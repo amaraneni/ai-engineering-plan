@@ -1,0 +1,1834 @@
+[
+  {
+    "url": "https://algomaster.io/learn/system-design",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://algomaster.io/learn/system-design",
+    "title": "Learn System Design | AlgoMaster.io",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:110",
+      "resources.md:124",
+      "weeks\\H-production-weeks-39-44.md:5",
+      "weeks\\H-production-weeks-39-44.md:169",
+      "weeks\\J-capstone-weeks-51-52.md:14"
+    ]
+  },
+  {
+    "url": "https://aspire.dev/dashboard/standalone/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://aspire.dev/dashboard/standalone/",
+    "title": "Standalone Aspire dashboard for OpenTelemetry | Aspire",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\H-production-weeks-39-44.md:100"
+    ]
+  },
+  {
+    "url": "https://aws.amazon.com/api-gateway/pricing/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://aws.amazon.com/api-gateway/pricing/",
+    "title": "Amazon API Gateway Pricing",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:330"
+    ]
+  },
+  {
+    "url": "https://aws.amazon.com/bedrock/pricing/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://aws.amazon.com/bedrock/pricing/",
+    "title": "Amazon Bedrock Pricing",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:6"
+    ]
+  },
+  {
+    "url": "https://aws.amazon.com/fargate/pricing/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://aws.amazon.com/fargate/pricing/",
+    "title": "AWS Fargate Pricing",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:630"
+    ]
+  },
+  {
+    "url": "https://aws.amazon.com/lambda/pricing/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://aws.amazon.com/lambda/pricing/",
+    "title": "AWS Lambda Pricing",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:330"
+    ]
+  },
+  {
+    "url": "https://aws.amazon.com/training/digital/immersive-learning/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://aws.amazon.com/training/digital/immersive-learning/",
+    "title": "Immersive learning | Digital Training | AWS",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:93",
+      "weeks\\F-aws-foundations-weeks-25-32.md:500"
+    ]
+  },
+  {
+    "url": "https://aws.amazon.com/training/learn-about/ai/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://aws.amazon.com/training/learn-about/ai/",
+    "title": "Artificial Intelligence - Learn about | AWS Training",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:101",
+      "weeks\\G-ai-on-aws-weeks-33-38.md:10"
+    ]
+  },
+  {
+    "url": "https://code.visualstudio.com/docs/datascience/jupyter-notebooks",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://code.visualstudio.com/docs/datascience/jupyter-notebooks",
+    "title": "Jupyter Notebooks in VS Code",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:373"
+    ]
+  },
+  {
+    "url": "https://csharp.sdk.modelcontextprotocol.io/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://csharp.sdk.modelcontextprotocol.io/",
+    "title": "MCP C# SDK documentation",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:80",
+      "weeks\\E-mcp-weeks-21-24.md:242"
+    ]
+  },
+  {
+    "url": "https://csharp.sdk.modelcontextprotocol.io/v1/concepts/getting-started.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://csharp.sdk.modelcontextprotocol.io/v1/concepts/getting-started.html",
+    "title": "Getting Started | MCP C# SDK",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:148",
+      "weeks\\E-mcp-weeks-21-24.md:305"
+    ]
+  },
+  {
+    "url": "https://docs.astral.sh/uv/getting-started/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.astral.sh/uv/getting-started/",
+    "title": "Getting started | uv",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:24"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html",
+    "title": "Best practices for designing and using partition keys effectively in DynamoDB - Amazon DynamoDB",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:347"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+    "title": "What is Amazon DynamoDB? - Amazon DynamoDB",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:347"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/AmazonECR/latest/userguide/what-is-ecr.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/AmazonECR/latest/userguide/what-is-ecr.html",
+    "title": "What is Amazon Elastic Container Registry? - Amazon ECR",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:580"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html",
+    "title": "What is Amazon Elastic Container Service? - Amazon Elastic Container Service",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:596"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-bedrock-kb.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-bedrock-kb.html",
+    "title": "Using S3 Vectors with Amazon Bedrock Knowledge Bases - Amazon Simple Storage Service",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:104"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-getting-started.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-getting-started.html",
+    "title": "Tutorial: Getting started with S3 Vectors - Amazon Simple Storage Service",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:154"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html",
+    "title": "What is Amazon S3? - Amazon Simple Storage Service",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:118"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html",
+    "title": "Choose between REST APIs and HTTP APIs - Amazon API Gateway",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:272"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html",
+    "title": "What Is AWS CloudTrail? - AWS CloudTrail",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:366"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-http-protocol-contract.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-http-protocol-contract.html",
+    "title": "HTTP protocol contract - Amazon Bedrock AgentCore",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:241"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-mcp.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-mcp.html",
+    "title": "Deploy MCP servers in AgentCore Runtime - Amazon Bedrock AgentCore",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:311"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html",
+    "title": "Overview - Amazon Bedrock AgentCore",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:226"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html",
+    "title": "How Amazon Bedrock Guardrails works - Amazon Bedrock",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:342"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-use-independent-api.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-use-independent-api.html",
+    "title": "Use the ApplyGuardrail API in your application - Amazon Bedrock",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:351"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-build.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-build.html",
+    "title": "Build a knowledge base with vector stores - Amazon Bedrock",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:103"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html",
+    "title": "Amazon Titan Text Embeddings models - Amazon Bedrock",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:64"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html",
+    "title": "Overview - Amazon Bedrock",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:102",
+      "weeks\\G-ai-on-aws-weeks-33-38.md:22"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-csharp.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-csharp.html",
+    "title": "Working with the AWS CDK in C# - AWS Cloud Development Kit (AWS CDK) v2",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:423"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html",
+    "title": "Configuring IAM Identity Center authentication with the AWS CLI - AWS Command Line Interface",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:59"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html",
+    "title": "Installing or updating to the latest version of the AWS CLI - AWS Command Line Interface",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:59"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html",
+    "title": "Managing your costs with AWS Budgets - AWS Cost Management",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:35"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html",
+    "title": "Policies and permissions in AWS Identity and Access Management - AWS Identity and Access Management",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:166"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+    "title": "Security best practices in IAM - AWS Identity and Access Management",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:23"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-asp.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-asp.html",
+    "title": "Deploy ASP.NET applications - AWS Lambda",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:281"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-csharp.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-csharp.html",
+    "title": "Building Lambda Event Functions with C# - AWS Lambda",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:208"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html",
+    "title": "What is AWS Organizations? - AWS Organizations",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\I-forward-deployed-weeks-45-50.md:143"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/mcp-deployment-patterns-on-aws/deployment-pattern-1-amazon-bedrock-agent-core.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/prescriptive-guidance/latest/mcp-deployment-patterns-on-aws/deployment-pattern-1-amazon-bedrock-agent-core.html",
+    "title": "Deployment Pattern 1 - Amazon Bedrock AgentCore - AWS Prescriptive Guidance",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:288"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/welcome.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/welcome.html",
+    "title": "What is the AWS SDK for .NET - AWS SDK for .NET (V4)",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:91",
+      "weeks\\F-aws-foundations-weeks-25-32.md:74"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/singlesignon/latest/userguide/getting-started.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/singlesignon/latest/userguide/getting-started.html",
+    "title": "Getting started with IAM Identity Center - AWS IAM Identity Center",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:47"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html",
+    "title": "How Amazon VPC works - Amazon Virtual Private Cloud",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:505"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html",
+    "title": "Control traffic to your AWS resources using security groups - Amazon Virtual Private Cloud",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:534"
+    ]
+  },
+  {
+    "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+    "title": "AWS Well-Architected Framework - AWS Well-Architected Framework",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:119",
+      "weeks\\C-rag-weeks-09-14.md:440",
+      "weeks\\G-ai-on-aws-weeks-33-38.md:387",
+      "weeks\\I-forward-deployed-weeks-45-50.md:9",
+      "weeks\\J-capstone-weeks-51-52.md:48"
+    ]
+  },
+  {
+    "url": "https://docs.docker.com/desktop/setup/install/windows-install/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.docker.com/desktop/setup/install/windows-install/",
+    "title": "Install Docker Desktop on Windows | Docker Docs",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:114"
+    ]
+  },
+  {
+    "url": "https://docs.docker.com/get-started/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.docker.com/get-started/",
+    "title": "Get started | Docker Docs",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:60"
+    ]
+  },
+  {
+    "url": "https://docs.docker.com/get-started/docker-concepts/running-containers/persisting-container-data/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.docker.com/get-started/docker-concepts/running-containers/persisting-container-data/",
+    "title": "Persisting container data | Docker Docs",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:163"
+    ]
+  },
+  {
+    "url": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/",
+    "title": "What is a container? | Docker Docs",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:119"
+    ]
+  },
+  {
+    "url": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/",
+    "title": "What is an image? | Docker Docs",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:119"
+    ]
+  },
+  {
+    "url": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-docker-compose/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-docker-compose/",
+    "title": "What is Docker Compose? | Docker Docs",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:163"
+    ]
+  },
+  {
+    "url": "https://docs.github.com/en/actions/get-started/understand-github-actions",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.github.com/en/actions/get-started/understand-github-actions",
+    "title": "Understanding GitHub Actions - GitHub Docs",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\H-production-weeks-39-44.md:17"
+    ]
+  },
+  {
+    "url": "https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws",
+    "title": "Configuring OpenID Connect in Amazon Web Services - GitHub Docs",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\H-production-weeks-39-44.md:48"
+    ]
+  },
+  {
+    "url": "https://docs.langchain.com/oss/python/langgraph/interrupts",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.langchain.com/oss/python/langgraph/interrupts",
+    "title": "Interrupts - Docs by LangChain",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:398"
+    ]
+  },
+  {
+    "url": "https://docs.langchain.com/oss/python/langgraph/overview",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.langchain.com/oss/python/langgraph/overview",
+    "title": "LangGraph overview - Docs by LangChain",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:357"
+    ]
+  },
+  {
+    "url": "https://docs.ollama.com/api/openai-compatibility",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.ollama.com/api/openai-compatibility",
+    "title": "OpenAI compatibility - Ollama",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:387"
+    ]
+  },
+  {
+    "url": "https://docs.pytest.org/en/stable/getting-started.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.pytest.org/en/stable/getting-started.html",
+    "title": "Get Started - pytest documentation",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:289"
+    ]
+  },
+  {
+    "url": "https://docs.python.org/3/library/asyncio-task.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.python.org/3/library/asyncio-task.html",
+    "title": "Coroutines and tasks &#8212; Python 3.15.2 documentation",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:232"
+    ]
+  },
+  {
+    "url": "https://docs.python.org/3/library/dataclasses.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.python.org/3/library/dataclasses.html",
+    "title": "dataclasses — Data Classes &#8212; Python 3.15.2 documentation",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:73"
+    ]
+  },
+  {
+    "url": "https://docs.python.org/3/tutorial/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.python.org/3/tutorial/",
+    "title": "The Python Tutorial &#8212; Python 3.15.2 documentation",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:51",
+      "weeks\\B-python-weeks-05-08.md:25"
+    ]
+  },
+  {
+    "url": "https://docs.python.org/3/tutorial/datastructures.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.python.org/3/tutorial/datastructures.html",
+    "title": "5. Data Structures &#8212; Python 3.15.2 documentation",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:46"
+    ]
+  },
+  {
+    "url": "https://docs.python.org/3/tutorial/modules.html",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.python.org/3/tutorial/modules.html",
+    "title": "6. Modules &#8212; Python 3.15.2 documentation",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:149"
+    ]
+  },
+  {
+    "url": "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/",
+    "title": "List of available metrics - Ragas",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:364"
+    ]
+  },
+  {
+    "url": "https://docs.ragas.io/en/stable/howtos/customizations/customize_models/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://docs.ragas.io/en/stable/howtos/customizations/customize_models/",
+    "title": "Customise models - Ragas",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:420"
+    ]
+  },
+  {
+    "url": "https://dotnet.microsoft.com/en-us/download",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://dotnet.microsoft.com/en-us/download",
+    "title": "Download .NET (Linux, macOS, and Windows) | .NET",
+    "softMissing": false,
+    "usedIn": [
+      "plan.md:140"
+    ]
+  },
+  {
+    "url": "https://fastapi.tiangolo.com/tutorial/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://fastapi.tiangolo.com/tutorial/",
+    "title": "Tutorial - User Guide - FastAPI",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:52"
+    ]
+  },
+  {
+    "url": "https://fastapi.tiangolo.com/tutorial/first-steps/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://fastapi.tiangolo.com/tutorial/first-steps/",
+    "title": "First Steps - FastAPI",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:471"
+    ]
+  },
+  {
+    "url": "https://genai.owasp.org/llm-top-10/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://genai.owasp.org/llm-top-10/",
+    "title": "LLMRisks Archive - OWASP Gen AI Security Project",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:72",
+      "weeks\\D-agents-weeks-15-20.md:437"
+    ]
+  },
+  {
+    "url": "https://github.com/aws-actions/configure-aws-credentials",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://github.com/aws-actions/configure-aws-credentials",
+    "title": "GitHub - aws-actions/configure-aws-credentials: Configure AWS credential environment variables for use in other GitHub Actions. · GitHub",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\H-production-weeks-39-44.md:53"
+    ]
+  },
+  {
+    "url": "https://github.com/microsoft/Generative-AI-for-beginners-dotnet",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://github.com/microsoft/Generative-AI-for-beginners-dotnet",
+    "title": "GitHub - microsoft/Generative-AI-for-beginners-dotnet: Five lessons, learn how to really apply AI to your .NET Applications · GitHub",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:40"
+    ]
+  },
+  {
+    "url": "https://github.com/modelcontextprotocol/python-sdk",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://github.com/modelcontextprotocol/python-sdk",
+    "title": "GitHub - modelcontextprotocol/python-sdk: The official Python SDK for Model Context Protocol servers and clients · GitHub",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:321"
+    ]
+  },
+  {
+    "url": "https://github.com/ollama/ollama-python",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://github.com/ollama/ollama-python",
+    "title": "GitHub - ollama/ollama-python: Ollama Python library · GitHub",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:323"
+    ]
+  },
+  {
+    "url": "https://github.com/open-telemetry/semantic-conventions-genai",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://github.com/open-telemetry/semantic-conventions-genai",
+    "title": "GitHub - open-telemetry/semantic-conventions-genai · GitHub",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:109",
+      "weeks\\H-production-weeks-39-44.md:126"
+    ]
+  },
+  {
+    "url": "https://grafana.com/docs/k6/latest/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://grafana.com/docs/k6/latest/",
+    "title": "Grafana k6 | Grafana k6 documentation",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\H-production-weeks-39-44.md:201"
+    ]
+  },
+  {
+    "url": "https://hatchworks.com/blog/fde/forward-deployed-engineer/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://hatchworks.com/blog/fde/forward-deployed-engineer/",
+    "title": "What Is a Forward Deployed Engineer? The Model Getting Enterprise AI Into Production",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:118",
+      "weeks\\I-forward-deployed-weeks-45-50.md:9",
+      "weeks\\I-forward-deployed-weeks-45-50.md:20"
+    ]
+  },
+  {
+    "url": "https://learn.deeplearning.ai/courses/ai-agents-in-langgraph",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.deeplearning.ai/courses/ai-agents-in-langgraph/lesson/qyrpc/introduction",
+    "title": "AI Agents in LangGraph - DeepLearning.AI",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:70",
+      "weeks\\D-agents-weeks-15-20.md:7",
+      "weeks\\D-agents-weeks-15-20.md:356"
+    ]
+  },
+  {
+    "url": "https://learn.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic/lesson/fkbhh/introduction",
+    "title": "MCP: Build Rich-Context AI Apps with Anthropic - DeepLearning.AI",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:78",
+      "weeks\\E-mcp-weeks-21-24.md:7"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/agents/tools/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/agents/tools/",
+    "title": "Tools Overview | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:19"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/agents/tools/tool-approval?pivots=programming-language-csharp",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/agents/tools/tool-approval?pivots=programming-language-csharp",
+    "title": "Using function tools with human in the loop approvals | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:234"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/concepts/workflows/edges?pivots=programming-language-csharp",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/concepts/workflows/edges?pivots=programming-language-csharp",
+    "title": "Microsoft Agent Framework Workflows - Edges | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:261"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/get-started/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/get-started/",
+    "title": "Get started with Agent Framework | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:68",
+      "weeks\\D-agents-weeks-15-20.md:7"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/get-started/add-tools?pivots=programming-language-csharp",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/get-started/add-tools?pivots=programming-language-csharp",
+    "title": "Step 2: Add Tools | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:150"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/get-started/memory?pivots=programming-language-csharp",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/get-started/memory?pivots=programming-language-csharp",
+    "title": "Step 4: Memory &amp; Persistence | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:184"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/get-started/multi-turn?pivots=programming-language-csharp",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/get-started/multi-turn?pivots=programming-language-csharp",
+    "title": "Step 3: Multi-Turn Conversations | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:167"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/get-started/workflows?pivots=programming-language-csharp",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/get-started/workflows?pivots=programming-language-csharp",
+    "title": "Step 5: Workflows | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:212"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/integrations/by-component/model-providers/amazon-bedrock",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/integrations/by-component/model-providers/amazon-bedrock",
+    "title": "Amazon Bedrock | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\G-ai-on-aws-weeks-33-38.md:37"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/integrations/by-component/model-providers/ollama?pivots=programming-language-csharp",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/integrations/by-component/model-providers/ollama?pivots=programming-language-csharp",
+    "title": "Ollama | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:121"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/overview/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/overview/",
+    "title": "Microsoft Agent Framework Overview | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:112"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/workflows/agents-in-workflows?pivots=programming-language-csharp",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/workflows/agents-in-workflows?pivots=programming-language-csharp",
+    "title": "Agents in Workflows | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:227"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/workflows/orchestrations/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/workflows/orchestrations/",
+    "title": "Workflow orchestrations in Agent Framework | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:290"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/workflows/orchestrations/concurrent?pivots=programming-language-csharp",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/workflows/orchestrations/concurrent?pivots=programming-language-csharp",
+    "title": "Microsoft Agent Framework Workflows Orchestrations - Concurrent | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:328"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/agent-framework/workflows/orchestrations/sequential?pivots=programming-language-csharp",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/agent-framework/workflows/orchestrations/sequential?pivots=programming-language-csharp",
+    "title": "Microsoft Agent Framework Workflows Orchestrations - Sequential | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:298"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit?view=aspnetcore-10.0",
+    "title": "Rate limiting middleware in ASP.NET Core | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\H-production-weeks-39-44.md:193"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/aspnet/core/tutorials/min-web-api",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/aspnet/core/tutorials/min-web-api?view=aspnetcore-10.0",
+    "title": "Tutorial: Create a Minimal API with ASP.NET Core | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:506"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-chunking-phase",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-chunking-phase",
+    "title": "Develop a RAG Solution on Azure - Chunking Phase - Azure Architecture Center | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:17"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/conceptual/embeddings",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/conceptual/embeddings",
+    "title": "How Embeddings Extend Your AI Model&#39;s Reach - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\A-ai-foundations-weeks-02-04.md:213"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/conceptual/how-genai-and-llms-work",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/conceptual/how-genai-and-llms-work",
+    "title": "How Generative AI and LLMs work - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "plan.md:149",
+      "weeks\\A-ai-foundations-weeks-02-04.md:158"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/conceptual/prompt-engineering-dotnet",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/conceptual/prompt-engineering-dotnet",
+    "title": "Prompt engineering concepts - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "plan.md:221",
+      "weeks\\A-ai-foundations-weeks-02-04.md:18"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/conceptual/rag",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/conceptual/rag",
+    "title": "Integrate Your Data into AI Apps with Retrieval-Augmented Generation - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\A-ai-foundations-weeks-02-04.md:399"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/conceptual/understanding-tokens",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/conceptual/understanding-tokens",
+    "title": "Understanding tokens - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "plan.md:150",
+      "plan.md:303"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/evaluation/libraries",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/evaluation/libraries",
+    "title": "The Microsoft.Extensions.AI.Evaluation libraries - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:401"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/microsoft-extensions-ai",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/microsoft-extensions-ai",
+    "title": "Microsoft.Extensions.AI libraries - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:41",
+      "weeks\\D-agents-weeks-15-20.md:54"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/build-mcp-client",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/build-mcp-client",
+    "title": "Quickstart - Create a minimal MCP client using .NET - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:64"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/build-mcp-server",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/build-mcp-server",
+    "title": "Quickstart - Create a minimal MCP server and publish to NuGet - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:129"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/chat-local-model",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/chat-local-model",
+    "title": "Quickstart - Connect to and chat with a local AI using .NET - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "plan.md:173"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/structured-output",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/structured-output",
+    "title": "Quickstart - Request a response with structured output - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "plan.md:249"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/use-function-calling",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/use-function-calling",
+    "title": "Quickstart - Extend OpenAI using functions and execute a local function with .NET - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\A-ai-foundations-weeks-02-04.md:78"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/ai/vector-stores/overview",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/ai/vector-stores/overview",
+    "title": "Vector databases for .NET AI apps - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:62",
+      "weeks\\A-ai-foundations-weeks-02-04.md:296"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/core/docker/build-container",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/core/docker/build-container",
+    "title": "Containerize an app with Docker tutorial - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:136"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/dotnet/core/resilience/http-resilience",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/dotnet/core/resilience/http-resilience",
+    "title": "Build resilient HTTP apps: Key development patterns - .NET | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\H-production-weeks-39-44.md:273"
+    ]
+  },
+  {
+    "url": "https://learn.microsoft.com/en-us/windows/wsl/install",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://learn.microsoft.com/en-us/windows/wsl/install",
+    "title": "Install WSL | Microsoft Learn",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\H-production-weeks-39-44.md:331"
+    ]
+  },
+  {
+    "url": "https://linuxcommand.org/lc3_learning_the_shell.php",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://linuxcommand.org/lc3_learning_the_shell.php",
+    "title": "LinuxCommand.org: Learning the shell.",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\H-production-weeks-39-44.md:332"
+    ]
+  },
+  {
+    "url": "https://modelcontextprotocol.io/docs/getting-started/intro",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro",
+    "title": "What is the Model Context Protocol (MCP)? - Model Context Protocol",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:79",
+      "weeks\\E-mcp-weeks-21-24.md:19"
+    ]
+  },
+  {
+    "url": "https://modelcontextprotocol.io/docs/learn/architecture",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture",
+    "title": "Architecture overview - Model Context Protocol",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:20"
+    ]
+  },
+  {
+    "url": "https://modelcontextprotocol.io/docs/tools/inspector",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector",
+    "title": "MCP Inspector - Model Context Protocol",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:31"
+    ]
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/latest/basic/authorization",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization",
+    "title": "Authorization - Model Context Protocol",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:312"
+    ]
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/latest/basic/security_best_practices",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
+    "title": "Security Best Practices - Model Context Protocol",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:362"
+    ]
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/latest/basic/transports",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports",
+    "title": "Overview - Model Context Protocol",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:291"
+    ]
+  },
+  {
+    "url": "https://modelcontextprotocol.io/specification/latest/server/tools",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+    "title": "Tools - Model Context Protocol",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:232"
+    ]
+  },
+  {
+    "url": "https://nodejs.org/en/download",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://nodejs.org/en/download",
+    "title": "Node.js — Download Node.js®",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\E-mcp-weeks-21-24.md:5"
+    ]
+  },
+  {
+    "url": "https://ollama.com/download",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://ollama.com/download",
+    "title": "Download Ollama on Windows",
+    "softMissing": false,
+    "usedIn": [
+      "plan.md:153"
+    ]
+  },
+  {
+    "url": "https://opentelemetry.io/docs/languages/dotnet/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://opentelemetry.io/docs/languages/dotnet/",
+    "title": ".NET | OpenTelemetry",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:108",
+      "weeks\\H-production-weeks-39-44.md:91"
+    ]
+  },
+  {
+    "url": "https://policysim.aws.amazon.com/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://policysim.aws.amazon.com/home/index.jsp",
+    "title": "",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\F-aws-foundations-weeks-25-32.md:179"
+    ]
+  },
+  {
+    "url": "https://pydantic.dev/docs/validation/latest/concepts/models/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://pydantic.dev/docs/validation/latest/concepts/models/",
+    "title": "Models | Pydantic Docs",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:264"
+    ]
+  },
+  {
+    "url": "https://qdrant.tech/documentation/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://qdrant.tech/documentation/",
+    "title": "Documentation - Qdrant",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:61"
+    ]
+  },
+  {
+    "url": "https://qdrant.tech/documentation/quickstart/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://qdrant.tech/documentation/quickstart/",
+    "title": "Local Quickstart - Qdrant",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:185"
+    ]
+  },
+  {
+    "url": "https://qdrant.tech/documentation/search-tuning/hybrid-search/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://qdrant.tech/documentation/search-tuning/hybrid-search/",
+    "title": "Hybrid Search in Qdrant",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:251"
+    ]
+  },
+  {
+    "url": "https://qdrant.tech/documentation/search/filtering/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://qdrant.tech/documentation/search/filtering/",
+    "title": "Filtering - Qdrant",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\C-rag-weeks-09-14.md:231"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/ai-agents",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/ai-agents",
+    "title": "AI Agents Roadmap",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:20",
+      "weeks\\D-agents-weeks-15-20.md:8",
+      "weeks\\D-agents-weeks-15-20.md:20",
+      "weeks\\D-agents-weeks-15-20.md:305",
+      "weeks\\D-agents-weeks-15-20.md:503",
+      "weeks\\E-mcp-weeks-21-24.md:8",
+      "weeks\\E-mcp-weeks-21-24.md:380"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/ai-engineer",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/ai-engineer",
+    "title": "AI Engineer Roadmap",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:19",
+      "weeks\\C-rag-weeks-09-14.md:6",
+      "weeks\\C-rag-weeks-09-14.md:106",
+      "weeks\\C-rag-weeks-09-14.md:585",
+      "weeks\\D-agents-weeks-15-20.md:305",
+      "weeks\\G-ai-on-aws-weeks-33-38.md:11",
+      "weeks\\J-capstone-weeks-51-52.md:101"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/aspnet-core",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/aspnet-core",
+    "title": "ASP.NET Core Roadmap",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:25",
+      "weeks\\C-rag-weeks-09-14.md:6"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/aws",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/aws",
+    "title": "AWS Roadmap",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:24",
+      "weeks\\F-aws-foundations-weeks-25-32.md:12",
+      "weeks\\F-aws-foundations-weeks-25-32.md:637",
+      "weeks\\G-ai-on-aws-weeks-33-38.md:11",
+      "weeks\\G-ai-on-aws-weeks-33-38.md:393"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/devops",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/devops",
+    "title": "DevOps Roadmap: Learn to become a DevOps Engineer or SRE",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:26",
+      "weeks\\H-production-weeks-39-44.md:6",
+      "weeks\\H-production-weeks-39-44.md:372"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/docker",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/docker",
+    "title": "Docker Roadmap",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:23",
+      "weeks\\C-rag-weeks-09-14.md:6",
+      "weeks\\C-rag-weeks-09-14.md:240"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/git-github",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/git-github",
+    "title": "Learn Git and GitHub",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:30"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/linux",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/linux",
+    "title": "Linux Roadmap",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:27",
+      "weeks\\H-production-weeks-39-44.md:6",
+      "weeks\\H-production-weeks-39-44.md:372"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/mlops",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/mlops",
+    "title": "MLOps Roadmap",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:28",
+      "weeks\\H-production-weeks-39-44.md:6",
+      "weeks\\H-production-weeks-39-44.md:256"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/pdfs/roadmaps/ai-engineer.pdf",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/pdfs/roadmaps/ai-engineer.pdf",
+    "title": "",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\D-agents-weeks-15-20.md:306"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/prompt-engineering",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/prompt-engineering",
+    "title": "Prompt Engineering Roadmap",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:21"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/python",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/python",
+    "title": "Learn to become a modern Python developer",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:22"
+    ]
+  },
+  {
+    "url": "https://roadmap.sh/system-design",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://roadmap.sh/system-design",
+    "title": "System Design Roadmap",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:29",
+      "resources.md:124",
+      "weeks\\H-production-weeks-39-44.md:6",
+      "weeks\\J-capstone-weeks-51-52.md:14"
+    ]
+  },
+  {
+    "url": "https://skillbuilder.aws/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://skillbuilder.aws/",
+    "title": "AWS Skill Builder",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:92",
+      "weeks\\F-aws-foundations-weeks-25-32.md:11"
+    ]
+  },
+  {
+    "url": "https://www.coursera.org/learn/amazon-bedrock-getting-started",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.coursera.org/learn/amazon-bedrock-getting-started",
+    "title": "Amazon Bedrock - Getting Started with Generative AI | Coursera",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:99",
+      "weeks\\G-ai-on-aws-weeks-33-38.md:10"
+    ]
+  },
+  {
+    "url": "https://www.coursera.org/learn/generative-ai-applications-amazon-bedrock",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.coursera.org/learn/generative-ai-applications-amazon-bedrock",
+    "title": "Generative AI Applications with Amazon Bedrock | Coursera",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:100",
+      "weeks\\G-ai-on-aws-weeks-33-38.md:10"
+    ]
+  },
+  {
+    "url": "https://www.coursera.org/learn/generative-ai-with-llms",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.coursera.org/learn/generative-ai-with-llms",
+    "title": "Generative AI with Large Language Models | Coursera",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:42"
+    ]
+  },
+  {
+    "url": "https://www.coursera.org/learn/retrieval-augmented-generation-rag",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.coursera.org/learn/retrieval-augmented-generation-rag",
+    "title": "Retrieval Augmented Generation (RAG) | Coursera",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:58",
+      "weeks\\C-rag-weeks-09-14.md:5"
+    ]
+  },
+  {
+    "url": "https://www.coursera.org/professional-certificates/microsoft-ai-agents",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.coursera.org/professional-certificates/microsoft-ai-agents",
+    "title": "Microsoft AI Agents: From Foundations to Applications Professional Certificate | Coursera",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:69",
+      "weeks\\D-agents-weeks-15-20.md:7"
+    ]
+  },
+  {
+    "url": "https://www.coursera.org/specializations/python",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.coursera.org/specializations/python",
+    "title": "Python for Everybody | Coursera",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:49"
+    ]
+  },
+  {
+    "url": "https://www.linkedin.com/learning/search?keywords=.NET%20generative%20AI",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.linkedin.com/learning/search?keywords=.NET%20generative%20AI",
+    "title": ".NET generative AI: Online Courses, Training and Tutorials on LinkedIn Learning",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:43"
+    ]
+  },
+  {
+    "url": "https://www.linkedin.com/learning/search?keywords=GitHub%20Actions",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.linkedin.com/learning/search?keywords=GitHub%20Actions",
+    "title": "GitHub Actions: Online Courses, Training and Tutorials on LinkedIn Learning",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:111",
+      "weeks\\H-production-weeks-39-44.md:5"
+    ]
+  },
+  {
+    "url": "https://www.linkedin.com/learning/search?keywords=Linux%20command%20line",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.linkedin.com/learning/search?keywords=Linux%20command%20line",
+    "title": "Linux command line: Online Courses, Training and Tutorials on LinkedIn Learning",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:112",
+      "weeks\\H-production-weeks-39-44.md:5"
+    ]
+  },
+  {
+    "url": "https://www.linkedin.com/learning/search?keywords=Microsoft%20Agent%20Framework",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.linkedin.com/learning/search?keywords=Microsoft%20Agent%20Framework",
+    "title": "Microsoft Agent Framework: Online Courses, Training and Tutorials on LinkedIn Learning",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:71"
+    ]
+  },
+  {
+    "url": "https://www.linkedin.com/learning/search?keywords=Python%20Essential%20Training",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.linkedin.com/learning/search?keywords=Python%20Essential%20Training",
+    "title": "Python Essential Training: Online Courses, Training and Tutorials on LinkedIn Learning",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:50"
+    ]
+  },
+  {
+    "url": "https://www.linkedin.com/learning/search?keywords=technical%20consulting%20skills",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.linkedin.com/learning/search?keywords=technical%20consulting%20skills",
+    "title": "technical consulting skills: Online Courses, Training and Tutorials on LinkedIn Learning",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:120",
+      "weeks\\I-forward-deployed-weeks-45-50.md:9"
+    ]
+  },
+  {
+    "url": "https://www.python-httpx.org/quickstart/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.python-httpx.org/quickstart/",
+    "title": "QuickStart - HTTPX",
+    "softMissing": false,
+    "usedIn": [
+      "weeks\\B-python-weeks-05-08.md:213"
+    ]
+  },
+  {
+    "url": "https://www.udemy.com/course/aws-certified-developer-associate-dva-c01/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.udemy.com/course/aws-certified-developer-associate-dva-c01/",
+    "title": "Ultimate AWS Certified Developer Associate 2026 DVA-C02",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:87",
+      "weeks\\F-aws-foundations-weeks-25-32.md:11"
+    ]
+  },
+  {
+    "url": "https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/",
+    "title": "Ultimate AWS Certified Solutions Architect Associate 2026",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:88",
+      "weeks\\F-aws-foundations-weeks-25-32.md:506"
+    ]
+  },
+  {
+    "url": "https://www.udemy.com/course/aws-cloud-development-kit-cdk-v2-beginner-to-advanced/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.udemy.com/course/aws-cloud-development-kit-cdk-v2-beginner-to-advanced/",
+    "title": "AWS Cloud Development Kit (CDK) - V2- Beginner to Advanced",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:90",
+      "weeks\\F-aws-foundations-weeks-25-32.md:11"
+    ]
+  },
+  {
+    "url": "https://www.udemy.com/course/aws-lambda-dotnet/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.udemy.com/course/aws-lambda-dotnet/",
+    "title": "AWS Lambda For The .NET Developer",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:89",
+      "weeks\\F-aws-foundations-weeks-25-32.md:11"
+    ]
+  },
+  {
+    "url": "https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/",
+    "title": "Docker and Kubernetes: The Complete Guide",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:59",
+      "weeks\\C-rag-weeks-09-14.md:5"
+    ]
+  },
+  {
+    "url": "https://www.udemy.com/course/mcp-masterclass/",
+    "verdict": "ok",
+    "status": 200,
+    "finalUrl": "https://www.udemy.com/course/mcp-masterclass/",
+    "title": "The Complete Model Context Protocol (MCP) Masterclass",
+    "softMissing": false,
+    "usedIn": [
+      "resources.md:81",
+      "weeks\\E-mcp-weeks-21-24.md:7"
+    ]
+  }
+]

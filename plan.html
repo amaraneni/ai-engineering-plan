@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Engineering Plan: Week by Week</title>
+<style>
+:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
+main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
+a { color:var(--accent); }
+a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
+h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
+h1:target,h2:target,h3:target { background:var(--target); }
+.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
+h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
+code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
+pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
+pre code { background:none; padding:0; font-size:.88rem; }
+.table-wrap { overflow-x:auto; }
+table { border-collapse:collapse; margin:1em 0; }
+th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
+th { background:var(--code); }
+li { margin:.2em 0; } li > p { margin:.3em 0; }
+hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
+.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
+@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Plan"><a href="schedule.html">← Schedule</a><a href="plan.html">Plan</a><a href="resources.html">Resources</a></nav>
+<main>
+<h1 id="ai-engineering-plan-week-by-week">AI Engineering Plan: Week by Week<a class="anchor" href="#ai-engineering-plan-week-by-week" aria-label="Link to this heading">#</a></h1>
+<p><strong>Goal:</strong> by the end you can build and deploy real AI systems: LLM apps, RAG, agents, MCP servers, and AWS deployments. You'll also be able to work as a forward deployed engineer, someone who takes these systems into a customer's environment and makes them work there.</p>
+<p><strong>Language:</strong> C# and .NET by default, because that's your strength. Python has its own block of weeks (5–8), then comes back wherever the Python ecosystem is clearly better, for example RAG evaluation and LangGraph.</p>
+<p><strong>Cost:</strong> local first. AI runs on your laptop with Ollama until Week 33. AWS weeks use small, short-lived resources and include a cleanup step.</p>
+<p><strong>Files in this plan:</strong></p>
+<ul>
+<li><a href="schedule.html">schedule.html</a>: <strong>start here each day.</strong> The dated checklist (Oct 28, 2026 to Oct 26, 2027). Tick days off, and your progress is saved in the browser</li>
+<li><a href="schedule.html">schedule.md</a>: the same checklist as a printable Markdown file</li>
+<li><code>plan.md</code> (this file): the goal, the outline, and Week 1 in full</li>
+<li><code>weeks/</code>: one file per section, with every day of Weeks 2–52</li>
+<li><a href="resources.html">resources.md</a>: the courses (Coursera, Udemy, LinkedIn Learning, AlgoMaster, AWS Skill Builder), docs, and roadmap.sh roadmaps, mapped to the weeks that use them</li>
+<li><code>tools/check-links.mjs</code>: run <code>node tools/check-links.mjs</code> to re-check every link; the results go to <code>tools/link-report.json</code></li>
+<li><code>tools/build-schedule.mjs</code>: run <code>node tools/build-schedule.mjs 2026-10-28</code> to rebuild the schedule after editing the plan, or pass a different start date</li>
+<li><code>tools/build-html.mjs</code>: run <code>node tools/build-html.mjs</code> to rebuild the HTML lesson pages (<code>plan.html</code>, <code>resources.html</code>, and <code>weeks/*.html</code>) after editing any <code>.md</code> file</li>
+</ul>
+<hr>
+<h2 id="your-main-project-the-curriculum-assistant">Your main project: the Curriculum Assistant<a class="anchor" href="#your-main-project-the-curriculum-assistant" aria-label="Link to this heading">#</a></h2>
+<p>Most weeks are small standalone exercises. Alongside them, you build one chatbot that grows as you learn, and by the end it's your portfolio piece. It knows <strong>this plan</strong>, the <strong>sources it links to</strong>, and <strong>your own work</strong>, and it answers questions about all three.</p>
+<p>By Week 52 you can ask it things like:</p>
+<ul>
+<li>&quot;What do I learn in Week 22, and what should I already know first?&quot;</li>
+<li>&quot;Explain chunking using the docs I studied, with links.&quot;</li>
+<li>&quot;Compare my plan with the roadmap.sh AI Engineer roadmap. What's missing?&quot;</li>
+<li>&quot;Is the Week 27 Lambda page still current, or has the official doc changed?&quot;</li>
+<li>&quot;What have I finished, and what did I skip?&quot;</li>
+</ul>
+<p>It's built in C# and grows in milestones. Each one is that week's Day 6 project, so it doesn't add extra work every day.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Week</th><th scope="col">Milestone</th><th scope="col">What it can do afterwards</th></tr></thead><tbody><tr><td>1</td><td>Paste the plan into the prompt</td><td>Answers questions about one week of the plan, and shows why that doesn't scale</td></tr><tr><td>4</td><td>First RAG version</td><td>Searches the whole plan and answers with the week and day it came from</td></tr><tr><td>9–13</td><td>Add the sources</td><td>Downloads the docs pages the plan links to, chunks and indexes them, and cites them in answers</td></tr><tr><td>14</td><td>Web API</td><td>Runs as an ASP.NET Core API with a simple chat page</td></tr><tr><td>16–17</td><td>Agent</td><td>Uses tools to look up a week, search sources, and check your progress</td></tr><tr><td>18</td><td>Compare</td><td>A &quot;compare&quot; agent checks your plan against roadmap.sh and current docs, and lists gaps and stale links</td></tr><tr><td>22–23</td><td>MCP server</td><td>Plan, sources, and progress are available as MCP tools you can also use from VS Code or Kiro</td></tr><tr><td>33–37</td><td>On AWS</td><td>Runs on AWS with Bedrock models, S3 Vectors search, and DynamoDB progress; the agent runs on AgentCore, and the MCP server is reachable over HTTPS</td></tr><tr><td>39–43</td><td>Production</td><td>CI/CD, tracing, caching, automatic answer-quality tests, and fallbacks</td></tr><tr><td>45–50</td><td>Customer version</td><td>Adapted for a made-up customer, Northwind, with access rules, a ticketing MCP server, and a separate AWS account</td></tr><tr><td>51–52</td><td>Version 1.0</td><td>Finished, deployed, documented, and demoed</td></tr></tbody></table></div>
+<hr>
+<h2 id="how-each-day-works-about-6090-minutes">How each day works (about 60–90 minutes)<a class="anchor" href="#how-each-day-works-about-6090-minutes" aria-label="Link to this heading">#</a></h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Part</th><th scope="col">Time</th><th scope="col">What you do</th></tr></thead><tbody><tr><td><strong>Topic</strong></td><td></td><td>One thing you learn today</td></tr><tr><td><strong>Learn</strong></td><td>~20 min</td><td>One or two docs pages or videos</td></tr><tr><td><strong>Do</strong></td><td>~45–60 min</td><td>Build something real with that topic</td></tr><tr><td><strong>Done when</strong></td><td></td><td>What you should see working</td></tr><tr><td><strong>Short on time?</strong></td><td></td><td>The smallest version that still counts</td></tr></tbody></table></div>
+<p><strong>Day 7 each week is light:</strong> catch up on anything you missed, tidy up, and push the week's work to GitHub.</p>
+<hr>
+<h2 id="outline-52-weeks">Outline (52 weeks)<a class="anchor" href="#outline-52-weeks" aria-label="Link to this heading">#</a></h2>
+<h3 id="a-ai-foundations-in-net-weeks-14--week-1-is-below--weeks-24weeksa-ai-foundations-weeks-02-04md">A. AI foundations in .NET (Weeks 1–4) · Week 1 is below · <a href="weeks/A-ai-foundations-weeks-02-04.html">Weeks 2–4</a><a class="anchor" href="#a-ai-foundations-in-net-weeks-14--week-1-is-below--weeks-24weeksa-ai-foundations-weeks-02-04md" aria-label="Link to this heading">#</a></h3>
+<ol>
+<li>Run an AI model locally and call it from C#</li>
+<li>Prompts, structured output, and tool calling</li>
+<li>Embeddings and semantic search</li>
+<li>Your first RAG app over your own documents</li>
+</ol>
+<h3 id="b-python-for-ai-weeks-58--openweeksb-python-weeks-05-08md">B. Python for AI (Weeks 5–8) · <a href="weeks/B-python-weeks-05-08.html">open</a><a class="anchor" href="#b-python-for-ai-weeks-58--openweeksb-python-weeks-05-08md" aria-label="Link to this heading">#</a></h3>
+<ol start="5">
+<li>Python for C# developers: syntax, types, uv, virtual environments</li>
+<li>Files, HTTP, async, and packages in Python</li>
+<li>Calling models and embeddings from Python, plus notebooks</li>
+<li>Rebuild your Week 4 RAG app in Python and compare it with .NET</li>
+</ol>
+<h3 id="c-rag-in-depth-weeks-914--openweeksc-rag-weeks-09-14md">C. RAG in depth (Weeks 9–14) · <a href="weeks/C-rag-weeks-09-14.html">open</a><a class="anchor" href="#c-rag-in-depth-weeks-914--openweeksc-rag-weeks-09-14md" aria-label="Link to this heading">#</a></h3>
+<ol start="9">
+<li>Chunking strategies and why they matter</li>
+<li>Docker basics, then run Qdrant as a vector database</li>
+<li>Hybrid search and reranking</li>
+<li>Measuring RAG quality with test questions and scores</li>
+<li>PDFs, code, and keeping sources fresh</li>
+<li>Put RAG behind an ASP.NET Core API with streaming</li>
+</ol>
+<h3 id="d-agents-weeks-1520--openweeksd-agents-weeks-15-20md">D. Agents (Weeks 15–20) · <a href="weeks/D-agents-weeks-15-20.html">open</a><a class="anchor" href="#d-agents-weeks-1520--openweeksd-agents-weeks-15-20md" aria-label="Link to this heading">#</a></h3>
+<ol start="15">
+<li>Tool calling in depth</li>
+<li>Your first agents with Microsoft Agent Framework: tools, sessions, memory</li>
+<li>Multi-step workflows and human approval</li>
+<li>Multi-agent systems, and comparing the plan with outside sources</li>
+<li>Agents in Python with LangGraph, compared with .NET</li>
+<li>Agent safety, guardrails, and evaluation</li>
+</ol>
+<h3 id="e-mcp-weeks-2124--openweekse-mcp-weeks-21-24md">E. MCP (Weeks 21–24) · <a href="weeks/E-mcp-weeks-21-24.html">open</a><a class="anchor" href="#e-mcp-weeks-2124--openweekse-mcp-weeks-21-24md" aria-label="Link to this heading">#</a></h3>
+<ol start="21">
+<li>What MCP is, and using existing MCP servers</li>
+<li>Build an MCP server in C# with the official SDK</li>
+<li>Better MCP servers: errors, progress, tests, and several servers at once</li>
+<li>Remote MCP over HTTP with auth, plus a Python MCP server</li>
+</ol>
+<h3 id="f-aws-foundations-with-net-weeks-2532--openweeksf-aws-foundations-weeks-25-32md">F. AWS foundations with .NET (Weeks 25–32) · <a href="weeks/F-aws-foundations-weeks-25-32.html">open</a><a class="anchor" href="#f-aws-foundations-with-net-weeks-2532--openweeksf-aws-foundations-weeks-25-32md" aria-label="Link to this heading">#</a></h3>
+<ol start="25">
+<li>Safe account setup: IAM, MFA, budgets, AWS CLI</li>
+<li>S3 and IAM roles with the AWS SDK for .NET</li>
+<li>Lambda functions in C#</li>
+<li>Build an API with API Gateway and Lambda</li>
+<li>DynamoDB</li>
+<li>Infrastructure as code with AWS CDK in C#</li>
+<li>VPC networking basics</li>
+<li>Containers: ECR and ECS Fargate for an ASP.NET app</li>
+</ol>
+<h3 id="g-ai-on-aws-weeks-3338--openweeksg-ai-on-aws-weeks-33-38md">G. AI on AWS (Weeks 33–38) · <a href="weeks/G-ai-on-aws-weeks-33-38.html">open</a><a class="anchor" href="#g-ai-on-aws-weeks-3338--openweeksg-ai-on-aws-weeks-33-38md" aria-label="Link to this heading">#</a></h3>
+<ol start="33">
+<li>Amazon Bedrock from C#</li>
+<li>Bedrock Knowledge Bases and S3 Vectors, compared with your own RAG</li>
+<li>Deploy your RAG API to AWS</li>
+<li>Agents on AWS with Bedrock AgentCore</li>
+<li>Deploy your MCP server to AWS</li>
+<li>Security for AI on AWS: guardrails, least privilege, audit trail</li>
+</ol>
+<h3 id="h-production-and-devops-weeks-3944--openweeksh-production-weeks-39-44md">H. Production and DevOps (Weeks 39–44) · <a href="weeks/H-production-weeks-39-44.html">open</a><a class="anchor" href="#h-production-and-devops-weeks-3944--openweeksh-production-weeks-39-44md" aria-label="Link to this heading">#</a></h3>
+<ol start="39">
+<li>CI/CD with GitHub Actions to AWS</li>
+<li>Observability: logs, metrics, and traces for LLM calls</li>
+<li>Cost and performance: caching, model choice, rate limits</li>
+<li>Automated AI tests and evaluation in CI</li>
+<li>Reliability: retries, timeouts, fallbacks</li>
+<li>Linux and troubleshooting skills for deployed systems</li>
+</ol>
+<h3 id="i-forward-deployed-engineering-weeks-4550--openweeksi-forward-deployed-weeks-45-50md">I. Forward deployed engineering (Weeks 45–50) · <a href="weeks/I-forward-deployed-weeks-45-50.html">open</a><a class="anchor" href="#i-forward-deployed-engineering-weeks-4550--openweeksi-forward-deployed-weeks-45-50md" aria-label="Link to this heading">#</a></h3>
+<ol start="45">
+<li>What the role is, and scoping a customer's AI use case</li>
+<li>Connecting to customer data and systems</li>
+<li>Deploying into a separate &quot;customer&quot; AWS account</li>
+<li>Building demos and explaining trade-offs to stakeholders</li>
+<li>Debugging in the field: an incident drill</li>
+<li>Handover: documentation and runbooks</li>
+</ol>
+<h3 id="j-capstone-weeks-5152--openweeksj-capstone-weeks-51-52md">J. Capstone (Weeks 51–52) · <a href="weeks/J-capstone-weeks-51-52.html">open</a><a class="anchor" href="#j-capstone-weeks-5152--openweeksj-capstone-weeks-51-52md" aria-label="Link to this heading">#</a></h3>
+<p>51–52. Finish the <strong>Curriculum Assistant</strong> as version 1.0. It runs on AWS and combines RAG over the plan, its sources, and your notes; an agent that compares your plan with roadmap.sh and current docs; MCP tools; answer-quality tests; and CI/CD. You also record a short demo and write up the design.</p>
+<hr>
+<h2 id="week-1-in-full-run-an-ai-model-locally-and-call-it-from-c">Week 1 in full: Run an AI model locally and call it from C#<a class="anchor" href="#week-1-in-full-run-an-ai-model-locally-and-call-it-from-c" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> a C# console chat app talking to an AI model on your own laptop, with a system prompt, streaming, typed output, and token counts. You'll also have hit the limit that RAG solves.</p>
+<p><strong>Setup you need once:</strong> the <a href="https://dotnet.microsoft.com/en-us/download" target="_blank" rel="noopener">.NET 10 SDK</a> and VS Code or Visual Studio. Everything this week runs in normal Windows. You don't need WSL yet.</p>
+<hr>
+<h3 id="day-1-what-an-llm-is-and-running-one-locally">Day 1: What an LLM is, and running one locally<a class="anchor" href="#day-1-what-an-llm-is-and-running-one-locally" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> a large language model (LLM) predicts text one token at a time. Ollama lets you run one on your own machine for free.</p>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/conceptual/how-genai-and-llms-work" target="_blank" rel="noopener">How generative AI and LLMs work</a> (Microsoft Learn)</li>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/conceptual/understanding-tokens" target="_blank" rel="noopener">Understanding tokens</a> (Microsoft Learn)</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Install Ollama for Windows from <a href="https://ollama.com/download" target="_blank" rel="noopener">ollama.com/download</a>.</li>
+<li>In PowerShell, download a small model (about 2 GB) and chat with it:
+<pre><code class="lang-powershell">ollama pull llama3.2
+ollama run llama3.2</code></pre></li>
+<li>Ask it three things: a fact question, something to summarize, and a question about something recent. Notice that it can be confidently wrong about recent events. It only knows its training data.</li>
+<li>Type <code>/bye</code> to exit, then run <code>ollama show llama3.2</code> and find the <strong>context length</strong> line.</li>
+</ol>
+<p><strong>Done when:</strong> you've had a conversation with the model, and you can explain in one sentence what a token is and what the context length means.</p>
+<p><strong>Short on time?</strong> Steps 1 and 2 only.</p>
+<hr>
+<h3 id="day-2-call-the-model-from-c">Day 2: Call the model from C#<a class="anchor" href="#day-2-call-the-model-from-c" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> <code>Microsoft.Extensions.AI</code> gives you one <code>IChatClient</code> interface for any model, local or cloud. It works like <code>ILogger</code>: you code against the interface and swap the provider later.</p>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/chat-local-model" target="_blank" rel="noopener">Chat with a local AI model using .NET</a> (Microsoft Learn). Follow it, but use <code>llama3.2</code> instead of <code>phi3:mini</code>.</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create the app:
+<pre><code class="lang-powershell">dotnet new console -o LocalChat
+cd LocalChat
+dotnet add package OllamaSharp
+code .</code></pre></li>
+<li>Replace <code>Program.cs</code> with:
+<pre><code class="lang-csharp">using Microsoft.Extensions.AI;
+using OllamaSharp;
+
+// OllamaApiClient implements IChatClient. Ollama listens on port 11434.
+IChatClient chat = new OllamaApiClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;llama3.2&quot;);
+
+List&lt;ChatMessage&gt; history = new();
+
+while (true)
+{
+    Console.Write(&quot;You: &quot;);
+    string? prompt = Console.ReadLine();
+    if (string.IsNullOrWhiteSpace(prompt)) break;   // empty line quits
+
+    history.Add(new ChatMessage(ChatRole.User, prompt));
+
+    ChatResponse response = await chat.GetResponseAsync(history);
+    Console.WriteLine($&quot;AI: {response.Text}\n&quot;);
+
+    // Keep the answer, so the model remembers the conversation.
+    history.Add(new ChatMessage(ChatRole.Assistant, response.Text));
+}</code></pre></li>
+<li>Run it with <code>dotnet run</code>. Ask a question, then ask a follow-up such as &quot;make that shorter&quot;.</li>
+</ol>
+<p><strong>Done when:</strong> the follow-up works, which shows the model is getting the conversation history.</p>
+<p><strong>Try this:</strong> comment out the line that adds the assistant's answer to <code>history</code>, then ask a follow-up. The model &quot;forgets&quot;, because it only knows what you send it on each call.</p>
+<hr>
+<h3 id="day-3-system-prompts-and-settings">Day 3: System prompts and settings<a class="anchor" href="#day-3-system-prompts-and-settings" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> a system message sets the model's role and rules. Settings such as temperature control how random the answers are.</p>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/conceptual/prompt-engineering-dotnet" target="_blank" rel="noopener">Prompt engineering in .NET</a> (Microsoft Learn)</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>In <code>LocalChat</code>, start the history with a system message:
+<pre><code class="lang-csharp">List&lt;ChatMessage&gt; history =
+[
+    new(ChatRole.System,
+        &quot;You are a senior .NET reviewer. Answer in at most 3 bullet points. &quot; +
+        &quot;If you are not sure, say so.&quot;)
+];</code></pre></li>
+<li>Pass settings on each call:
+<pre><code class="lang-csharp">var options = new ChatOptions { Temperature = 0.2f };   // 0 = focused, 1+ = creative
+ChatResponse response = await chat.GetResponseAsync(history, options);</code></pre></li>
+<li>Ask &quot;Is async void ever OK in C#?&quot; three times with <code>Temperature = 0.2f</code>, then three times with <code>1.5f</code>. Compare the answers.</li>
+</ol>
+<p><strong>Done when:</strong> answers follow your 3-bullet rule, and you can see that low temperature gives more consistent answers.</p>
+<hr>
+<h3 id="day-4-streaming-and-structured-output">Day 4: Streaming and structured output<a class="anchor" href="#day-4-streaming-and-structured-output" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> streaming shows text as it's generated. Structured output makes the model return JSON that maps straight onto a C# type, so your code can use the result directly.</p>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/structured-output" target="_blank" rel="noopener">Request a response with structured output</a> (Microsoft Learn). Read the code. It uses Azure, but the same <code>GetResponseAsync&lt;T&gt;</code> works with your local <code>IChatClient</code>.</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Switch the chat loop to streaming:
+<pre><code class="lang-csharp">string answer = &quot;&quot;;
+Console.Write(&quot;AI: &quot;);
+await foreach (ChatResponseUpdate update in chat.GetStreamingResponseAsync(history, options))
+{
+    Console.Write(update.Text);
+    answer += update.Text;
+}
+Console.WriteLine(&quot;\n&quot;);
+history.Add(new ChatMessage(ChatRole.Assistant, answer));</code></pre></li>
+<li>Create a second console app, <code>ReviewTriage</code>, with the OllamaSharp package. It turns bug reports into a typed C# object:
+<pre><code class="lang-csharp">using Microsoft.Extensions.AI;
+using OllamaSharp;
+
+IChatClient chat = new OllamaApiClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;llama3.2&quot;);
+
+string[] reports =
+[
+    &quot;App crashes on login when the password has an emoji.&quot;,
+    &quot;Please add dark mode.&quot;,
+    &quot;Checkout is 10 seconds slow since yesterday's release.&quot;
+];
+
+foreach (string report in reports)
+{
+    var response = await chat.GetResponseAsync&lt;Triage&gt;(
+        $&quot;Triage this bug report: {report}&quot;);
+
+    if (response.TryGetResult(out Triage? t))
+        Console.WriteLine($&quot;{t.Severity,-8} {t.Area,-12} {t.Summary}&quot;);
+    else
+        Console.WriteLine($&quot;Could not parse: {response.Text}&quot;);
+}
+
+enum Severity { Low, Medium, High, Critical }
+record Triage(Severity Severity, string Area, string Summary);</code></pre></li>
+<li>Run it. Small local models sometimes return bad JSON. That's why the code uses <code>TryGetResult</code> instead of trusting the output.</li>
+</ol>
+<p><strong>Done when:</strong> your chat streams word by word, and <code>ReviewTriage</code> prints one typed line for each report.</p>
+<hr>
+<h3 id="day-5-tokens-context-windows-and-cost">Day 5: Tokens, context windows, and cost<a class="anchor" href="#day-5-tokens-context-windows-and-cost" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> every request uses tokens, both the input you send and the output you get back. Cloud models charge per token. All models have a context window limit.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li>Re-read the &quot;Token limits&quot; and &quot;Token-based pricing&quot; sections of <a href="https://learn.microsoft.com/en-us/dotnet/ai/conceptual/understanding-tokens" target="_blank" rel="noopener">Understanding tokens</a>.</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>In <code>LocalChat</code>, switch back to the non-streaming call for this exercise, then print usage after each answer:
+<pre><code class="lang-csharp">ChatResponse response = await chat.GetResponseAsync(history, options);
+Console.WriteLine($&quot;AI: {response.Text}&quot;);
+Console.WriteLine($&quot;[tokens in: {response.Usage?.InputTokenCount}, out: {response.Usage?.OutputTokenCount}]\n&quot;);</code></pre></li>
+<li>Chat for ten turns and watch the <strong>input</strong> tokens grow. You resend the whole history every time.</li>
+<li>Work it out: if a cloud model charged $1 per million input tokens, roughly what would your conversation cost? What about 10,000 users doing the same each day?</li>
+</ol>
+<p><strong>Done when:</strong> you can explain why long conversations get slower and more expensive, and why apps trim or summarize history.</p>
+<hr>
+<h3 id="day-6-curriculum-assistant-version-01-ask-my-plan">Day 6: Curriculum Assistant, version 0.1 (&quot;Ask my plan&quot;)<a class="anchor" href="#day-6-curriculum-assistant-version-01-ask-my-plan" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> the simplest way to give a model your own knowledge is to paste it into the prompt. Today you'll start the Curriculum Assistant this way, and see where it breaks down. That's the problem RAG solves in Weeks 3–4.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Copy the <strong>Week 1</strong> section of this plan into a file named <code>notes.md</code>. The model has never seen it, so it can't answer from its training.</li>
+<li>Create a console app, <code>AskMyNotes</code>. This is version 0.1 of the Curriculum Assistant:
+<pre><code class="lang-csharp">using Microsoft.Extensions.AI;
+using OllamaSharp;
+
+IChatClient chat = new OllamaApiClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;llama3.2&quot;);
+string notes = File.ReadAllText(&quot;notes.md&quot;);
+
+List&lt;ChatMessage&gt; history =
+[
+    new(ChatRole.System,
+        &quot;Answer only from the notes below. If the answer is not in the notes, &quot; +
+        &quot;say \&quot;Not in my notes.\&quot;\n\n--- NOTES ---\n&quot; + notes)
+];
+
+while (true)
+{
+    Console.Write(&quot;Question: &quot;);
+    string? q = Console.ReadLine();
+    if (string.IsNullOrWhiteSpace(q)) break;
+    history.Add(new(ChatRole.User, q));
+    ChatResponse r = await chat.GetResponseAsync(history);
+    Console.WriteLine($&quot;{r.Text}\n[input tokens: {r.Usage?.InputTokenCount}]\n&quot;);
+    history.Add(new(ChatRole.Assistant, r.Text));
+}</code></pre></li>
+<li>Copy <code>notes.md</code> into the build output: right-click it in VS Code or Visual Studio and set it to copy to the output folder, or run the app from the project folder.</li>
+<li>Ask questions that the plan answers, such as &quot;What do I do on Day 4?&quot; or &quot;Which package do I need on Day 2?&quot;, and one it doesn't, such as &quot;What's in Week 30?&quot;.</li>
+<li>Now replace <code>notes.md</code> with the <strong>whole plan</strong> and ask about a detail in Week 1. Ollama uses a small context window by default and quietly drops what doesn't fit, so the model may miss it or make something up.</li>
+</ol>
+<p><strong>Done when:</strong> it answers correctly from one week of the plan, and you've seen it fail on the whole plan.</p>
+<p><strong>Takeaway:</strong> you can't paste everything into the prompt. RAG finds the few relevant pieces and sends only those.</p>
+<hr>
+<h3 id="day-7-review-and-catch-up-light">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Finish anything you skipped this week.</li>
+<li>Put <code>LocalChat</code>, <code>ReviewTriage</code>, and <code>AskMyNotes</code> (Curriculum Assistant 0.1) in one GitHub repository, <code>ai-learning</code>, with one folder per week.</li>
+<li>Write a short <code>README.md</code> for Week 1 covering what each app does, how to run it, and one thing that surprised you.</li>
+<li><strong>Optional:</strong> try a different model, such as <code>ollama pull qwen2.5:3b</code>, by changing just the model name. Your code doesn't change, which is the point of <code>IChatClient</code>.</li>
+</ul>
+<p><strong>Done when:</strong> the repository is on GitHub, and running <code>dotnet run</code> in each folder works.</p>
+<nav class="pager" aria-label="Sections"><span></span><a href="weeks/A-ai-foundations-weeks-02-04.html">A. AI foundations (Weeks 2–4) →</a></nav>
+</main>
+</body>
+</html>

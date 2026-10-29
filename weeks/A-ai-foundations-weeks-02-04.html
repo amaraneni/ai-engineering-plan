@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Section A: AI foundations in .NET (Weeks 2–4)</title>
+<style>
+:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
+main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
+a { color:var(--accent); }
+a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
+h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
+h1:target,h2:target,h3:target { background:var(--target); }
+.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
+h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
+code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
+pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
+pre code { background:none; padding:0; font-size:.88rem; }
+.table-wrap { overflow-x:auto; }
+table { border-collapse:collapse; margin:1em 0; }
+th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
+th { background:var(--code); }
+li { margin:.2em 0; } li > p { margin:.3em 0; }
+hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
+.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
+@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Plan"><a href="../schedule.html">← Schedule</a><a href="../plan.html">Plan</a><a href="../resources.html">Resources</a></nav>
+<main>
+<h1 id="section-a-ai-foundations-in-net-weeks-24">Section A: AI foundations in .NET (Weeks 2–4)<a class="anchor" href="#section-a-ai-foundations-in-net-weeks-24" aria-label="Link to this heading">#</a></h1>
+<p>Week 1 is in <a href="../plan.html">plan.md</a>. Keep using the <code>ai-learning</code> GitHub repository, with one folder per week.</p>
+<p><strong>Model tip:</strong> <code>llama3.2</code> is fine for chat. For tool calling (from Week 2) a slightly bigger model works much better. If your laptop has 16 GB of RAM or more, also run <code>ollama pull qwen2.5:7b</code> and use it wherever a lesson says &quot;tool model&quot;. If it's slow, stay on <code>llama3.2</code>.</p>
+<hr>
+<h2 id="week-2-prompts-and-tool-calling">Week 2: Prompts and tool calling<a class="anchor" href="#week-2-prompts-and-tool-calling" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> you can write reliable prompts, keep them out of your code, and let the model call your own C# methods. The Curriculum Assistant looks up plan weeks with a tool instead of pasting the whole plan.</p>
+<h3 id="day-1-few-shot-prompting">Day 1: Few-shot prompting<a class="anchor" href="#day-1-few-shot-prompting" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> showing the model two or three worked examples (&quot;few-shot&quot;) is often the fastest way to get consistent answers.</p>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/conceptual/prompt-engineering-dotnet" target="_blank" rel="noopener">Prompt engineering in .NET</a>: the sections on instructions and examples</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create a console app, <code>CommitMessages</code>, with <code>dotnet add package OllamaSharp</code>.</li>
+<li>Make the model turn messy change notes into a conventional commit message. First try zero-shot:
+<pre><code class="lang-csharp">using Microsoft.Extensions.AI;
+using OllamaSharp;
+
+IChatClient chat = new OllamaApiClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;llama3.2&quot;);
+
+string notes = &quot;fixed the null crash in login, also renamed some vars&quot;;
+var zeroShot = await chat.GetResponseAsync(
+    $&quot;Write a git commit message for: {notes}&quot;);
+Console.WriteLine($&quot;Zero-shot:\n{zeroShot.Text}\n&quot;);</code></pre></li>
+<li>Now add examples as earlier messages:
+<pre><code class="lang-csharp">List&lt;ChatMessage&gt; fewShot =
+[
+    new(ChatRole.System, &quot;Write one conventional commit line. No explanation.&quot;),
+    new(ChatRole.User, &quot;added retry to http client&quot;),
+    new(ChatRole.Assistant, &quot;feat(http): add retry policy to HttpClient calls&quot;),
+    new(ChatRole.User, &quot;typo in readme&quot;),
+    new(ChatRole.Assistant, &quot;docs: fix typo in README&quot;),
+    new(ChatRole.User, notes)
+];
+var result = await chat.GetResponseAsync(fewShot);
+Console.WriteLine($&quot;Few-shot:\n{result.Text}&quot;);</code></pre></li>
+<li>Run it three times. Compare the two styles.</li>
+</ol>
+<p><strong>Done when:</strong> the few-shot version gives one clean <code>type(scope): message</code> line every time, and the zero-shot version doesn't.</p>
+<h3 id="day-2-prompts-as-files-and-templates">Day 2: Prompts as files and templates<a class="anchor" href="#day-2-prompts-as-files-and-templates" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> prompts change often, so treat them like configuration. Keep them in files with placeholders, not hard-coded strings.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>In <code>CommitMessages</code>, create <code>prompts/commit.system.txt</code> holding the system text from Day 1, and set the file to copy to the output folder.</li>
+<li>Add a tiny template helper:
+<pre><code class="lang-csharp">static string Fill(string template, Dictionary&lt;string, string&gt; values) =&gt;
+    values.Aggregate(template, (text, kv) =&gt; text.Replace(&quot;{{&quot; + kv.Key + &quot;}}&quot;, kv.Value));</code></pre></li>
+<li>Create <code>prompts/review.txt</code>:
+<pre><code class="lang-text">Review this {{language}} code. List at most {{max}} problems, most important first.
+Code:
+{{code}}</code></pre></li>
+<li>Load it, call <code>Fill(...)</code> with <code>language = &quot;C#&quot;</code>, <code>max = &quot;3&quot;</code>, and a small buggy method of your own, then send it to the model.</li>
+</ol>
+<p><strong>Done when:</strong> you can change a prompt by editing a text file, without recompiling.</p>
+<h3 id="day-3-tool-calling-basics">Day 3: Tool calling basics<a class="anchor" href="#day-3-tool-calling-basics" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> with tool calling, the model can ask your code to run a function and then use the result. <code>Microsoft.Extensions.AI</code> runs the function and sends the result back automatically.</p>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/use-function-calling" target="_blank" rel="noopener">Invoke .NET functions using an AI model</a> (Microsoft Learn)</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create a console app, <code>ToolsDemo</code>, with the OllamaSharp package.</li>
+<li>Replace <code>Program.cs</code>:
+<pre><code class="lang-csharp">using System.ComponentModel;
+using Microsoft.Extensions.AI;
+using OllamaSharp;
+
+// UseFunctionInvocation() runs the tools the model asks for, then calls the model again.
+IChatClient chat = new ChatClientBuilder(
+        new OllamaApiClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;llama3.2&quot;))  // or your tool model
+    .UseFunctionInvocation()
+    .Build();
+
+var options = new ChatOptions
+{
+    Tools = [AIFunctionFactory.Create(GetTime), AIFunctionFactory.Create(Add)]
+};
+
+foreach (string q in new[] { &quot;What time is it?&quot;, &quot;What is 1234 + 8766?&quot;, &quot;Tell me a joke.&quot; })
+{
+    var r = await chat.GetResponseAsync(q, options);
+    Console.WriteLine($&quot;Q: {q}\nA: {r.Text}\n&quot;);
+}
+
+[Description(&quot;Gets the current local date and time.&quot;)]
+static string GetTime()
+{
+    Console.WriteLine(&quot;  [tool] GetTime called&quot;);
+    return DateTime.Now.ToString(&quot;f&quot;);
+}
+
+[Description(&quot;Adds two whole numbers.&quot;)]
+static int Add(int a, int b)
+{
+    Console.WriteLine($&quot;  [tool] Add({a}, {b}) called&quot;);
+    return a + b;
+}</code></pre></li>
+<li>Run it, and watch the <code>[tool]</code> lines.</li>
+</ol>
+<p><strong>Done when:</strong> the time and sum questions trigger the tools and the answers use their results, while the joke doesn't call any tool.</p>
+<p><strong>Note:</strong> if no tool gets called, switch to the tool model. Small models are inconsistent at choosing tools.</p>
+<h3 id="day-4-tools-that-read-real-data-safely">Day 4: Tools that read real data, safely<a class="anchor" href="#day-4-tools-that-read-real-data-safely" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> tools are how models reach real data. Tools also run with your permissions, so you limit what they can touch.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>In <code>ToolsDemo</code>, add a tool that reads files, but only inside one folder:
+<pre><code class="lang-csharp">[Description(&quot;Reads a text file from the notes folder. Use a file name like 'todo.md'.&quot;)]
+static string ReadNote(string fileName)
+{
+    string root = Path.GetFullPath(&quot;notes&quot;);
+    string full = Path.GetFullPath(Path.Combine(root, fileName));
+    if (!full.StartsWith(root + Path.DirectorySeparatorChar))
+        return &quot;Error: access outside the notes folder is not allowed.&quot;;
+    return File.Exists(full) ? File.ReadAllText(full) : $&quot;Error: {fileName} not found.&quot;;
+}
+
+[Description(&quot;Lists the files in the notes folder.&quot;)]
+static string[] ListNotes() =&gt;
+    Directory.GetFiles(&quot;notes&quot;).Select(Path.GetFileName).ToArray()!;</code></pre></li>
+<li>Create a <code>notes</code> folder next to the project with two or three small <code>.md</code> files.</li>
+<li>Register both tools, then ask: &quot;What notes do I have?&quot;, &quot;Summarize todo.md&quot;, and &quot;Read ../Program.cs&quot;.</li>
+</ol>
+<p><strong>Done when:</strong> the first two questions work, and the third gets the &quot;not allowed&quot; error back from your tool.</p>
+<p><strong>Takeaway:</strong> never trust tool arguments from the model, just as you never trust user input in an API.</p>
+<h3 id="day-5-hallucinations-and-grounding">Day 5: Hallucinations and grounding<a class="anchor" href="#day-5-hallucinations-and-grounding" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> models make up facts with confidence. &quot;Grounding&quot; means giving them the facts and telling them to admit when something isn't covered.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/conceptual/how-genai-and-llms-work" target="_blank" rel="noopener">How generative AI and LLMs work</a>: the section on limitations</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Ask the model five questions about a made-up library, for example &quot;How do I configure retries in FluxPipe.NET 3.2?&quot;. Note how often it invents an answer.</li>
+<li>Ask again with this system prompt:
+<pre><code class="lang-text">Only answer from facts you are sure about. If you don't know, reply exactly: &quot;I don't know.&quot;</code></pre></li>
+<li>Now give it facts. Paste a three-line made-up FluxPipe README into the system prompt and ask again.</li>
+</ol>
+<p><strong>Done when:</strong> you've seen all three behaviors (invented, &quot;I don't know&quot;, and correct from the facts), and you've written a two-line note on why grounding beats instructions alone.</p>
+<h3 id="day-6-curriculum-assistant-02-looking-up-weeks-with-a-tool">Day 6: Curriculum Assistant 0.2, looking up weeks with a tool<a class="anchor" href="#day-6-curriculum-assistant-02-looking-up-weeks-with-a-tool" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> instead of pasting the whole plan, give the model a tool that fetches only the week it needs. This is retrieval in its simplest form.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Copy <code>AskMyNotes</code> to <code>CurriculumAssistant02</code>. Put <code>plan.md</code> and the section files in a <code>content</code> folder that copies to the output.</li>
+<li>Add a tool that returns one week's section:
+<pre><code class="lang-csharp">[Description(&quot;Returns the full text of one week of the learning plan, for example week 3.&quot;)]
+static string GetWeek(int week)
+{
+    string all = string.Join(&quot;\n&quot;, Directory.GetFiles(&quot;content&quot;, &quot;*.md&quot;).Select(File.ReadAllText));
+    string start = $&quot;## Week {week}:&quot;;
+    int i = all.IndexOf(start, StringComparison.Ordinal);
+    if (i &lt; 0) return $&quot;Week {week} is not in the plan.&quot;;
+    int next = all.IndexOf(&quot;\n## Week &quot;, i + start.Length, StringComparison.Ordinal);
+    return next &lt; 0 ? all[i..] : all[i..next];
+}</code></pre></li>
+<li>Use a <code>ChatClientBuilder</code> with <code>.UseFunctionInvocation()</code> and the tool model, and set this system prompt: &quot;You answer questions about the user's learning plan. Use the GetWeek tool to look things up. Never guess.&quot;</li>
+<li>Ask: &quot;What do I do on Day 3 of Week 2?&quot;, &quot;Which week covers MCP servers in C#?&quot;, and &quot;What's in Week 99?&quot;.</li>
+</ol>
+<p><strong>Done when:</strong> specific week questions work. The &quot;which week covers…&quot; question may fail, because the model has to guess a week number. That's the problem Week 3 solves with search.</p>
+<h3 id="day-7-review-and-catch-up-light">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Finish anything you skipped.</li>
+<li>Push <code>CommitMessages</code>, <code>ToolsDemo</code>, and <code>CurriculumAssistant02</code> to <code>ai-learning/week-02</code>.</li>
+<li>In the README, note which questions the tool model got right and which <code>llama3.2</code> got right.</li>
+</ul>
+<hr>
+<h2 id="week-3-embeddings-and-semantic-search">Week 3: Embeddings and semantic search<a class="anchor" href="#week-3-embeddings-and-semantic-search" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> you understand embeddings and can find text by meaning, not by exact words. The Curriculum Assistant can find which day of the plan answers a question.</p>
+<p><strong>Setup:</strong> <code>ollama pull nomic-embed-text</code>, a small embedding model that produces 768 numbers per text.</p>
+<h3 id="day-1-what-embeddings-are">Day 1: What embeddings are<a class="anchor" href="#day-1-what-embeddings-are" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> an embedding is a list of numbers that represents what a piece of text means. Texts with similar meanings get similar numbers.</p>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/conceptual/embeddings" target="_blank" rel="noopener">Embeddings in .NET</a> (Microsoft Learn)</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create a console app, <code>Embeddings</code>, with <code>dotnet add package OllamaSharp</code>.</li>
+<li>Generate one embedding and look at it:
+<pre><code class="lang-csharp">using Microsoft.Extensions.AI;
+using OllamaSharp;
+
+IEmbeddingGenerator&lt;string, Embedding&lt;float&gt;&gt; embedder =
+    new OllamaApiClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;nomic-embed-text&quot;);
+
+ReadOnlyMemory&lt;float&gt; v = await embedder.GenerateVectorAsync(&quot;The cat sat on the mat.&quot;);
+Console.WriteLine($&quot;Length: {v.Length}&quot;);
+Console.WriteLine($&quot;First 5: {string.Join(&quot;, &quot;, v.Span[..5].ToArray())}&quot;);</code></pre></li>
+</ol>
+<p><strong>Done when:</strong> it prints a length of 768 and some small decimal numbers.</p>
+<h3 id="day-2-measuring-similarity">Day 2: Measuring similarity<a class="anchor" href="#day-2-measuring-similarity" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> cosine similarity compares two embeddings. It's close to 1 for similar meaning and closer to 0 for unrelated text.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Add <code>dotnet add package System.Numerics.Tensors</code>.</li>
+<li>Compare pairs:
+<pre><code class="lang-csharp">using System.Numerics.Tensors;
+
+async Task&lt;float&gt; Similarity(string a, string b)
+{
+    var va = await embedder.GenerateVectorAsync(a);
+    var vb = await embedder.GenerateVectorAsync(b);
+    return TensorPrimitives.CosineSimilarity(va.Span, vb.Span);
+}
+
+(string, string)[] pairs =
+[
+    (&quot;How do I deploy a Lambda function?&quot;, &quot;Publishing code to AWS Lambda&quot;),
+    (&quot;How do I deploy a Lambda function?&quot;, &quot;Best pizza toppings&quot;),
+    (&quot;car&quot;, &quot;automobile&quot;),
+    (&quot;bank of a river&quot;, &quot;bank account&quot;)
+];
+foreach (var (a, b) in pairs)
+    Console.WriteLine($&quot;{await Similarity(a, b):F3}  {a}  &lt;-&gt;  {b}&quot;);</code></pre></li>
+</ol>
+<p><strong>Done when:</strong> the Lambda pair scores clearly higher than the pizza pair, and you've noticed that &quot;car&quot; and &quot;automobile&quot; match even though they share no letters.</p>
+<h3 id="day-3-semantic-search-in-memory">Day 3: Semantic search in memory<a class="anchor" href="#day-3-semantic-search-in-memory" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> semantic search embeds every document once, embeds the question, and returns the closest documents.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Write 20 one-line &quot;facts&quot; about .NET, AWS, and AI into <code>facts.txt</code>.</li>
+<li>Search them:
+<pre><code class="lang-csharp">string[] facts = File.ReadAllLines(&quot;facts.txt&quot;);
+var index = new List&lt;(string Text, ReadOnlyMemory&lt;float&gt; Vector)&gt;();
+foreach (string f in facts)
+    index.Add((f, await embedder.GenerateVectorAsync(f)));
+
+while (true)
+{
+    Console.Write(&quot;Search: &quot;);
+    string? q = Console.ReadLine();
+    if (string.IsNullOrWhiteSpace(q)) break;
+    var qv = await embedder.GenerateVectorAsync(q);
+    foreach (var hit in index
+        .Select(e =&gt; (e.Text, Score: TensorPrimitives.CosineSimilarity(qv.Span, e.Vector.Span)))
+        .OrderByDescending(e =&gt; e.Score).Take(3))
+        Console.WriteLine($&quot;  {hit.Score:F3}  {hit.Text}&quot;);
+}</code></pre></li>
+<li>Search using words that aren't in the facts, for example &quot;serverless&quot; when the fact says &quot;Lambda&quot;.</li>
+</ol>
+<p><strong>Done when:</strong> searches by meaning find the right facts.</p>
+<h3 id="day-4-vector-databases-and-saving-your-index">Day 4: Vector databases, and saving your index<a class="anchor" href="#day-4-vector-databases-and-saving-your-index" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> embedding is slow, so you store vectors and only embed new or changed text. Vector databases do this at scale. Today you'll do a simple version with a file.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/vector-stores/overview" target="_blank" rel="noopener">Vector databases for .NET AI apps</a> (Microsoft Learn)</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Save the index to <code>index.json</code> after building it, and load it on startup if it exists:
+<pre><code class="lang-csharp">using System.Text.Json;
+
+record Entry(string Text, float[] Vector);
+
+List&lt;Entry&gt; entries;
+if (File.Exists(&quot;index.json&quot;))
+    entries = JsonSerializer.Deserialize&lt;List&lt;Entry&gt;&gt;(File.ReadAllText(&quot;index.json&quot;))!;
+else
+{
+    entries = new();
+    foreach (string f in facts)
+        entries.Add(new(f, (await embedder.GenerateVectorAsync(f)).ToArray()));
+    File.WriteAllText(&quot;index.json&quot;, JsonSerializer.Serialize(entries));
+}</code></pre></li>
+<li>Time the first run and the second run with a <code>Stopwatch</code>.</li>
+</ol>
+<p><strong>Done when:</strong> the second run starts almost instantly, and you can say what a vector database adds beyond a JSON file: scale, fast search, filtering, and updates.</p>
+<h3 id="day-5-chunking-a-long-document">Day 5: Chunking a long document<a class="anchor" href="#day-5-chunking-a-long-document" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> long documents are split into chunks before embedding. One vector for a whole document blurs its meaning, and a chunk that's too small loses context.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Take any long Markdown document, such as a README from a project you know.</li>
+<li>Split it into chunks by blank lines, joining short paragraphs up to about 800 characters:
+<pre><code class="lang-csharp">static List&lt;string&gt; Chunk(string text, int maxChars = 800)
+{
+    var chunks = new List&lt;string&gt;();
+    var current = new System.Text.StringBuilder();
+    foreach (string para in text.Split(&quot;\n\n&quot;, StringSplitOptions.RemoveEmptyEntries))
+    {
+        if (current.Length + para.Length &gt; maxChars &amp;&amp; current.Length &gt; 0)
+        {
+            chunks.Add(current.ToString().Trim());
+            current.Clear();
+        }
+        current.AppendLine(para).AppendLine();
+    }
+    if (current.Length &gt; 0) chunks.Add(current.ToString().Trim());
+    return chunks;
+}</code></pre></li>
+<li>Index the chunks instead of <code>facts.txt</code>, then search for something specific in the document.</li>
+</ol>
+<p><strong>Done when:</strong> a search returns the right paragraph from the long document.</p>
+<h3 id="day-6-curriculum-assistant-03-searching-the-plan">Day 6: Curriculum Assistant 0.3, searching the plan<a class="anchor" href="#day-6-curriculum-assistant-03-searching-the-plan" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> now the assistant can find which day of the plan answers a question, without you naming the week.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create <code>CurriculumAssistant03</code>, with the plan files in <code>content</code>.</li>
+<li>Chunk the plan by day: split each file on lines starting with <code>### Day</code>, and keep the nearest <code>## Week</code> heading with each chunk, for example <code>&quot;Week 3 Day 5: Chunking a long document&quot;</code>.
+<pre><code class="lang-csharp">record PlanChunk(string Title, string Text);
+
+static IEnumerable&lt;PlanChunk&gt; ChunkPlan(string markdown)
+{
+    string week = &quot;&quot;;
+    PlanChunk? current = null;
+    var body = new System.Text.StringBuilder();
+    foreach (string line in markdown.Split('\n'))
+    {
+        if (line.StartsWith(&quot;## Week &quot;)) week = line[3..].Split(':')[0];          // &quot;Week 3&quot;
+        if (line.StartsWith(&quot;### Day &quot;))
+        {
+            if (current is not null) yield return current with { Text = body.ToString() };
+            current = new PlanChunk($&quot;{week} {line[4..].Trim()}&quot;, &quot;&quot;);
+            body.Clear();
+        }
+        body.AppendLine(line);
+    }
+    if (current is not null) yield return current with { Text = body.ToString() };
+}</code></pre></li>
+<li>Embed each chunk's <code>Title + Text</code>, save the index to JSON as on Day 4, and print the top 3 titles with scores for a question.</li>
+<li>Try: &quot;Where do I learn about cosine similarity?&quot;, &quot;When do I first use tools?&quot;, and &quot;Which day sets up Ollama?&quot;.</li>
+</ol>
+<p><strong>Done when:</strong> the right day appears in the top 3 for most questions. There's no AI answer yet, just search. Next week adds that.</p>
+<h3 id="day-7-review-and-catch-up-light-1">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-1" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push this week's projects to <code>ai-learning/week-03</code>.</li>
+<li>Write down five questions where search worked and two where it didn't. You'll reuse them as test questions.</li>
+</ul>
+<hr>
+<h2 id="week-4-your-first-rag-app">Week 4: Your first RAG app<a class="anchor" href="#week-4-your-first-rag-app" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> Curriculum Assistant 0.4, a real RAG app. It searches the plan, sends the best chunks to the model, and answers with the week and day it got them from.</p>
+<h3 id="day-1-what-rag-is">Day 1: What RAG is<a class="anchor" href="#day-1-what-rag-is" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> Retrieval-Augmented Generation: <strong>retrieve</strong> relevant chunks, <strong>augment</strong> the prompt with them, and let the model <strong>generate</strong> an answer from them.</p>
+<p><strong>Learn (~25 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/conceptual/rag" target="_blank" rel="noopener">Retrieval-augmented generation (RAG)</a> (Microsoft Learn)</li>
+<li><strong>Optional video:</strong> search YouTube for &quot;Generative AI for Beginners .NET RAG&quot; (Microsoft's free course, which also has a GitHub repository)</li>
+</ul>
+<p><strong>Do:</strong> draw the RAG flow on paper: question → embed → search → top chunks → prompt → model → answer. Mark which parts you already built in Weeks 1–3.</p>
+<p><strong>Done when:</strong> you can explain RAG in three sentences, and you can see that you already have every piece.</p>
+<h3 id="day-2-retrieve-augment-generate">Day 2: Retrieve, augment, generate<a class="anchor" href="#day-2-retrieve-augment-generate" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do</strong></p>
+<ol>
+<li>In <code>CurriculumAssistant03</code>, after the search, build the prompt from the top 3 chunks and call the chat model:
+<pre><code class="lang-csharp">IChatClient chat = new OllamaApiClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;llama3.2&quot;);
+
+async Task&lt;string&gt; Ask(string question)
+{
+    var qv = await embedder.GenerateVectorAsync(question);
+    var top = index
+        .OrderByDescending(c =&gt; TensorPrimitives.CosineSimilarity(qv.Span, c.Vector))
+        .Take(3).ToList();
+
+    string context = string.Join(&quot;\n\n---\n\n&quot;, top.Select(c =&gt; c.Text));
+    List&lt;ChatMessage&gt; messages =
+    [
+        new(ChatRole.System,
+            &quot;Answer the question using only the context. If the context does not contain &quot; +
+            &quot;the answer, say \&quot;The plan doesn't cover that.\&quot;\n\nCONTEXT:\n&quot; + context),
+        new(ChatRole.User, question)
+    ];
+    return (await chat.GetResponseAsync(messages)).Text;
+}</code></pre>
+<p>Here <code>index</code> is your list of chunks with a <code>float[] Vector</code> field.</p></li>
+<li>Ask your five &quot;search worked&quot; questions from Week 3.</li>
+</ol>
+<p><strong>Done when:</strong> you get proper answers, not just chunk titles.</p>
+<h3 id="day-3-citations">Day 3: Citations<a class="anchor" href="#day-3-citations" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> users trust answers they can check. Give each chunk a label and ask the model to cite it.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Label each chunk in the context:
+<pre><code class="lang-csharp">string context = string.Join(&quot;\n\n&quot;, top.Select((c, i) =&gt; $&quot;[{i + 1}] {c.Title}\n{c.Text}&quot;));</code></pre></li>
+<li>Add to the system prompt: &quot;After each fact, cite the source number like [1]. End with a 'Sources:' line listing the titles you used.&quot;</li>
+<li>Print the chunk titles yourself too, so you can check the model's citations.</li>
+</ol>
+<p><strong>Done when:</strong> answers end with sources such as &quot;Week 3 Day 2: Measuring similarity&quot;, and the cited chunks really contain the facts.</p>
+<h3 id="day-4-saying-i-dont-know">Day 4: Saying &quot;I don't know&quot;<a class="anchor" href="#day-4-saying-i-dont-know" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> if nothing relevant is found, don't send weak chunks. Set a minimum similarity score.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Print the top score for ten questions, half relevant and half not, such as &quot;What is the capital of France?&quot;.</li>
+<li>Pick a cut-off between the two groups, often around 0.5–0.6 for <code>nomic-embed-text</code>, and skip the model call when the best score is below it:
+<pre><code class="lang-csharp">if (bestScore &lt; 0.55f) return &quot;The plan doesn't cover that.&quot;;</code></pre></li>
+</ol>
+<p><strong>Done when:</strong> off-topic questions get the polite refusal instantly, and on-topic ones still work.</p>
+<h3 id="day-5-your-first-evaluation">Day 5: Your first evaluation<a class="anchor" href="#day-5-your-first-evaluation" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> &quot;it seems better&quot; isn't good enough. Compare approaches on the same questions.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create <code>eval-questions.md</code> with 10 questions and the week and day that answers each one.</li>
+<li>Answer each question three ways: no context, the whole Week 1–4 text pasted in, and RAG.</li>
+<li>Score each answer by hand: 2 = correct, 1 = partly correct, 0 = wrong or made up. Fill in a table.</li>
+</ol>
+<p><strong>Done when:</strong> you have a score table, and RAG wins on most questions. You'll automate this scoring in Week 12.</p>
+<h3 id="day-6-curriculum-assistant-04-proper-project-structure">Day 6: Curriculum Assistant 0.4, proper project structure<a class="anchor" href="#day-6-curriculum-assistant-04-proper-project-structure" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> move from scripts to a real solution, because the assistant will grow for 48 more weeks.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create the solution that the rest of the year builds on:
+<pre><code class="lang-powershell">mkdir CurriculumAssistant; cd CurriculumAssistant
+dotnet new sln -n CurriculumAssistant
+dotnet new classlib -o src/Assistant.Core
+dotnet new console  -o src/Assistant.Cli
+dotnet new xunit    -o tests/Assistant.Core.Tests
+dotnet sln add src/Assistant.Core src/Assistant.Cli tests/Assistant.Core.Tests
+dotnet add src/Assistant.Cli reference src/Assistant.Core
+dotnet add tests/Assistant.Core.Tests reference src/Assistant.Core
+dotnet add src/Assistant.Core package OllamaSharp
+dotnet add src/Assistant.Core package System.Numerics.Tensors</code></pre></li>
+<li>Move the code into classes in <code>Assistant.Core</code>:
+<ul>
+<li><code>PlanChunker</code>, holding <code>ChunkPlan</code> from Week 3</li>
+<li><code>VectorIndex</code>, which builds, saves, loads, and searches the JSON index</li>
+<li><code>RagService</code>, holding <code>AskAsync(question)</code> with the threshold and citations</li>
+</ul></li>
+<li>Take <code>IChatClient</code> and <code>IEmbeddingGenerator&lt;string, Embedding&lt;float&gt;&gt;</code> in the constructors, rather than creating them inside the classes, so you can swap in AWS Bedrock later.</li>
+<li>Write two xUnit tests for <code>PlanChunker</code>: one checks that a sample with two days gives two chunks, and one checks the titles.</li>
+<li><code>Assistant.Cli</code> builds the index on first run and then answers questions in a loop.</li>
+</ol>
+<p><strong>Done when:</strong> <code>dotnet test</code> passes, and <code>dotnet run --project src/Assistant.Cli</code> answers questions about the plan with sources.</p>
+<h3 id="day-7-review-and-catch-up-light-2">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-2" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Put <code>CurriculumAssistant</code> in its own GitHub repository. It's your portfolio project for the year.</li>
+<li>Write its README: what it does, how to run it, the architecture (the RAG flow from Day 1), and your Day 5 score table.</li>
+</ul>
+<nav class="pager" aria-label="Sections"><a href="../plan.html">← Plan and Week 1</a><a href="B-python-weeks-05-08.html">B. Python (Weeks 5–8) →</a></nav>
+</main>
+</body>
+</html>

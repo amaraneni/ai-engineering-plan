@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Section C: RAG in depth (Weeks 9–14)</title>
+<style>
+:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
+main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
+a { color:var(--accent); }
+a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
+h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
+h1:target,h2:target,h3:target { background:var(--target); }
+.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
+h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
+code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
+pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
+pre code { background:none; padding:0; font-size:.88rem; }
+.table-wrap { overflow-x:auto; }
+table { border-collapse:collapse; margin:1em 0; }
+th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
+th { background:var(--code); }
+li { margin:.2em 0; } li > p { margin:.3em 0; }
+hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
+.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
+@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Plan"><a href="../schedule.html">← Schedule</a><a href="../plan.html">Plan</a><a href="../resources.html">Resources</a></nav>
+<main>
+<h1 id="section-c-rag-in-depth-weeks-914">Section C: RAG in depth (Weeks 9–14)<a class="anchor" href="#section-c-rag-in-depth-weeks-914" aria-label="Link to this heading">#</a></h1>
+<p>Everything here goes into the <code>CurriculumAssistant</code> solution from Week 4. By Week 14 it downloads the docs your plan links to, stores them in a real vector database, searches with keywords plus meaning, measures its own quality, and runs as a web API with a chat page.</p>
+<p><strong>Courses for this section (optional, see <a href="../resources.html">resources.md</a>):</strong> the Coursera <a href="https://www.coursera.org/learn/retrieval-augmented-generation-rag" target="_blank" rel="noopener">Retrieval Augmented Generation (RAG)</a> course for Weeks 9–13, and the Docker sections of Udemy's <a href="https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/" target="_blank" rel="noopener">Docker and Kubernetes: The Complete Guide</a> for Week 10. <strong>roadmap.sh:</strong> <a href="https://roadmap.sh/ai-engineer" target="_blank" rel="noopener">AI Engineer</a> (RAG and vector databases topics), <a href="https://roadmap.sh/docker" target="_blank" rel="noopener">Docker</a>, <a href="https://roadmap.sh/aspnet-core" target="_blank" rel="noopener">ASP.NET Core</a>.</p>
+<hr>
+<h2 id="week-9-chunking-and-the-plans-sources">Week 9: Chunking and the plan's sources<a class="anchor" href="#week-9-chunking-and-the-plans-sources" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> the assistant downloads every docs page the plan links to, turns it into clean text, and chunks it well.</p>
+<h3 id="day-1-why-chunking-decides-rag-quality">Day 1: Why chunking decides RAG quality<a class="anchor" href="#day-1-why-chunking-decides-rag-quality" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-chunking-phase" target="_blank" rel="noopener">RAG chunking phase</a> (Azure Architecture Center; the ideas apply to any platform)</li>
+</ul>
+<p><strong>Do:</strong> pick three of your eval questions. For each one, look at the chunk your Week 4 app retrieved, and note whether it was too short, too long, or cut through the middle of the answer.</p>
+<p><strong>Done when:</strong> you have a written list of three chunking problems you've seen in your own app.</p>
+<h3 id="day-2-fixed-size-chunks-with-overlap">Day 2: Fixed-size chunks with overlap<a class="anchor" href="#day-2-fixed-size-chunks-with-overlap" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> overlap repeats the end of one chunk at the start of the next, so an answer that crosses a boundary isn't lost.</p>
+<p><strong>Do:</strong> in <code>Assistant.Core</code>, add <code>TextChunker.FixedSize(string text, int size = 800, int overlap = 150)</code>:</p>
+<pre><code class="lang-csharp">public static List&lt;string&gt; FixedSize(string text, int size = 800, int overlap = 150)
+{
+    var chunks = new List&lt;string&gt;();
+    for (int start = 0; start &lt; text.Length; start += size - overlap)
+    {
+        int length = Math.Min(size, text.Length - start);
+        chunks.Add(text.Substring(start, length));
+        if (start + length &gt;= text.Length) break;
+    }
+    return chunks;
+}</code></pre>
+<p>Write xUnit tests: a 2,000-character text gives 3 chunks, and each chunk's last 150 characters match the start of the next chunk.</p>
+<p><strong>Done when:</strong> <code>dotnet test</code> passes.</p>
+<h3 id="day-3-structure-aware-chunks-for-markdown">Day 3: Structure-aware chunks for Markdown<a class="anchor" href="#day-3-structure-aware-chunks-for-markdown" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> splitting on headings keeps each chunk about one topic. Prefix every chunk with its heading path, such as <code>Week 9 &gt; Day 3</code>, so it still makes sense on its own.</p>
+<p><strong>Do:</strong> add <code>TextChunker.ByMarkdownHeadings(string markdown, int maxChars = 1200)</code>:</p>
+<ul>
+<li>Track the current <code>#</code>, <code>##</code>, and <code>###</code> headings as you read the lines.</li>
+<li>Start a new chunk at every heading.</li>
+<li>If a section is longer than <code>maxChars</code>, split it with <code>FixedSize</code>.</li>
+<li>Return <code>record Chunk(string HeadingPath, string Text)</code>.</li>
+</ul>
+<p><strong>Done when:</strong> a test proves that a sample file with two headings gives two chunks with the right heading paths, such as <code>Week 9 &gt; Day 3: Structure-aware chunks for Markdown</code>.</p>
+<h3 id="day-4-downloading-the-sources">Day 4: Downloading the sources<a class="anchor" href="#day-4-downloading-the-sources" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do</strong></p>
+<ol>
+<li>Add two packages: <code>dotnet add src/Assistant.Core package ReverseMarkdown</code> (HTML to Markdown) and <code>dotnet add src/Assistant.Core package AngleSharp</code> (HTML parsing).</li>
+<li>Create <code>SourceFetcher</code> with <code>Task&lt;SourceDoc?&gt; FetchAsync(Uri url)</code>:
+<ul>
+<li>Download with <code>HttpClient</code>, using a 20-second timeout and a <code>User-Agent</code> header naming your app.</li>
+<li>Use AngleSharp to take the <code>&lt;main&gt;</code> element if there is one, so you skip menus and footers.</li>
+<li>Convert it with <code>new ReverseMarkdown.Converter().Convert(html)</code>.</li>
+<li>Return <code>record SourceDoc(Uri Url, string Title, string Markdown, DateTimeOffset FetchedAt)</code>.</li>
+</ul></li>
+<li>Add a CLI command, <code>sources fetch</code>, which collects every <code>https://</code> link in the plan (use the same regex as Week 5) and saves each page to <code>data/sources/&lt;safe-file-name&gt;.md</code>.</li>
+</ol>
+<p><strong>Be polite:</strong> fetch one page at a time with a one-second pause between pages, and skip pages that need a login, such as Udemy, Coursera, and LinkedIn.</p>
+<p><strong>Done when:</strong> <code>data/sources</code> holds readable Markdown versions of the Microsoft Learn pages linked in Weeks 1–4.</p>
+<h3 id="day-5-metadata-on-every-chunk">Day 5: Metadata on every chunk<a class="anchor" href="#day-5-metadata-on-every-chunk" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> metadata is extra information stored with each chunk, such as its source, URL, week, and fetch date. It lets you filter results and cite sources.</p>
+<p><strong>Do</strong></p>
+<ol>
+<li>Define the record the rest of the year uses:
+<pre><code class="lang-csharp">public record KnowledgeChunk(
+    string Id,               // stable: hash of SourceId + HeadingPath + index
+    string SourceType,       // &quot;plan&quot;, &quot;doc&quot; or (later) &quot;code&quot;
+    string SourceId,         // plan file name or URL
+    string Title,
+    string HeadingPath,
+    string Text,
+    int? Week,               // for plan chunks
+    DateTimeOffset IndexedAt);</code></pre></li>
+<li>Fill in <code>Week</code> for plan chunks, and use the URL as <code>SourceId</code> for doc chunks.</li>
+<li>Make <code>Id</code> deterministic with <code>Convert.ToHexString(SHA256.HashData(...))</code>, so re-indexing replaces chunks instead of duplicating them.</li>
+</ol>
+<p><strong>Done when:</strong> a test proves the same input always gives the same <code>Id</code>.</p>
+<h3 id="day-6-curriculum-assistant-05-plan-plus-sources">Day 6: Curriculum Assistant 0.5, plan plus sources<a class="anchor" href="#day-6-curriculum-assistant-05-plan-plus-sources" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do</strong></p>
+<ol>
+<li>Add <code>index build</code>, which chunks the plan and every file in <code>data/sources</code>, embeds them, and saves them through your <code>VectorIndex</code> (still the JSON file).</li>
+<li>Show citations as clickable URLs for doc chunks, and as &quot;Week N Day M&quot; for plan chunks.</li>
+<li>Ask &quot;What is cosine similarity?&quot;, which should cite the Microsoft Learn embeddings page, and &quot;When do I learn it?&quot;, which should cite Week 3 Day 2.</li>
+</ol>
+<p><strong>Done when:</strong> one answer can cite both your plan and an official doc.</p>
+<h3 id="day-7-review-and-catch-up-light">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push, and add the new <code>sources fetch</code> and <code>index build</code> commands to the README.</li>
+<li>On <a href="https://roadmap.sh/ai-engineer" target="_blank" rel="noopener">roadmap.sh/ai-engineer</a>, tick the chunking topics.</li>
+</ul>
+<hr>
+<h2 id="week-10-docker-and-a-real-vector-database">Week 10: Docker and a real vector database<a class="anchor" href="#week-10-docker-and-a-real-vector-database" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> you understand Docker, and the assistant stores its vectors in Qdrant running in a container.</p>
+<p><strong>Setup:</strong> <a href="https://docs.docker.com/desktop/setup/install/windows-install/" target="_blank" rel="noopener">Docker Desktop for Windows</a>. You already have it, so just make sure it's running.</p>
+<h3 id="day-1-images-containers-and-ports">Day 1: Images, containers, and ports<a class="anchor" href="#day-1-images-containers-and-ports" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/" target="_blank" rel="noopener">What is a container?</a> and <a href="https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/" target="_blank" rel="noopener">What is an image?</a> (Docker docs)</li>
+</ul>
+<p><strong>Do</strong></p>
+<pre><code class="lang-powershell">docker run --rm hello-world
+docker run -d --name web -p 8080:80 nginx
+# now open http://localhost:8080
+docker ps
+docker logs web
+docker stop web; docker rm web</code></pre>
+<p><strong>Done when:</strong> you saw the nginx welcome page, and you can explain image, container, and port mapping.</p>
+<h3 id="day-2-containerize-a-net-app">Day 2: Containerize a .NET app<a class="anchor" href="#day-2-containerize-a-net-app" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/core/docker/build-container" target="_blank" rel="noopener">Containerize a .NET app</a> (Microsoft Learn)</li>
+</ul>
+<p><strong>Do:</strong> add this <code>Dockerfile</code> to your Week 1 <code>LocalChat</code> project and build it:</p>
+<pre><code class="lang-dockerfile">FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY . .
+RUN dotnet publish -c Release -o /app
+
+FROM mcr.microsoft.com/dotnet/runtime:10.0
+WORKDIR /app
+COPY --from=build /app .
+ENTRYPOINT [&quot;dotnet&quot;, &quot;LocalChat.dll&quot;]</code></pre>
+<pre><code class="lang-powershell">docker build -t localchat .
+docker run -it --rm localchat</code></pre>
+<p>Inside a container, <code>localhost</code> means the container itself, not your laptop. Change the Ollama address to <code>http://host.docker.internal:11434/</code> so it can reach Ollama on Windows.</p>
+<p><strong>Done when:</strong> the containerized app chats with your local model.</p>
+<h3 id="day-3-volumes-and-docker-compose">Day 3: Volumes and Docker Compose<a class="anchor" href="#day-3-volumes-and-docker-compose" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> volumes keep data when a container is removed. Compose starts several containers from one file.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://docs.docker.com/get-started/docker-concepts/running-containers/persisting-container-data/" target="_blank" rel="noopener">Persisting container data</a> and <a href="https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-docker-compose/" target="_blank" rel="noopener">What is Docker Compose?</a></li>
+</ul>
+<p><strong>Do:</strong> create <code>compose.yaml</code> in the <code>CurriculumAssistant</code> root:</p>
+<pre><code class="lang-yaml">services:
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - &quot;6333:6333&quot;   # HTTP API and dashboard
+      - &quot;6334:6334&quot;   # gRPC, used by the .NET client
+    volumes:
+      - qdrant-data:/qdrant/storage
+volumes:
+  qdrant-data:</code></pre>
+<p>Run <code>docker compose up -d</code>, then open <code>http://localhost:6333/dashboard</code>.</p>
+<p><strong>Done when:</strong> the dashboard opens. Run <code>docker compose down</code> and then <code>docker compose up -d</code> again, and the data volume is still there.</p>
+<h3 id="day-4-qdrant-basics-from-c">Day 4: Qdrant basics from C#<a class="anchor" href="#day-4-qdrant-basics-from-c" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://qdrant.tech/documentation/quickstart/" target="_blank" rel="noopener">Qdrant quickstart</a>, using the C# tab</li>
+</ul>
+<p><strong>Do:</strong> in a scratch console app, run <code>dotnet add package Qdrant.Client</code>, then:</p>
+<pre><code class="lang-csharp">using Qdrant.Client;
+using Qdrant.Client.Grpc;
+
+var qdrant = new QdrantClient(&quot;localhost&quot;, 6334);
+await qdrant.CreateCollectionAsync(&quot;test&quot;,
+    new VectorParams { Size = 4, Distance = Distance.Cosine });
+
+await qdrant.UpsertAsync(&quot;test&quot;, new List&lt;PointStruct&gt;
+{
+    new() { Id = 1, Vectors = new float[] { 0.1f, 0.9f, 0.1f, 0.1f }, Payload = { [&quot;title&quot;] = &quot;Lambda&quot; } },
+    new() { Id = 2, Vectors = new float[] { 0.9f, 0.1f, 0.1f, 0.1f }, Payload = { [&quot;title&quot;] = &quot;Pizza&quot; } },
+});
+
+var hits = await qdrant.SearchAsync(&quot;test&quot;, new float[] { 0.2f, 0.8f, 0.1f, 0.1f }, limit: 1);
+Console.WriteLine(hits[0].Payload[&quot;title&quot;].StringValue);   // Lambda</code></pre>
+<p><strong>Done when:</strong> it prints <code>Lambda</code>, and you can see the <code>test</code> collection in the dashboard.</p>
+<h3 id="day-5-move-the-assistant-to-qdrant">Day 5: Move the assistant to Qdrant<a class="anchor" href="#day-5-move-the-assistant-to-qdrant" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create an interface in <code>Assistant.Core</code>:
+<pre><code class="lang-csharp">public interface IKnowledgeStore
+{
+    Task UpsertAsync(IReadOnlyList&lt;(KnowledgeChunk Chunk, float[] Vector)&gt; items, CancellationToken ct = default);
+    Task&lt;IReadOnlyList&lt;(KnowledgeChunk Chunk, float Score)&gt;&gt; SearchAsync(
+        float[] vector, int k, string? sourceType = null, CancellationToken ct = default);
+}</code></pre></li>
+<li>Move the JSON index into <code>JsonKnowledgeStore : IKnowledgeStore</code>, and add <code>QdrantKnowledgeStore : IKnowledgeStore</code>:
+<ul>
+<li>Use a collection named <code>knowledge</code>, with vector size 768 (for <code>nomic-embed-text</code>) and cosine distance.</li>
+<li>Qdrant point IDs must be numbers or GUIDs, so build a GUID from the first 16 bytes of your SHA-256 <code>Id</code>.</li>
+<li>Store every <code>KnowledgeChunk</code> field in the payload.</li>
+</ul></li>
+<li>Pick the store with a setting in <code>appsettings.json</code>: <code>&quot;Store&quot;: &quot;Qdrant&quot;</code> or <code>&quot;Json&quot;</code>.</li>
+</ol>
+<p><strong>Done when:</strong> <code>index build</code> fills Qdrant, and answers work the same as before.</p>
+<h3 id="day-6-metadata-filters">Day 6: Metadata filters<a class="anchor" href="#day-6-metadata-filters" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~10 min)</strong></p>
+<ul>
+<li><a href="https://qdrant.tech/documentation/search/filtering/" target="_blank" rel="noopener">Qdrant filtering</a></li>
+</ul>
+<p><strong>Do:</strong> implement the <code>sourceType</code> filter in <code>QdrantKnowledgeStore</code> with a &quot;match&quot; condition on the <code>source_type</code> payload field. Add CLI options <code>--plan-only</code> and <code>--docs-only</code>.</p>
+<p><strong>Done when:</strong> &quot;What is RAG?&quot; with <code>--plan-only</code> cites only Week 4, and with <code>--docs-only</code> cites only Microsoft Learn.</p>
+<h3 id="day-7-review-and-catch-up-light-1">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-1" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push, including <code>compose.yaml</code>. The README should say &quot;Run <code>docker compose up -d</code> first&quot;.</li>
+<li>Tick the containers and volumes topics on <a href="https://roadmap.sh/docker" target="_blank" rel="noopener">roadmap.sh/docker</a>.</li>
+</ul>
+<hr>
+<h2 id="week-11-hybrid-search-and-reranking">Week 11: Hybrid search and reranking<a class="anchor" href="#week-11-hybrid-search-and-reranking" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> search that finds exact terms, such as <code>GetResponseAsync</code> or <code>SAA-C03</code>, as well as meaning, and a second step that reorders results for precision.</p>
+<h3 id="day-1-where-pure-vector-search-fails">Day 1: Where pure vector search fails<a class="anchor" href="#day-1-where-pure-vector-search-fails" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://qdrant.tech/documentation/search-tuning/hybrid-search/" target="_blank" rel="noopener">Hybrid search</a> (Qdrant)</li>
+</ul>
+<p><strong>Do:</strong> ask the assistant five questions containing exact identifiers, such as &quot;Where do I use <code>UseFunctionInvocation</code>?&quot;, &quot;Which day uses <code>TensorPrimitives</code>?&quot;, and &quot;Where is port 6334 used?&quot;. Note how many it misses.</p>
+<p><strong>Done when:</strong> you have proof that meaning-based search alone misses exact keywords.</p>
+<h3 id="day-2-bm25-keyword-search">Day 2: BM25 keyword search<a class="anchor" href="#day-2-bm25-keyword-search" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> BM25 is the classic keyword ranking formula used by search engines. Matches on rare words count for more.</p>
+<p><strong>Do:</strong> implement <code>Bm25Index</code> in <code>Assistant.Core</code>:</p>
+<pre><code class="lang-csharp">public sealed class Bm25Index(IEnumerable&lt;(string Id, string Text)&gt; docs, double k1 = 1.5, double b = 0.75)
+{
+    private readonly List&lt;(string Id, string[] Terms)&gt; _docs =
+        docs.Select(d =&gt; (d.Id, Tokenize(d.Text))).ToList();
+
+    public static string[] Tokenize(string text) =&gt;
+        System.Text.RegularExpressions.Regex.Matches(text.ToLowerInvariant(), @&quot;[a-z0-9_]+&quot;)
+            .Select(m =&gt; m.Value).ToArray();
+
+    public IEnumerable&lt;(string Id, double Score)&gt; Search(string query, int k)
+    {
+        double avgLen = _docs.Average(d =&gt; d.Terms.Length);
+        int n = _docs.Count;
+        var queryTerms = Tokenize(query).Distinct().ToArray();
+        var df = queryTerms.ToDictionary(t =&gt; t, t =&gt; _docs.Count(d =&gt; d.Terms.Contains(t)));
+
+        return _docs.Select(d =&gt;
+        {
+            double score = 0;
+            foreach (string t in queryTerms)
+            {
+                int tf = d.Terms.Count(x =&gt; x == t);
+                if (tf == 0) continue;
+                double idf = Math.Log(1 + (n - df[t] + 0.5) / (df[t] + 0.5));
+                score += idf * tf * (k1 + 1) / (tf + k1 * (1 - b + b * d.Terms.Length / avgLen));
+            }
+            return (d.Id, Score: score);
+        })
+        .Where(r =&gt; r.Score &gt; 0).OrderByDescending(r =&gt; r.Score).Take(k);
+    }
+}</code></pre>
+<p>Write a test: the query <code>TensorPrimitives</code> must return the Week 3 Day 2 chunk first.</p>
+<p><strong>Done when:</strong> the test passes, and your Day 1 identifier questions now work with BM25.</p>
+<h3 id="day-3-combining-results-with-reciprocal-rank-fusion">Day 3: Combining results with Reciprocal Rank Fusion<a class="anchor" href="#day-3-combining-results-with-reciprocal-rank-fusion" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> Reciprocal Rank Fusion (RRF) merges two ranked lists without having to compare their very different scores. Each result scores <code>Σ 1 / (60 + rank)</code> across the lists.</p>
+<p><strong>Do:</strong> add <code>HybridSearch.SearchAsync(question, k)</code>. It takes the top 20 from vector search and the top 20 from BM25, combines them with RRF, and returns the top <code>k</code>:</p>
+<pre><code class="lang-csharp">static Dictionary&lt;string, double&gt; Rrf(params IEnumerable&lt;string&gt;[] rankings)
+{
+    var scores = new Dictionary&lt;string, double&gt;();
+    foreach (var ranking in rankings)
+        foreach (var (id, rank) in ranking.Select((id, i) =&gt; (id, i + 1)))
+            scores[id] = scores.GetValueOrDefault(id) + 1.0 / (60 + rank);
+    return scores;
+}</code></pre>
+<p><strong>Done when:</strong> both your meaning questions and your identifier questions find the right chunk.</p>
+<h3 id="day-4-reranking-with-the-model">Day 4: Reranking with the model<a class="anchor" href="#day-4-reranking-with-the-model" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> a reranker reads the question together with each candidate and scores how relevant it is. It's slower but more precise, so run it only on the top 10–20 results.</p>
+<p><strong>Do:</strong> add <code>LlmReranker</code>, which asks the chat model for a structured score for each candidate:</p>
+<pre><code class="lang-csharp">record Relevance(int Score);   // 0–10
+
+var r = await chat.GetResponseAsync&lt;Relevance&gt;(
+    $&quot;Question: {question}\n\nPassage:\n{chunk.Text}\n\n&quot; +
+    &quot;How well does the passage answer the question? Reply with a score from 0 (not at all) to 10 (fully).&quot;);</code></pre>
+<p>Rerank the top 10 hybrid results and keep the best 3.</p>
+<p><strong>Done when:</strong> you've compared answers with and without reranking on your eval questions, and noted the extra time it takes.</p>
+<h3 id="day-5-rewriting-the-question">Day 5: Rewriting the question<a class="anchor" href="#day-5-rewriting-the-question" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> follow-up questions like &quot;and how do I test it?&quot; make poor searches. Rewriting them as standalone questions fixes that.</p>
+<p><strong>Do:</strong> before searching, if the chat history isn't empty, ask the model: &quot;Rewrite the user's last question as a standalone search query, using the conversation. Reply with the query only.&quot; Then search with the rewritten text.</p>
+<p><strong>Done when:</strong> &quot;What is BM25?&quot; followed by &quot;Which week teaches it?&quot; finds Week 11.</p>
+<h3 id="day-6-curriculum-assistant-06-a-configurable-retrieval-pipeline">Day 6: Curriculum Assistant 0.6, a configurable retrieval pipeline<a class="anchor" href="#day-6-curriculum-assistant-06-a-configurable-retrieval-pipeline" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> put the retrieval steps behind settings in <code>appsettings.json</code>:</p>
+<pre><code class="lang-json">&quot;Retrieval&quot;: { &quot;Mode&quot;: &quot;Hybrid&quot;, &quot;Rerank&quot;: true, &quot;RewriteQuestion&quot;: true, &quot;TopK&quot;: 3 }</code></pre>
+<p><code>Mode</code> can be <code>Vector</code>, <code>Keyword</code>, or <code>Hybrid</code>. Print the settings used with each answer.</p>
+<p><strong>Done when:</strong> you can switch each step on and off without code changes. Next week, you'll measure which combination works best.</p>
+<h3 id="day-7-review-and-catch-up-light-2">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-2" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push, and add a README section explaining the retrieval pipeline, with a diagram.</li>
+</ul>
+<hr>
+<h2 id="week-12-measuring-rag-quality">Week 12: Measuring RAG quality<a class="anchor" href="#week-12-measuring-rag-quality" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> an automatic evaluation that scores the assistant on 30 questions, so you can measure every change.</p>
+<h3 id="day-1-what-to-measure">Day 1: What to measure<a class="anchor" href="#day-1-what-to-measure" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/" target="_blank" rel="noopener">Ragas: available metrics</a>. Read context precision, context recall, faithfulness, and answer relevancy.</li>
+</ul>
+<p><strong>Do:</strong> for each kind of measurement, write down what it would catch in your assistant:</p>
+<ul>
+<li><strong>Retrieval:</strong> did the right chunk come back? (hits@k, MRR)</li>
+<li><strong>Faithfulness:</strong> does the answer state only what the chunks say?</li>
+<li><strong>Relevance:</strong> does the answer actually address the question?</li>
+</ul>
+<p><strong>Done when:</strong> you can explain the difference between bad retrieval and a bad answer generated from good chunks.</p>
+<h3 id="day-2-build-a-30-question-test-set">Day 2: Build a 30-question test set<a class="anchor" href="#day-2-build-a-30-question-test-set" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> grow your Week 4 list into <code>eval/questions.json</code>:</p>
+<pre><code class="lang-json">[
+  { &quot;id&quot;: &quot;q01&quot;, &quot;question&quot;: &quot;Which day teaches cosine similarity?&quot;, &quot;expectedSourceId&quot;: &quot;week 3 day 2&quot;, &quot;expectedAnswerContains&quot;: [&quot;cosine&quot;] },
+  { &quot;id&quot;: &quot;q02&quot;, &quot;question&quot;: &quot;What does UseFunctionInvocation do?&quot;, &quot;expectedSourceId&quot;: &quot;week 2 day 3&quot;, &quot;expectedAnswerContains&quot;: [&quot;tool&quot;] }
+]</code></pre>
+<p>Include 10 easy questions, 10 with exact identifiers, 5 follow-ups, and 5 the plan doesn't cover (set <code>&quot;expectedSourceId&quot;: null</code> for those).</p>
+<p><strong>Done when:</strong> the file has 30 entries.</p>
+<h3 id="day-3-automatic-retrieval-scores">Day 3: Automatic retrieval scores<a class="anchor" href="#day-3-automatic-retrieval-scores" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add a console project, <code>tests/Assistant.Eval</code>. For each question it runs retrieval only and computes:</p>
+<ul>
+<li><strong>hits@3:</strong> whether the expected source is in the top 3 results</li>
+<li><strong>MRR:</strong> 1 divided by the rank of the expected source, or 0 if it's missing</li>
+</ul>
+<p>It prints a table for each retrieval mode (Vector, Keyword, Hybrid, and Hybrid with reranking), and saves the results to <code>eval/results-&lt;date&gt;.json</code>.</p>
+<p><strong>Done when:</strong> you have hard numbers showing which retrieval mode wins on your questions.</p>
+<h3 id="day-4-llm-as-judge-for-faithfulness">Day 4: LLM-as-judge for faithfulness<a class="anchor" href="#day-4-llm-as-judge-for-faithfulness" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> a second model call checks the answer against the chunks it was given. This is useful, but the judge can be wrong, so check some of its decisions yourself.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/evaluation/libraries" target="_blank" rel="noopener">The Microsoft.Extensions.AI.Evaluation libraries</a> (Microsoft Learn)</li>
+</ul>
+<p><strong>Do:</strong> add a judge prompt with structured output:</p>
+<pre><code class="lang-csharp">record Judgement(bool Faithful, bool Relevant, string Reason);</code></pre>
+<p>The prompt asks: &quot;Given these passages and this answer, is every claim in the answer supported by the passages? Does the answer address the question?&quot; Run it on all 30 answers.</p>
+<p><strong>Done when:</strong> you have faithfulness and relevance percentages, and you've checked five of the judgements by hand.</p>
+<h3 id="day-5-find-and-fix-one-weakness">Day 5: Find and fix one weakness<a class="anchor" href="#day-5-find-and-fix-one-weakness" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> sort the results by failure and pick the worst category, for example follow-ups or &quot;not covered&quot; questions. Change one thing (chunk size, threshold, or prompt), then re-run the evaluation.</p>
+<p><strong>Done when:</strong> one metric improved and none of the others got worse. Record the before and after numbers in the README.</p>
+<h3 id="day-6-ragas-in-python-optional-comparison">Day 6: Ragas in Python (optional comparison)<a class="anchor" href="#day-6-ragas-in-python-optional-comparison" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~10 min)</strong></p>
+<ul>
+<li><a href="https://docs.ragas.io/en/stable/howtos/customizations/customize_models/" target="_blank" rel="noopener">Ragas: customize models</a></li>
+</ul>
+<p><strong>Do:</strong> in your <code>py-rag</code> project, run <code>uv add ragas</code>. Run Ragas on 10 of your questions, pointing it at Ollama through the OpenAI-compatible endpoint from Week 7. Compare its faithfulness numbers with your C# judge.</p>
+<p><strong>Done when:</strong> you know whether your judge and Ragas roughly agree. If Ragas doesn't work with your local model, write down why. That's a useful finding too.</p>
+<h3 id="day-7-review-and-catch-up-light-3">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-3" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push, including <code>eval/questions.json</code> and the latest results file.</li>
+</ul>
+<hr>
+<h2 id="week-13-pdfs-code-and-keeping-sources-fresh">Week 13: PDFs, code, and keeping sources fresh<a class="anchor" href="#week-13-pdfs-code-and-keeping-sources-fresh" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> the assistant can read PDFs and your own code, and it knows when a source page has changed.</p>
+<h3 id="day-1-pdf-text-extraction">Day 1: PDF text extraction<a class="anchor" href="#day-1-pdf-text-extraction" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add <code>dotnet add src/Assistant.Core package UglyToad.PdfPig</code>, then write <code>PdfLoader.Load(path)</code>, which returns one <code>SourceDoc</code> per PDF with the text page by page. Put each page number in the heading path (&quot;Page 4&quot;) so citations can point to it.</p>
+<p>Test it with an AWS whitepaper. The <a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html" target="_blank" rel="noopener">AWS Well-Architected Framework</a> page has a PDF download link.</p>
+<p><strong>Done when:</strong> you can ask about a fact in the PDF, and the answer cites the right page.</p>
+<h3 id="day-2-indexing-your-own-code">Day 2: Indexing your own code<a class="anchor" href="#day-2-indexing-your-own-code" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> code needs its own chunking: one chunk per method, not one per 800 characters.</p>
+<p><strong>Do:</strong> run <code>dotnet add src/Assistant.Core package Microsoft.CodeAnalysis.CSharp</code>, then add <code>CSharpChunker</code>:</p>
+<pre><code class="lang-csharp">using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+public static IEnumerable&lt;Chunk&gt; ChunkFile(string path)
+{
+    var root = CSharpSyntaxTree.ParseText(File.ReadAllText(path)).GetRoot();
+    foreach (var method in root.DescendantNodes().OfType&lt;MethodDeclarationSyntax&gt;())
+    {
+        string cls = method.Ancestors().OfType&lt;TypeDeclarationSyntax&gt;().FirstOrDefault()?.Identifier.Text ?? &quot;&quot;;
+        yield return new Chunk($&quot;{Path.GetFileName(path)} &gt; {cls}.{method.Identifier.Text}&quot;, method.ToFullString());
+    }
+}</code></pre>
+<p>Index your <code>ai-learning</code> repository with <code>SourceType = &quot;code&quot;</code>.</p>
+<p><strong>Done when:</strong> &quot;Where did I write the BM25 score?&quot; finds your <code>Bm25Index.Search</code> method.</p>
+<h3 id="day-3-detecting-changed-sources">Day 3: Detecting changed sources<a class="anchor" href="#day-3-detecting-changed-sources" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> store a SHA-256 hash of each fetched page with its source. Add <code>sources refresh</code>, which re-downloads every page and reports it as <strong>unchanged</strong>, <strong>changed</strong>, <strong>moved</strong> (redirected to a new URL), or <strong>gone</strong> (404). Re-index only the pages that changed.</p>
+<p><strong>Done when:</strong> the command prints a refresh report, and running it a second time shows everything as unchanged.</p>
+<h3 id="day-4-showing-freshness-in-answers">Day 4: Showing freshness in answers<a class="anchor" href="#day-4-showing-freshness-in-answers" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add each chunk's <code>IndexedAt</code> date to its citation, for example &quot;learn.microsoft.com/… (fetched 3 days ago)&quot;. If a source is older than 90 days, add: &quot;This source may be out of date. Run <code>sources refresh</code>.&quot;</p>
+<p><strong>Done when:</strong> answers show how old their sources are.</p>
+<h3 id="day-5-removing-stale-data">Day 5: Removing stale data<a class="anchor" href="#day-5-removing-stale-data" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add <code>index prune</code>, which deletes chunks whose source no longer exists (deleted files, or pages marked gone). Add a test using the JSON store: index two sources, delete one, prune, and check that only one source's chunks remain.</p>
+<p><strong>Done when:</strong> the test passes, and Qdrant's point count drops after a prune.</p>
+<h3 id="day-6-curriculum-assistant-07-a-what-changed-report">Day 6: Curriculum Assistant 0.7, a &quot;what changed&quot; report<a class="anchor" href="#day-6-curriculum-assistant-07-a-what-changed-report" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add the command <code>report changes</code>, which lists:</p>
+<ul>
+<li>plan weeks whose linked sources changed since the last refresh</li>
+<li>links that are now broken or redirected (port the logic of your Week 6 Python link checker to C#)</li>
+</ul>
+<p><strong>Done when:</strong> you get a short report you could act on, for example &quot;Week 3 Day 4 links to a page that redirected; update the plan.&quot;</p>
+<h3 id="day-7-review-and-catch-up-light-4">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-4" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push, run <code>report changes</code> on the real plan, and fix any broken links it finds.</li>
+</ul>
+<hr>
+<h2 id="week-14-rag-behind-an-api-with-a-chat-page">Week 14: RAG behind an API, with a chat page<a class="anchor" href="#week-14-rag-behind-an-api-with-a-chat-page" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> the assistant runs as an ASP.NET Core API with streaming answers and a simple browser chat page. This is the shape you'll deploy to AWS later.</p>
+<h3 id="day-1-minimal-api-project">Day 1: Minimal API project<a class="anchor" href="#day-1-minimal-api-project" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/aspnet/core/tutorials/min-web-api" target="_blank" rel="noopener">Tutorial: Create a minimal API with ASP.NET Core</a> (Microsoft Learn). Skim it, since you already know ASP.NET.</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Run <code>dotnet new web -o src/Assistant.Api</code>, add it to the solution, and reference <code>Assistant.Core</code>.</li>
+<li>Register the services with dependency injection:
+<pre><code class="lang-csharp">builder.Services.AddSingleton&lt;IChatClient&gt;(_ =&gt;
+    new ChatClientBuilder(new OllamaApiClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;llama3.2&quot;))
+        .UseFunctionInvocation().Build());
+builder.Services.AddSingleton&lt;IEmbeddingGenerator&lt;string, Embedding&lt;float&gt;&gt;&gt;(_ =&gt;
+    new OllamaApiClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;nomic-embed-text&quot;));
+builder.Services.AddSingleton&lt;IKnowledgeStore, QdrantKnowledgeStore&gt;();
+builder.Services.AddSingleton&lt;RagService&gt;();</code></pre></li>
+<li>Add <code>app.MapPost(&quot;/ask&quot;, async (AskRequest r, RagService rag) =&gt; await rag.AskAsync(r.Question));</code> and return the answer plus its citations.</li>
+</ol>
+<p><strong>Done when:</strong> this PowerShell command returns JSON with an answer and sources (use the port your app prints):</p>
+<pre><code class="lang-powershell">Invoke-RestMethod -Method Post -Uri http://localhost:5000/ask -ContentType &quot;application/json&quot; -Body '{&quot;question&quot;:&quot;What is RAG?&quot;}'</code></pre>
+<h3 id="day-2-streaming-with-server-sent-events">Day 2: Streaming with server-sent events<a class="anchor" href="#day-2-streaming-with-server-sent-events" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> server-sent events (SSE) push text to the browser as it's generated.</p>
+<p><strong>Do:</strong> add <code>AskStreamingAsync</code> to <code>RagService</code> using <code>GetStreamingResponseAsync</code>, then expose it as <code>GET /ask/stream?q=...</code>:</p>
+<pre><code class="lang-csharp">app.MapGet(&quot;/ask/stream&quot;, async (string q, RagService rag, HttpResponse res, CancellationToken ct) =&gt;
+{
+    res.ContentType = &quot;text/event-stream&quot;;
+    await foreach (string piece in rag.AskStreamingAsync(q, ct))
+    {
+        await res.WriteAsync($&quot;data: {piece.Replace(&quot;\n&quot;, &quot;\\n&quot;)}\n\n&quot;, ct);
+        await res.Body.FlushAsync(ct);
+    }
+});</code></pre>
+<p><strong>Done when:</strong> <code>curl.exe -N &quot;http://localhost:5000/ask/stream?q=What%20is%20RAG&quot;</code> prints the answer piece by piece.</p>
+<h3 id="day-3-a-simple-chat-page">Day 3: A simple chat page<a class="anchor" href="#day-3-a-simple-chat-page" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add <code>wwwroot/index.html</code>, plus <code>app.UseDefaultFiles();</code> and <code>app.UseStaticFiles();</code>. The page needs:</p>
+<ul>
+<li>a question box and a Send button</li>
+<li>a message list that shows your question and the streamed answer, using <code>new EventSource(&quot;/ask/stream?q=&quot; + encodeURIComponent(q))</code></li>
+<li>the sources as links under each answer, either from <code>POST /ask</code> or sent as a final SSE event</li>
+</ul>
+<p>Plain HTML and a little JavaScript are enough. No framework is needed.</p>
+<p><strong>Done when:</strong> you can chat with your plan in the browser.</p>
+<h3 id="day-4-conversations">Day 4: Conversations<a class="anchor" href="#day-4-conversations" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> keep chat history per conversation. The browser creates a <code>conversationId</code> (a GUID) and sends it with each question. The server keeps the last 10 messages for that ID in an <code>IMemoryCache</code> with a 30-minute expiry, and passes that history to question rewriting from Week 11.</p>
+<p><strong>Done when:</strong> follow-up questions work in the browser.</p>
+<h3 id="day-5-errors-limits-and-health-checks">Day 5: Errors, limits, and health checks<a class="anchor" href="#day-5-errors-limits-and-health-checks" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do</strong></p>
+<ol>
+<li>If Ollama or Qdrant is down, return a clear <code>503</code> that says &quot;The model service is unavailable&quot; instead of a stack trace. Use <code>app.UseExceptionHandler</code> with <code>Results.Problem</code>.</li>
+<li>Add a fixed-window rate limiter of 10 questions per minute per IP, using <code>builder.Services.AddRateLimiter(...)</code>.</li>
+<li>Add <code>GET /health</code>, which checks that Ollama and Qdrant respond.</li>
+<li>Reject questions longer than 2,000 characters with a <code>400</code>.</li>
+</ol>
+<p><strong>Done when:</strong> stopping the Qdrant container shows a friendly error in the page, and <code>/health</code> reports it.</p>
+<h3 id="day-6-curriculum-assistant-08-everything-in-docker-compose">Day 6: Curriculum Assistant 0.8, everything in Docker Compose<a class="anchor" href="#day-6-curriculum-assistant-08-everything-in-docker-compose" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add a <code>Dockerfile</code> for <code>Assistant.Api</code> and add the API to <code>compose.yaml</code> next to Qdrant. Inside Compose:</p>
+<ul>
+<li>reach Ollama on Windows at <code>http://host.docker.internal:11434/</code></li>
+<li>reach Qdrant at host <code>qdrant</code>, port <code>6334</code> (the service name works as a host name)</li>
+<li>pass settings as environment variables, for example <code>Store__Type=Qdrant</code></li>
+</ul>
+<p><strong>Done when:</strong> <code>docker compose up -d --build</code> starts the whole assistant, and the chat page works at <code>http://localhost:8080</code>.</p>
+<h3 id="day-7-review-and-catch-up-light-5">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-5" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push, run your evaluation against the API version, and add a screenshot of the chat page to the README.</li>
+<li>Section C is complete. Tick the RAG topics on <a href="https://roadmap.sh/ai-engineer" target="_blank" rel="noopener">roadmap.sh/ai-engineer</a>.</li>
+</ul>
+<nav class="pager" aria-label="Sections"><a href="B-python-weeks-05-08.html">← B. Python (Weeks 5–8)</a><a href="D-agents-weeks-15-20.html">D. Agents (Weeks 15–20) →</a></nav>
+</main>
+</body>
+</html>

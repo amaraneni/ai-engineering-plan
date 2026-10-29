@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Section G: AI on AWS (Weeks 33–38)</title>
+<style>
+:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
+main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
+a { color:var(--accent); }
+a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
+h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
+h1:target,h2:target,h3:target { background:var(--target); }
+.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
+h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
+code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
+pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
+pre code { background:none; padding:0; font-size:.88rem; }
+.table-wrap { overflow-x:auto; }
+table { border-collapse:collapse; margin:1em 0; }
+th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
+th { background:var(--code); }
+li { margin:.2em 0; } li > p { margin:.3em 0; }
+hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
+.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
+@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Plan"><a href="../schedule.html">← Schedule</a><a href="../plan.html">Plan</a><a href="../resources.html">Resources</a></nav>
+<main>
+<h1 id="section-g-ai-on-aws-weeks-3338">Section G: AI on AWS (Weeks 33–38)<a class="anchor" href="#section-g-ai-on-aws-weeks-3338" aria-label="Link to this heading">#</a></h1>
+<p>Now the AI moves to AWS. Amazon Bedrock gives you models through an API, and because it plugs into the same <code>IChatClient</code> interface you've used all year, most of your code doesn't change. By Week 38 the Curriculum Assistant runs on AWS, with Bedrock models, cheap vector storage in S3, an agent, and its MCP server.</p>
+<p><strong>Cost rules for this section:</strong></p>
+<ul>
+<li>Bedrock charges per token. Use small, cheap models for learning, such as the Amazon Nova Micro or Lite models, and check prices on the <a href="https://aws.amazon.com/bedrock/pricing/" target="_blank" rel="noopener">Amazon Bedrock pricing</a> page before each week.</li>
+<li><strong>Don't use OpenSearch Serverless</strong> for Knowledge Bases. It has a high minimum monthly cost. This plan uses <strong>Amazon S3 Vectors</strong> instead, which costs very little at this size.</li>
+<li>Keep your $10 budget alert from Week 25 on.</li>
+</ul>
+<p><strong>Courses for this section (optional, see <a href="../resources.html">resources.md</a>):</strong> Coursera's <a href="https://www.coursera.org/learn/amazon-bedrock-getting-started" target="_blank" rel="noopener">Amazon Bedrock: Getting Started with Generative AI</a> for Week 33, and <a href="https://www.coursera.org/learn/generative-ai-applications-amazon-bedrock" target="_blank" rel="noopener">Generative AI Applications with Amazon Bedrock</a> for Weeks 34–36. AWS also has free courses on Knowledge Bases, Agents, and Guardrails on its <a href="https://aws.amazon.com/training/learn-about/ai/" target="_blank" rel="noopener">AI training page</a>. <strong>roadmap.sh:</strong> <a href="https://roadmap.sh/aws" target="_blank" rel="noopener">AWS</a> and <a href="https://roadmap.sh/ai-engineer" target="_blank" rel="noopener">AI Engineer</a>.</p>
+<hr>
+<h2 id="week-33-amazon-bedrock-from-c">Week 33: Amazon Bedrock from C#<a class="anchor" href="#week-33-amazon-bedrock-from-c" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> Bedrock models answering from your C# code through <code>IChatClient</code> and <code>IEmbeddingGenerator</code>, and an assistant that can switch between Ollama and Bedrock with one setting.</p>
+<h3 id="day-1-what-bedrock-is">Day 1: What Bedrock is<a class="anchor" href="#day-1-what-bedrock-is" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html" target="_blank" rel="noopener">What is Amazon Bedrock?</a></li>
+</ul>
+<p><strong>Do:</strong> in the Bedrock console in <code>us-east-1</code>, open the <strong>Model catalog</strong>. Find two cheap text models (for example from Amazon Nova) and one embedding model (Amazon Titan Text Embeddings V2). Write down their model IDs and their prices per million input and output tokens. If a model shows that it needs access, request it.</p>
+<p><strong>Done when:</strong> you have a short table of three models with their IDs and prices.</p>
+<h3 id="day-2-the-playground">Day 2: The playground<a class="anchor" href="#day-2-the-playground" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> in the Bedrock <strong>Chat playground</strong>, ask the same three questions you asked <code>llama3.2</code> in Week 1 to each cheap model. Look at the token counts and the response time it shows.</p>
+<p><strong>Done when:</strong> you can compare the cloud models with your local model on quality, speed, and cost.</p>
+<h3 id="day-3-bedrock-through-ichatclient">Day 3: Bedrock through <code>IChatClient</code><a class="anchor" href="#day-3-bedrock-through-ichatclient" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~10 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/agent-framework/integrations/by-component/model-providers/amazon-bedrock" target="_blank" rel="noopener">Agent Framework: Amazon Bedrock</a>. It shows the <code>AsIChatClient</code> bridge.</li>
+</ul>
+<p><strong>Do</strong></p>
+<pre><code class="lang-powershell">dotnet new console -o BedrockChat
+cd BedrockChat
+dotnet add package AWSSDK.Extensions.Bedrock.MEAI</code></pre>
+<pre><code class="lang-csharp">using Amazon;
+using Amazon.BedrockRuntime;
+using Microsoft.Extensions.AI;
+
+var runtime = new AmazonBedrockRuntimeClient(RegionEndpoint.USEast1);   // credentials from AWS_PROFILE
+IChatClient chat = runtime.AsIChatClient(&quot;&lt;model ID from Day 1&gt;&quot;);
+
+ChatResponse r = await chat.GetResponseAsync(&quot;Explain RAG in two sentences.&quot;);
+Console.WriteLine(r.Text);
+Console.WriteLine($&quot;[tokens in: {r.Usage?.InputTokenCount}, out: {r.Usage?.OutputTokenCount}]&quot;);</code></pre>
+<p>Some models need an <strong>inference profile</strong> ID, which starts with <code>us.</code>. If you get an error about on-demand throughput, use the profile ID shown in the model catalog.</p>
+<p><strong>Done when:</strong> a Bedrock model answers, and you see its token usage. This is the same <code>IChatClient</code> code you wrote in Week 1.</p>
+<h3 id="day-4-embeddings-with-titan">Day 4: Embeddings with Titan<a class="anchor" href="#day-4-embeddings-with-titan" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~10 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html" target="_blank" rel="noopener">Amazon Titan Text Embeddings models</a></li>
+</ul>
+<p><strong>Do:</strong> generate embeddings with <code>amazon.titan-embed-text-v2:0</code>, using the same package:</p>
+<pre><code class="lang-csharp">IEmbeddingGenerator&lt;string, Embedding&lt;float&gt;&gt; embedder = runtime.AsIEmbeddingGenerator(&quot;amazon.titan-embed-text-v2:0&quot;);
+var v = await embedder.GenerateVectorAsync(&quot;How do I deploy a Lambda function?&quot;);
+Console.WriteLine(v.Length);   // 1024 by default</code></pre>
+<p>Then run your Week 3 Day 2 similarity pairs again with Titan.</p>
+<p><strong>Done when:</strong> you get 1,024-number vectors, and the similarity pairs still rank sensibly.</p>
+<h3 id="day-5-one-setting-to-switch-providers">Day 5: One setting to switch providers<a class="anchor" href="#day-5-one-setting-to-switch-providers" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> in <code>Assistant.Core</code>, add an <code>AiProviderOptions</code> setting, <code>&quot;Provider&quot;: &quot;Ollama&quot;</code> or <code>&quot;Bedrock&quot;</code>, plus the model IDs. Register <code>IChatClient</code> and <code>IEmbeddingGenerator</code> based on it.</p>
+<p>Titan produces 1,024 numbers and <code>nomic-embed-text</code> produces 768, so you can't mix them in one collection. Give each provider its own collection, such as <code>knowledge-768</code> and <code>knowledge-1024</code>.</p>
+<p><strong>Done when:</strong> the same assistant runs on Ollama or Bedrock by changing one setting, and re-indexing with Bedrock fills the 1,024-size collection.</p>
+<h3 id="day-6-compare-local-and-cloud-on-your-evaluation">Day 6: Compare local and cloud on your evaluation<a class="anchor" href="#day-6-compare-local-and-cloud-on-your-evaluation" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> run your Week 12 evaluation with Ollama, then with Bedrock. Record retrieval scores, faithfulness, average answer time, and the Bedrock cost, from the token usage times the price.</p>
+<p><strong>Done when:</strong> you have a table comparing them, with a recommendation for when to use each.</p>
+<h3 id="day-7-review-and-catch-up-light">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push. Check Cost Explorer: this week should have cost less than a dollar.</li>
+</ul>
+<hr>
+<h2 id="week-34-bedrock-knowledge-bases-and-s3-vectors">Week 34: Bedrock Knowledge Bases and S3 Vectors<a class="anchor" href="#week-34-bedrock-knowledge-bases-and-s3-vectors" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> a managed RAG setup built with Bedrock Knowledge Bases, and an honest comparison with the RAG you built yourself.</p>
+<h3 id="day-1-managed-rag">Day 1: Managed RAG<a class="anchor" href="#day-1-managed-rag" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-build.html" target="_blank" rel="noopener">Build a knowledge base with vector stores</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-bedrock-kb.html" target="_blank" rel="noopener">Using S3 Vectors with Bedrock Knowledge Bases</a></li>
+</ul>
+<p><strong>Do:</strong> list which parts of your own RAG a Knowledge Base replaces (chunking, embedding, vector storage, retrieval) and which it doesn't (your evaluation, your tools, your citations format).</p>
+<p><strong>Done when:</strong> you can say what you'd gain and lose by using it.</p>
+<h3 id="day-2-create-a-knowledge-base">Day 2: Create a Knowledge Base<a class="anchor" href="#day-2-create-a-knowledge-base" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do</strong></p>
+<ol>
+<li>Upload <code>data/sources/*.md</code> and the plan files to an S3 bucket with <code>sources upload</code> from Week 26.</li>
+<li>In the Bedrock console, create a Knowledge Base with that bucket as the data source, Titan Text Embeddings V2, and <strong>S3 Vectors</strong> as the vector store, using the quick-create option.</li>
+<li><strong>Sync</strong> the data source.</li>
+</ol>
+<p><strong>Done when:</strong> the sync finishes, and the Knowledge Base shows your documents.</p>
+<h3 id="day-3-query-it">Day 3: Query it<a class="anchor" href="#day-3-query-it" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> test it in the console's <strong>Test knowledge base</strong> panel, then from C#:</p>
+<pre><code class="lang-csharp">// dotnet add package AWSSDK.BedrockAgentRuntime
+using Amazon.BedrockAgentRuntime;
+using Amazon.BedrockAgentRuntime.Model;
+
+var kb = new AmazonBedrockAgentRuntimeClient(Amazon.RegionEndpoint.USEast1);
+var result = await kb.RetrieveAsync(new RetrieveRequest
+{
+    KnowledgeBaseId = &quot;&lt;your KB id&gt;&quot;,
+    RetrievalQuery = new KnowledgeBaseQuery { Text = &quot;Which day teaches cosine similarity?&quot; }
+});
+foreach (var r in result.RetrievalResults)
+    Console.WriteLine($&quot;{r.Score:F3} {r.Location.S3Location.Uri}\n{r.Content.Text[..Math.Min(200, r.Content.Text.Length)]}\n&quot;);</code></pre>
+<p><strong>Done when:</strong> retrieval returns the right chunks from C#.</p>
+<h3 id="day-4-the-knowledge-base-as-one-more-store">Day 4: The Knowledge Base as one more store<a class="anchor" href="#day-4-the-knowledge-base-as-one-more-store" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add <code>BedrockKbKnowledgeStore : IKnowledgeStore</code>, which calls <code>RetrieveAsync</code> and maps the results to <code>KnowledgeChunk</code>. Its <code>UpsertAsync</code> should say indexing is handled by the Knowledge Base sync.</p>
+<p><strong>Done when:</strong> the assistant can answer using the Knowledge Base by changing the store setting.</p>
+<h3 id="day-5-compare-it-with-your-own-rag">Day 5: Compare it with your own RAG<a class="anchor" href="#day-5-compare-it-with-your-own-rag" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> run your Week 12 retrieval evaluation against the Knowledge Base, and fill in a table for your own RAG versus the Knowledge Base, covering hits@3, MRR, setup time, control over chunking, the cost per month at your size, and how hard it is to debug.</p>
+<p><strong>Done when:</strong> you have a recommendation you could give a customer. This is a classic forward deployed engineer question: &quot;Should we build it or use the managed service?&quot;</p>
+<h3 id="day-6-s3-vectors-directly">Day 6: S3 Vectors directly<a class="anchor" href="#day-6-s3-vectors-directly" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-getting-started.html" target="_blank" rel="noopener">Getting started with S3 Vectors</a></li>
+</ul>
+<p><strong>Do:</strong> create your own vector bucket and index (1,024 dimensions, cosine). Write <code>S3VectorsKnowledgeStore : IKnowledgeStore</code> with the <code>AWSSDK.S3Vectors</code> package, putting vectors with your <code>KnowledgeChunk</code> fields as metadata and querying them. Index your sources with Bedrock embeddings into it.</p>
+<p><strong>Done when:</strong> the assistant works with S3 Vectors as its store, with your own chunking and hybrid search on top. This is the store you'll use in the deployed version.</p>
+<h3 id="day-7-review-and-catch-up-light-1">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-1" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li><strong>Clean up:</strong> delete the Knowledge Base and its quick-created vector index. Keep your own S3 Vectors index for next week. Run your cleanup script.</li>
+</ul>
+<hr>
+<h2 id="week-35-deploy-the-rag-assistant-to-aws">Week 35: Deploy the RAG assistant to AWS<a class="anchor" href="#week-35-deploy-the-rag-assistant-to-aws" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> the Curriculum Assistant API and chat page running on AWS: Fargate for the API, Bedrock for the models, S3 Vectors for search, DynamoDB for progress, and S3 for sources, all defined in CDK.</p>
+<p><strong>Cost warning:</strong> this uses a load balancer and a Fargate task. Deploy, test, and destroy on the same day, as in Week 32.</p>
+<h3 id="day-1-architecture">Day 1: Architecture<a class="anchor" href="#day-1-architecture" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> draw the target architecture in the README: browser, then the load balancer, then Fargate (<code>Assistant.Api</code>), which calls Bedrock, S3 Vectors, DynamoDB, and S3. Use the Fargate-or-Lambda decision you made in Week 32. Fargate suits streaming answers.</p>
+<p><strong>Done when:</strong> you have a diagram and a list of the IAM permissions the task needs.</p>
+<h3 id="day-2-cdk-stack-for-the-data">Day 2: CDK stack for the data<a class="anchor" href="#day-2-cdk-stack-for-the-data" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> in <code>infra</code>, add a <code>DataStack</code> with the sources bucket, the progress table (from Week 30), and the S3 Vectors bucket and index. Check the CDK docs for current S3 Vectors support; if your CDK version has no construct for it, create it with a CDK custom resource or the CLI, and note which you used.</p>
+<p><strong>Done when:</strong> <code>cdk deploy DataStack</code> creates them all.</p>
+<h3 id="day-3-cdk-stack-for-the-api">Day 3: CDK stack for the API<a class="anchor" href="#day-3-cdk-stack-for-the-api" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add an <code>ApiStack</code> with <code>ApplicationLoadBalancedFargateService</code> (as in Week 32), with:</p>
+<ul>
+<li>environment variables setting the provider to Bedrock, the store to S3 Vectors, and the progress store to DynamoDB</li>
+<li>a task role with least privilege: <code>bedrock:InvokeModel</code> on your two model IDs only, read on the sources bucket, query and put on the vector index, and read and write on the progress table</li>
+</ul>
+<p><strong>Done when:</strong> <code>cdk deploy ApiStack</code> starts the task, and <code>/health</code> reports that everything is reachable.</p>
+<h3 id="day-4-index-the-sources-in-aws">Day 4: Index the sources in AWS<a class="anchor" href="#day-4-index-the-sources-in-aws" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> run <code>index build</code> from your laptop against AWS (Bedrock embeddings into S3 Vectors), or add a one-off ECS task that runs it. Then ask questions through the deployed chat page.</p>
+<p><strong>Done when:</strong> the deployed chat page answers questions about your plan, with sources.</p>
+<h3 id="day-5-protect-the-public-url">Day 5: Protect the public URL<a class="anchor" href="#day-5-protect-the-public-url" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> right now anyone with the URL can use your Bedrock budget. Add simple protection:</p>
+<ul>
+<li>an API key header checked by the API, with the key in Secrets Manager (as in Week 32), and the chat page asking for it once and saving it in the browser</li>
+<li>the rate limit from Week 14, which is still on</li>
+<li>a CloudWatch alarm on the <code>/ask</code> request count that emails you if there are over 200 requests in an hour</li>
+</ul>
+<p><strong>Done when:</strong> requests without the key get <code>401</code>, and the alarm is set up.</p>
+<h3 id="day-6-run-your-evaluation-against-aws">Day 6: Run your evaluation against AWS<a class="anchor" href="#day-6-run-your-evaluation-against-aws" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> point your Week 12 evaluation at the deployed API's URL, and compare the results with local Ollama. Write down the cost of the full evaluation run.</p>
+<p><strong>Done when:</strong> you've measured the deployed system, not just your laptop.</p>
+<h3 id="day-7-review-and-catch-up-light-2">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-2" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li><strong>Clean up:</strong> <code>cdk destroy ApiStack</code>. Keep <code>DataStack</code>, which costs cents. Run your cleanup script.</li>
+</ul>
+<hr>
+<h2 id="week-36-agents-on-aws">Week 36: Agents on AWS<a class="anchor" href="#week-36-agents-on-aws" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> the Curriculum Agent running with a Bedrock model, and deployed to Amazon Bedrock AgentCore Runtime.</p>
+<h3 id="day-1-agent-options-on-aws">Day 1: Agent options on AWS<a class="anchor" href="#day-1-agent-options-on-aws" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" target="_blank" rel="noopener">What is Amazon Bedrock AgentCore?</a></li>
+</ul>
+<p><strong>Do:</strong> compare three ways to run your agent: in your own Fargate API (as now), as <strong>Bedrock Agents</strong> (AWS-managed agents configured in the console), or in <strong>AgentCore Runtime</strong> (AWS hosts your own agent's container). Write down when each fits.</p>
+<p><strong>Done when:</strong> you can explain what AgentCore Runtime gives you: isolated sessions, scaling, and identity, without managing servers.</p>
+<h3 id="day-2-the-curriculum-agent-on-bedrock">Day 2: The Curriculum Agent on Bedrock<a class="anchor" href="#day-2-the-curriculum-agent-on-bedrock" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> switch the agent's model to Bedrock with your Week 33 setting. Run your Week 20 agent tests against it, checking which tools it called.</p>
+<p><strong>Done when:</strong> the agent tests pass on Bedrock. Write down any tool-calling differences from your local model.</p>
+<h3 id="day-3-the-agentcore-http-contract">Day 3: The AgentCore HTTP contract<a class="anchor" href="#day-3-the-agentcore-http-contract" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-http-protocol-contract.html" target="_blank" rel="noopener">AgentCore Runtime HTTP protocol contract</a></li>
+</ul>
+<p><strong>Do:</strong> create <code>src/Assistant.AgentHost</code>, a minimal API on port 8080 with:</p>
+<ul>
+<li><code>GET /ping</code>, returning <code>{ &quot;status&quot;: &quot;Healthy&quot; }</code></li>
+<li><code>POST /invocations</code>, which takes <code>{ &quot;prompt&quot;: &quot;...&quot;, &quot;sessionId&quot;: &quot;...&quot; }</code>, runs the Curriculum Agent, and returns <code>{ &quot;response&quot;: &quot;...&quot; }</code></li>
+</ul>
+<p>Test it locally with <code>Invoke-RestMethod</code>.</p>
+<p><strong>Done when:</strong> both endpoints work locally.</p>
+<h3 id="day-4-build-for-arm64-and-deploy">Day 4: Build for ARM64 and deploy<a class="anchor" href="#day-4-build-for-arm64-and-deploy" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> AgentCore Runtime requires ARM64 container images.</p>
+<p><strong>Do</strong></p>
+<pre><code class="lang-powershell">docker buildx build --platform linux/arm64 -t &lt;account-id&gt;.dkr.ecr.us-east-1.amazonaws.com/curriculum-agent:v1 --push .</code></pre>
+<p>In the AgentCore console, create an agent runtime from that image, and give its execution role the Bedrock, S3 Vectors, and DynamoDB permissions from Week 35.</p>
+<p><strong>Done when:</strong> the runtime shows as ready.</p>
+<h3 id="day-5-invoke-it-from-c">Day 5: Invoke it from C#<a class="anchor" href="#day-5-invoke-it-from-c" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> call the deployed agent with <code>AWSSDK.BedrockAgentCore</code>'s <code>InvokeAgentRuntimeAsync</code>, passing a payload and a session ID. Then add an <code>&quot;Agent&quot;: &quot;Local&quot;</code> or <code>&quot;AgentCore&quot;</code> setting to <code>Assistant.Api</code>, so the chat page can use the hosted agent.</p>
+<p><strong>Done when:</strong> a question from your laptop is answered by the agent running in AgentCore, and a follow-up in the same session remembers the conversation.</p>
+<h3 id="day-6-observability-for-the-hosted-agent">Day 6: Observability for the hosted agent<a class="anchor" href="#day-6-observability-for-the-hosted-agent" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> find the agent's logs and traces in CloudWatch (AgentCore has built-in observability; see its docs). Ask three questions and follow one of them through its tool calls.</p>
+<p><strong>Done when:</strong> you can see each tool call the hosted agent made for one question.</p>
+<h3 id="day-7-review-and-catch-up-light-3">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-3" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li><strong>Clean up:</strong> delete the AgentCore runtime (or note that it charges only while it's working, and check the current pricing page), and run your cleanup script.</li>
+</ul>
+<hr>
+<h2 id="week-37-deploy-your-mcp-server-to-aws">Week 37: Deploy your MCP server to AWS<a class="anchor" href="#week-37-deploy-your-mcp-server-to-aws" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> your Curriculum Assistant MCP server reachable over HTTPS on AWS, so your editor can use it from anywhere.</p>
+<h3 id="day-1-options-for-hosting-mcp-servers">Day 1: Options for hosting MCP servers<a class="anchor" href="#day-1-options-for-hosting-mcp-servers" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/mcp-deployment-patterns-on-aws/deployment-pattern-1-amazon-bedrock-agent-core.html" target="_blank" rel="noopener">MCP deployment patterns on AWS: AgentCore</a> (AWS Prescriptive Guidance)</li>
+</ul>
+<p><strong>Do:</strong> compare running your Week 24 <code>Assistant.McpHttp</code> container on Fargate with deploying it to AgentCore Runtime, which supports MCP servers directly.</p>
+<p><strong>Done when:</strong> you've picked one, with your reasons written down.</p>
+<h3 id="day-2-mcp-server-on-fargate">Day 2: MCP server on Fargate<a class="anchor" href="#day-2-mcp-server-on-fargate" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add an <code>McpStack</code> to CDK, similar to the API stack: a Fargate service for <code>Assistant.McpHttp</code> behind a load balancer, with the API key in Secrets Manager and the same least-privilege task role.</p>
+<p><strong>Done when:</strong> the Inspector connects to <code>http://&lt;load-balancer&gt;/mcp</code> with your API key.</p>
+<h3 id="day-3-https">Day 3: HTTPS<a class="anchor" href="#day-3-https" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> API keys must never travel over plain HTTP.</p>
+<p><strong>Do:</strong> if you have a domain, add an ACM certificate and an HTTPS listener in CDK. If you don't, put <strong>Amazon CloudFront</strong> in front of the load balancer, which gives you an HTTPS URL on a <code>cloudfront.net</code> domain. Check that CloudFront passes the <code>Authorization</code> header through.</p>
+<p><strong>Done when:</strong> the Inspector connects over <code>https://</code>.</p>
+<h3 id="day-4-mcp-server-on-agentcore-runtime-alternative">Day 4: MCP server on AgentCore Runtime (alternative)<a class="anchor" href="#day-4-mcp-server-on-agentcore-runtime-alternative" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-mcp.html" target="_blank" rel="noopener">Deploy MCP servers in AgentCore Runtime</a></li>
+</ul>
+<p><strong>Do:</strong> follow the guide to deploy your MCP server (built for ARM64) to AgentCore Runtime, and connect with the authentication method the guide describes.</p>
+<p><strong>Done when:</strong> you've connected to the AgentCore-hosted server, and you can compare the setup effort with Fargate.</p>
+<h3 id="day-5-use-the-remote-server-from-your-editor">Day 5: Use the remote server from your editor<a class="anchor" href="#day-5-use-the-remote-server-from-your-editor" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add the remote server to your editor's MCP config with the HTTPS URL and an <code>Authorization</code> header from an input variable. Remove the local <code>dotnet run</code> server from the config, then ask your editor's AI for today's lesson.</p>
+<p><strong>Done when:</strong> your editor uses the AWS-hosted MCP server.</p>
+<h3 id="day-6-agent-plus-remote-mcp">Day 6: Agent plus remote MCP<a class="anchor" href="#day-6-agent-plus-remote-mcp" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> point the Curriculum Agent's MCP settings at the remote server instead of the local one, deploy it, and run your agent tests.</p>
+<p><strong>Done when:</strong> the deployed agent gets its tools from the deployed MCP server. This is a real distributed AI system.</p>
+<h3 id="day-7-review-and-catch-up-light-4">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-4" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li><strong>Clean up:</strong> <code>cdk destroy McpStack</code>, and delete the AgentCore runtime if you created one. Run your cleanup script.</li>
+</ul>
+<hr>
+<h2 id="week-38-security-for-ai-on-aws">Week 38: Security for AI on AWS<a class="anchor" href="#week-38-security-for-ai-on-aws" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> guardrails on model input and output, tighter permissions, an audit trail, and a written security review of the deployed assistant.</p>
+<h3 id="day-1-bedrock-guardrails">Day 1: Bedrock Guardrails<a class="anchor" href="#day-1-bedrock-guardrails" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html" target="_blank" rel="noopener">How Amazon Bedrock Guardrails works</a></li>
+</ul>
+<p><strong>Do:</strong> create a guardrail with a denied topic (&quot;financial advice&quot;), content filters at medium strength, and a sensitive-information filter that masks email addresses and AWS access keys. Test it in the console.</p>
+<p><strong>Done when:</strong> a question asking for investment advice is blocked, and an email address in an answer is masked.</p>
+<h3 id="day-2-guardrails-from-c">Day 2: Guardrails from C#<a class="anchor" href="#day-2-guardrails-from-c" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-use-independent-api.html" target="_blank" rel="noopener">Use the ApplyGuardrail API</a></li>
+</ul>
+<p><strong>Do:</strong> add a guardrail check to the API with <code>ApplyGuardrailAsync</code> (from <code>AWSSDK.BedrockRuntime</code>) on the question before answering, and on the answer before returning it. Because it's a separate call, it works whichever model provider you use.</p>
+<p><strong>Done when:</strong> blocked questions get a polite refusal in the chat page, and your Week 20 input and output tests still pass.</p>
+<h3 id="day-3-least-privilege-review">Day 3: Least-privilege review<a class="anchor" href="#day-3-least-privilege-review" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> open IAM Access Analyzer and generate a policy from your task role's real activity in CloudTrail (the <strong>Generate policy</strong> option). Compare it with the policy you wrote. Remove anything the role never used.</p>
+<p><strong>Done when:</strong> the task role has only the permissions it actually uses.</p>
+<h3 id="day-4-audit-trail">Day 4: Audit trail<a class="anchor" href="#day-4-audit-trail" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html" target="_blank" rel="noopener">What is AWS CloudTrail?</a></li>
+</ul>
+<p><strong>Do:</strong> in CloudTrail <strong>Event history</strong>, find your recent Bedrock <code>InvokeModel</code> calls and the IAM changes you made this week. Filter by your task role's name.</p>
+<p><strong>Done when:</strong> you can answer &quot;who called Bedrock, and when?&quot; from CloudTrail.</p>
+<h3 id="day-5-secrets-and-encryption">Day 5: Secrets and encryption<a class="anchor" href="#day-5-secrets-and-encryption" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> check that every secret (API keys) is in Secrets Manager, not in environment variables, task definitions, or Git. Search your repositories with <code>git log -p | Select-String &quot;AKIA|sk-&quot;</code>. Check that the S3 buckets and the DynamoDB table are encrypted at rest; by default they are.</p>
+<p><strong>Done when:</strong> you've found no secrets in your code or history, and you've written down where each one is stored.</p>
+<h3 id="day-6-security-review-of-the-deployed-assistant">Day 6: Security review of the deployed assistant<a class="anchor" href="#day-6-security-review-of-the-deployed-assistant" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> update <code>SECURITY.md</code> with an AWS section:</p>
+<ul>
+<li>the data flows, and where data is stored</li>
+<li>IAM roles and what each can do</li>
+<li>guardrails and their limits</li>
+<li>what's public, and how it's protected (API key, rate limit, alarm)</li>
+<li>the alarms and audit logs you have</li>
+</ul>
+<p>Then check it against the security pillar of the <a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html" target="_blank" rel="noopener">AWS Well-Architected Framework</a>.</p>
+<p><strong>Done when:</strong> the review is written, and every gap has a fix or is listed as an accepted risk.</p>
+<h3 id="day-7-review-and-catch-up-light-5">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-5" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push, and destroy anything still running. Section G is complete. Tick the topics on <a href="https://roadmap.sh/aws" target="_blank" rel="noopener">roadmap.sh/aws</a>.</li>
+</ul>
+<nav class="pager" aria-label="Sections"><a href="F-aws-foundations-weeks-25-32.html">← F. AWS foundations (Weeks 25–32)</a><a href="H-production-weeks-39-44.html">H. Production (Weeks 39–44) →</a></nav>
+</main>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Section J: Capstone (Weeks 51–52)</title>
+<style>
+:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
+main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
+a { color:var(--accent); }
+a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
+h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
+h1:target,h2:target,h3:target { background:var(--target); }
+.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
+h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
+code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
+pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
+pre code { background:none; padding:0; font-size:.88rem; }
+.table-wrap { overflow-x:auto; }
+table { border-collapse:collapse; margin:1em 0; }
+th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
+th { background:var(--code); }
+li { margin:.2em 0; } li > p { margin:.3em 0; }
+hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
+.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
+@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Plan"><a href="../schedule.html">← Schedule</a><a href="../plan.html">Plan</a><a href="../resources.html">Resources</a></nav>
+<main>
+<h1 id="section-j-capstone-weeks-5152">Section J: Capstone (Weeks 51–52)<a class="anchor" href="#section-j-capstone-weeks-5152" aria-label="Link to this heading">#</a></h1>
+<p>Two weeks to finish the <strong>Curriculum Assistant 1.0</strong>: the chatbot you started in Week 1 that knows your plan, its sources, and your progress, answers questions about them, and compares your plan with outside roadmaps and current docs. Nothing new to learn. This is about finishing, polishing, and showing it.</p>
+<p><strong>What 1.0 must do</strong> (each item was built earlier; the week is in brackets):</p>
+<ul>
+<li>answer questions about the plan and its sources, with citations and source age (Weeks 4, 9–13)</li>
+<li>search with hybrid search and reranking, with quality measured on 30+ questions (Weeks 11–12)</li>
+<li>run as an agent with tools, memory, and approval for changes (Weeks 15–17)</li>
+<li>compare the plan with roadmap.sh and report changed or broken sources (Weeks 13, 18)</li>
+<li>work as an MCP server from your editor, locally and remotely (Weeks 22–24, 37)</li>
+<li>run on AWS with Bedrock, S3 Vectors, and DynamoDB, from CDK (Weeks 33–35)</li>
+<li>have CI/CD, tracing, evaluation in CI, guardrails, and alarms (Weeks 38–43)</li>
+</ul>
+<p><strong>Review resources:</strong> AlgoMaster's <a href="https://algomaster.io/learn/system-design" target="_blank" rel="noopener">System Design</a> and the <a href="https://roadmap.sh/system-design" target="_blank" rel="noopener">System Design roadmap</a>, for checking your final architecture.</p>
+<hr>
+<h2 id="week-51-finish-and-harden">Week 51: Finish and harden<a class="anchor" href="#week-51-finish-and-harden" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> every 1.0 feature works on AWS, and nothing on the list above is half-done.</p>
+<h3 id="day-1-gap-check">Day 1: Gap check<a class="anchor" href="#day-1-gap-check" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> go through the 1.0 list. For each item, run it on the deployed version and mark it <strong>works</strong>, <strong>partly works</strong>, or <strong>missing</strong>. Then pick the fixes for this week, most important first. Use the assistant itself: ask it &quot;What did I skip in this plan?&quot;, using your progress data.</p>
+<p><strong>Done when:</strong> you have a short, ordered list of fixes for Days 2–5.</p>
+<h3 id="day-2-fix-the-gaps-part-1">Day 2: Fix the gaps (part 1)<a class="anchor" href="#day-2-fix-the-gaps-part-1" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> work through your fix list. Run the tests and the evaluation after each fix.</p>
+<p><strong>Done when:</strong> the top half of your list is fixed.</p>
+<h3 id="day-3-fix-the-gaps-part-2">Day 3: Fix the gaps (part 2)<a class="anchor" href="#day-3-fix-the-gaps-part-2" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> finish the list. Anything you can't finish goes into a &quot;known limitations&quot; section of the README, with a reason.</p>
+<p><strong>Done when:</strong> every item on the 1.0 list works or is listed as a known limitation.</p>
+<h3 id="day-4-final-evaluation">Day 4: Final evaluation<a class="anchor" href="#day-4-final-evaluation" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> grow your test set to 50 questions, including 10 about sources and 5 compare requests. Run the full evaluation on the deployed version, and record the final scores in <code>eval/history.csv</code> and the README.</p>
+<p><strong>Done when:</strong> you have the final scores, and they're no worse than your best earlier run.</p>
+<h3 id="day-5-architecture-review">Day 5: Architecture review<a class="anchor" href="#day-5-architecture-review" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> compare your final design with the AlgoMaster system design lessons on caching, rate limiting, and reliability, and with the <a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html" target="_blank" rel="noopener">AWS Well-Architected Framework</a> pillars. Write a short &quot;what I'd change at 100 times the users&quot; section.</p>
+<p><strong>Done when:</strong> you can defend each major choice, and you've written down what you'd change at scale.</p>
+<h3 id="day-6-clean-install-test">Day 6: Clean install test<a class="anchor" href="#day-6-clean-install-test" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> on a clean folder (or in WSL Ubuntu), follow only your README: clone, set up, run locally, and deploy to AWS. Fix any step that was missing or wrong.</p>
+<p><strong>Done when:</strong> someone else could get it running from the README alone.</p>
+<h3 id="day-7-review-and-catch-up-light">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push, and tag the release <code>v1.0.0-rc1</code>.</li>
+</ul>
+<hr>
+<h2 id="week-52-release-demo-and-look-back">Week 52: Release, demo, and look back<a class="anchor" href="#week-52-release-demo-and-look-back" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> version 1.0 released, demoed, and written up, plus a plan for what comes next.</p>
+<h3 id="day-1-release-10">Day 1: Release 1.0<a class="anchor" href="#day-1-release-10" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> publish GitHub release <code>v1.0.0</code>. Let the Week 39 pipeline deploy it, with the Week 42 evaluation gate. Check <code>/health</code> and ask five questions on the deployed version.</p>
+<p><strong>Done when:</strong> 1.0 is live, deployed by the pipeline, not by hand.</p>
+<h3 id="day-2-polish-the-readme">Day 2: Polish the README<a class="anchor" href="#day-2-polish-the-readme" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> make the README a portfolio page: a one-paragraph summary, a screenshot of the chat page, the architecture diagram, the features list, the evaluation scores, the cost per month, how to run it, and links to the security, runbook, and design documents.</p>
+<p><strong>Done when:</strong> someone could understand the project in two minutes from the README.</p>
+<h3 id="day-3-record-the-demo">Day 3: Record the demo<a class="anchor" href="#day-3-record-the-demo" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> record a 5–8 minute demo, using what you practiced in Week 48:</p>
+<ol>
+<li>Asking about the plan, with citations</li>
+<li>A follow-up question, and memory</li>
+<li>&quot;Compare my plan with the AI Engineer roadmap&quot;</li>
+<li>&quot;Which sources changed?&quot;</li>
+<li>Using it as an MCP server from your editor</li>
+<li>The traces and the evaluation scores</li>
+</ol>
+<p><strong>Done when:</strong> the video is linked from the README.</p>
+<h3 id="day-4-write-it-up">Day 4: Write it up<a class="anchor" href="#day-4-write-it-up" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write a blog post or long LinkedIn post: what you built over the year, the hardest problem and how you solved it, what surprised you about RAG, agents, and MCP, and what you'd do differently. Link the repository and the demo.</p>
+<p><strong>Done when:</strong> it's published, or saved as a draft ready to post.</p>
+<h3 id="day-5-look-back-at-your-progress">Day 5: Look back at your progress<a class="anchor" href="#day-5-look-back-at-your-progress" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do</strong></p>
+<ol>
+<li>Open each <a href="https://roadmap.sh/ai-engineer" target="_blank" rel="noopener">roadmap.sh</a> roadmap from <a href="../resources.html">resources.md</a> and check off everything you've done.</li>
+<li>Ask the Curriculum Assistant: &quot;Compare my progress with the AI Engineer and AI Agents roadmaps. What are my biggest gaps?&quot;</li>
+<li>Re-read your Week 45 skills map, and update it.</li>
+</ol>
+<p><strong>Done when:</strong> you have an honest list of what you're strong at, and your top three gaps.</p>
+<h3 id="day-6-plan-the-next-quarter">Day 6: Plan the next quarter<a class="anchor" href="#day-6-plan-the-next-quarter" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write a 12-week plan for your top gaps, in the same week-by-week format as this plan. Options could include an AWS certification exam (with the Udemy courses in <a href="../resources.html">resources.md</a>), fine-tuning small models, multimodal RAG with images and PDFs, Kubernetes, or contributing to an open-source MCP or agent project. Add the new plan to the assistant's index, so it can help you with it.</p>
+<p><strong>Done when:</strong> next quarter's plan exists, and the assistant can answer questions about it.</p>
+<h3 id="day-7-shut-down-and-celebrate">Day 7: Shut down and celebrate<a class="anchor" href="#day-7-shut-down-and-celebrate" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li><strong>Clean up:</strong> destroy the AWS stacks you don't need running, and check that Cost Explorer shows nothing unexpected. Keep the code, the recordings, and the write-ups.</li>
+<li>You've finished the plan.</li>
+</ul>
+<nav class="pager" aria-label="Sections"><a href="I-forward-deployed-weeks-45-50.html">← I. Forward deployed (Weeks 45–50)</a><a href="../resources.html">Resources →</a></nav>
+</main>
+</body>
+</html>

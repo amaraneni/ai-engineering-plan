@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Section E: MCP (Weeks 21–24)</title>
+<style>
+:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
+main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
+a { color:var(--accent); }
+a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
+h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
+h1:target,h2:target,h3:target { background:var(--target); }
+.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
+h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
+code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
+pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
+pre code { background:none; padding:0; font-size:.88rem; }
+.table-wrap { overflow-x:auto; }
+table { border-collapse:collapse; margin:1em 0; }
+th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
+th { background:var(--code); }
+li { margin:.2em 0; } li > p { margin:.3em 0; }
+hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
+.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
+@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Plan"><a href="../schedule.html">← Schedule</a><a href="../plan.html">Plan</a><a href="../resources.html">Resources</a></nav>
+<main>
+<h1 id="section-e-mcp-weeks-2124">Section E: MCP (Weeks 21–24)<a class="anchor" href="#section-e-mcp-weeks-2124" aria-label="Link to this heading">#</a></h1>
+<p>The Model Context Protocol (MCP) is a standard way to connect AI apps to tools and data. You write a server once, and any MCP client can use it: VS Code, Kiro, Claude, or your own agent. By Week 24 your Curriculum Assistant is an MCP server you can use from your editor, running locally and over HTTP, plus a Python MCP server.</p>
+<p><strong>Setup:</strong> install <a href="https://nodejs.org/en/download" target="_blank" rel="noopener">Node.js LTS</a> for the MCP Inspector and the reference servers. The C# work needs the .NET 10 SDK, which you already have.</p>
+<p><strong>Courses for this section (optional, see <a href="../resources.html">resources.md</a>):</strong> DeepLearning.AI's free <a href="https://learn.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic" target="_blank" rel="noopener">MCP: Build Rich-Context AI Apps with Anthropic</a> for the concepts, and Udemy's <a href="https://www.udemy.com/course/mcp-masterclass/" target="_blank" rel="noopener">The Complete Model Context Protocol (MCP) Masterclass</a> for more depth. <strong>roadmap.sh:</strong> <a href="https://roadmap.sh/ai-agents" target="_blank" rel="noopener">AI Agents</a> (the Model Context Protocol topics).</p>
+<hr>
+<h2 id="week-21-what-mcp-is-and-using-existing-servers">Week 21: What MCP is, and using existing servers<a class="anchor" href="#week-21-what-mcp-is-and-using-existing-servers" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> you understand hosts, clients, servers, tools, resources, and prompts, and you've used real MCP servers from your editor and from C#.</p>
+<h3 id="day-1-the-mcp-architecture">Day 1: The MCP architecture<a class="anchor" href="#day-1-the-mcp-architecture" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~25 min)</strong></p>
+<ul>
+<li><a href="https://modelcontextprotocol.io/docs/getting-started/intro" target="_blank" rel="noopener">MCP: What is the Model Context Protocol?</a></li>
+<li><a href="https://modelcontextprotocol.io/docs/learn/architecture" target="_blank" rel="noopener">MCP architecture overview</a></li>
+</ul>
+<p><strong>Do:</strong> draw the pieces for your own setup: a <strong>host</strong> (VS Code or Kiro) contains <strong>clients</strong>, each connecting to one <strong>server</strong>, and servers offer <strong>tools</strong> (actions), <strong>resources</strong> (data to read), and <strong>prompts</strong> (reusable templates).</p>
+<p><strong>Done when:</strong> you can explain the difference between a tool and a resource, and between stdio and HTTP transport.</p>
+<h3 id="day-2-the-mcp-inspector">Day 2: The MCP Inspector<a class="anchor" href="#day-2-the-mcp-inspector" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> the Inspector is a test UI that connects to any MCP server, so you can see and call what it offers without an AI model.</p>
+<p><strong>Learn (~10 min)</strong></p>
+<ul>
+<li><a href="https://modelcontextprotocol.io/docs/tools/inspector" target="_blank" rel="noopener">MCP Inspector</a></li>
+</ul>
+<p><strong>Do:</strong> run the reference &quot;everything&quot; server inside the Inspector:</p>
+<pre><code class="lang-powershell">npx @modelcontextprotocol/inspector npx -y @modelcontextprotocol/server-everything</code></pre>
+<p>In the browser page that opens, list its tools, call <code>echo</code>, read one resource, and try one prompt.</p>
+<p><strong>Done when:</strong> you've called a tool, read a resource, and used a prompt, all by hand.</p>
+<h3 id="day-3-use-an-mcp-server-from-your-editor">Day 3: Use an MCP server from your editor<a class="anchor" href="#day-3-use-an-mcp-server-from-your-editor" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add the official filesystem server to your editor, limited to your <code>ai-learning</code> folder.</p>
+<p>For VS Code, create <code>.vscode/mcp.json</code> in the <code>ai-learning</code> repository:</p>
+<pre><code class="lang-json">{
+  &quot;servers&quot;: {
+    &quot;files&quot;: {
+      &quot;type&quot;: &quot;stdio&quot;,
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;@modelcontextprotocol/server-filesystem&quot;, &quot;${workspaceFolder}&quot;]
+    }
+  }
+}</code></pre>
+<p>For Kiro, add the same server under <code>mcpServers</code> in <code>.kiro/settings/mcp.json</code>. In the editor's agent chat, ask: &quot;List the C# projects in this repository and summarize what each does.&quot;</p>
+<p><strong>Done when:</strong> the editor's AI answers by calling the filesystem tools, and you approved each call.</p>
+<h3 id="day-4-an-mcp-client-in-c">Day 4: An MCP client in C#<a class="anchor" href="#day-4-an-mcp-client-in-c" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/build-mcp-client" target="_blank" rel="noopener">Build a minimal MCP client</a> (Microsoft Learn). It uses Azure OpenAI; you'll use Ollama instead.</li>
+</ul>
+<p><strong>Do</strong></p>
+<pre><code class="lang-powershell">dotnet new console -o McpHost
+cd McpHost
+dotnet add package ModelContextProtocol --prerelease
+dotnet add package OllamaSharp</code></pre>
+<pre><code class="lang-csharp">using Microsoft.Extensions.AI;
+using ModelContextProtocol.Client;
+using OllamaSharp;
+
+var transport = new StdioClientTransport(new StdioClientTransportOptions
+{
+    Name = &quot;Everything&quot;,
+    Command = &quot;npx&quot;,
+    Arguments = [&quot;-y&quot;, &quot;@modelcontextprotocol/server-everything&quot;],
+});
+McpClient mcp = await McpClient.CreateAsync(transport);
+
+IList&lt;McpClientTool&gt; tools = await mcp.ListToolsAsync();
+foreach (var t in tools) Console.WriteLine($&quot;{t.Name}: {t.Description}&quot;);
+
+// McpClientTool is an AIFunction, so it plugs straight into IChatClient.
+IChatClient chat = new ChatClientBuilder(new OllamaApiClient(new Uri(&quot;http://localhost:11434/&quot;), &quot;qwen2.5:7b&quot;))
+    .UseFunctionInvocation().Build();
+
+var answer = await chat.GetResponseAsync(&quot;Use the add tool to add 17 and 25.&quot;, new() { Tools = [.. tools] });
+Console.WriteLine(answer.Text);</code></pre>
+<p><strong>Done when:</strong> your app lists the server's tools, and the local model calls one of them.</p>
+<h3 id="day-5-resources-and-prompts-from-c">Day 5: Resources and prompts from C#<a class="anchor" href="#day-5-resources-and-prompts-from-c" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> in <code>McpHost</code>, also:</p>
+<ul>
+<li>list resources with <code>await mcp.ListResourcesAsync()</code> and read one with <code>await mcp.ReadResourceAsync(uri)</code></li>
+<li>list prompts with <code>await mcp.ListPromptsAsync()</code> and fetch one with <code>await mcp.GetPromptAsync(name, arguments)</code></li>
+</ul>
+<p>Print what comes back.</p>
+<p><strong>Done when:</strong> you've read a resource and fetched a prompt from code, and can say when an app would use each.</p>
+<h3 id="day-6-connect-an-agent-to-mcp-tools">Day 6: Connect an agent to MCP tools<a class="anchor" href="#day-6-connect-an-agent-to-mcp-tools" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> give your Week 16 <code>StudyCoach</code> agent the filesystem server's tools, pointing at your <code>ai-learning</code> folder, by passing <code>tools: [.. mcpTools]</code> to <code>AsAIAgent(...)</code>. Ask: &quot;Look at my week-03 folder and tell me what I built.&quot;</p>
+<p><strong>Done when:</strong> the agent reads your real files through MCP and describes them correctly.</p>
+<h3 id="day-7-review-and-catch-up-light">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push <code>McpHost</code> to <code>ai-learning/week-21</code>.</li>
+<li>In your notes, list three MCP servers you'd want at work, for example ones for Jira, a database, or internal docs.</li>
+</ul>
+<hr>
+<h2 id="week-22-build-an-mcp-server-in-c">Week 22: Build an MCP server in C#<a class="anchor" href="#week-22-build-an-mcp-server-in-c" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> the Curriculum Assistant runs as an MCP server, so your editor's AI can search your plan and docs and check your progress.</p>
+<h3 id="day-1-your-first-server-from-the-template">Day 1: Your first server from the template<a class="anchor" href="#day-1-your-first-server-from-the-template" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/build-mcp-server" target="_blank" rel="noopener">Create a minimal MCP server</a> (Microsoft Learn)</li>
+</ul>
+<p><strong>Do</strong></p>
+<pre><code class="lang-powershell">dotnet new install Microsoft.McpServer.ProjectTemplates
+dotnet new mcpserver -n HelloMcp
+cd HelloMcp
+dotnet build</code></pre>
+<p>Test it in the Inspector:</p>
+<pre><code class="lang-powershell">npx @modelcontextprotocol/inspector dotnet run --project .</code></pre>
+<p><strong>Done when:</strong> the Inspector lists the template's <code>get_random_number</code> tool, and calling it works.</p>
+<h3 id="day-2-tools-with-attributes">Day 2: Tools with attributes<a class="anchor" href="#day-2-tools-with-attributes" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://csharp.sdk.modelcontextprotocol.io/v1/concepts/getting-started.html" target="_blank" rel="noopener">MCP C# SDK: getting started</a></li>
+</ul>
+<p><strong>Do:</strong> add a tool class to <code>HelloMcp</code>:</p>
+<pre><code class="lang-csharp">using System.ComponentModel;
+using ModelContextProtocol.Server;
+
+[McpServerToolType]
+public static class PlanTools
+{
+    [McpServerTool, Description(&quot;Returns the titles of all weeks in the learning plan.&quot;)]
+    public static string[] ListWeeks() =&gt;
+        Directory.GetFiles(Environment.GetEnvironmentVariable(&quot;PLAN_DIR&quot;) ?? &quot;.&quot;, &quot;*.md&quot;, SearchOption.AllDirectories)
+            .SelectMany(File.ReadLines)
+            .Where(l =&gt; l.StartsWith(&quot;## Week &quot;))
+            .Select(l =&gt; l[3..])
+            .ToArray();
+}</code></pre>
+<p>Pass <code>PLAN_DIR</code> from the Inspector's environment settings, pointing at your plan folder.</p>
+<p><strong>Done when:</strong> <code>ListWeeks</code> returns all 52 weeks.</p>
+<p><strong>Important:</strong> with stdio, standard output carries the protocol. Never use <code>Console.WriteLine</code> in a stdio server. Log to standard error, which the template's logging setup already does.</p>
+<h3 id="day-3-the-curriculum-assistant-as-an-mcp-server">Day 3: The Curriculum Assistant as an MCP server<a class="anchor" href="#day-3-the-curriculum-assistant-as-an-mcp-server" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> create <code>src/Assistant.Mcp</code> from the template, reference <code>Assistant.Core</code>, and register your existing services with dependency injection, as in the API project. Expose these tools, passing work to your services:</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Tool</th><th scope="col">Calls</th></tr></thead><tbody><tr><td><code>search_knowledge(query, top)</code></td><td>your hybrid search</td></tr><tr><td><code>get_week(week)</code></td><td>the plan lookup</td></tr><tr><td><code>get_progress()</code></td><td>the progress store</td></tr><tr><td><code>compare_with_roadmap(roadmap)</code></td><td>the Week 18 compare feature</td></tr></tbody></table></div>
+<p>Tool methods can take services as parameters, and the SDK injects them, for example <code>public static async Task&lt;string&gt; SearchKnowledge(HybridSearch search, string query, int top = 3)</code>.</p>
+<p><strong>Done when:</strong> every tool works in the Inspector, with Qdrant and Ollama running.</p>
+<h3 id="day-4-resources">Day 4: Resources<a class="anchor" href="#day-4-resources" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> expose each plan week as a resource, so clients can read a whole week as context:</p>
+<pre><code class="lang-csharp">[McpServerResourceType]
+public static class PlanResources
+{
+    [McpServerResource(UriTemplate = &quot;plan://week/{week}&quot;, Name = &quot;Plan week&quot;), Description(&quot;The full text of one week of the learning plan.&quot;)]
+    public static string Week(PlanStore plan, int week) =&gt; plan.GetWeekText(week);
+}</code></pre>
+<p>Register it with <code>.WithResourcesFromAssembly()</code>.</p>
+<p><strong>Done when:</strong> in the Inspector, reading <code>plan://week/22</code> returns this week's text.</p>
+<h3 id="day-5-prompts">Day 5: Prompts<a class="anchor" href="#day-5-prompts" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add two prompts that clients can offer as ready-made commands:</p>
+<ul>
+<li><code>study_today</code>, which builds the message &quot;Here's my progress … Here's today's lesson … Coach me through it.&quot;</li>
+<li><code>quiz_me(week)</code>, which builds &quot;Ask me five questions about Week {week}, one at a time, and score my answers.&quot;</li>
+</ul>
+<p>Use <code>[McpServerPromptType]</code> and <code>[McpServerPrompt]</code>, and register them with <code>.WithPromptsFromAssembly()</code>.</p>
+<p><strong>Done when:</strong> both prompts appear in the Inspector, and <code>quiz_me</code> gives a good quiz in your editor.</p>
+<h3 id="day-6-use-it-from-your-editor-every-day">Day 6: Use it from your editor every day<a class="anchor" href="#day-6-use-it-from-your-editor-every-day" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add <code>Assistant.Mcp</code> to your editor's MCP config (<code>.vscode/mcp.json</code> or <code>.kiro/settings/mcp.json</code>) with <code>dotnet run --project &lt;path&gt;/src/Assistant.Mcp</code>, and set <code>PLAN_DIR</code> in <code>env</code>. From now on, start study sessions with the <code>study_today</code> prompt.</p>
+<p><strong>Done when:</strong> in your editor, asking &quot;What should I do today, and which docs should I read?&quot; uses your server's tools and answers from your real plan and progress.</p>
+<h3 id="day-7-review-and-catch-up-light-1">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-1" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push. Add an &quot;Use it as an MCP server&quot; section to the README, with the config snippet.</li>
+</ul>
+<hr>
+<h2 id="week-23-better-mcp-servers">Week 23: Better MCP servers<a class="anchor" href="#week-23-better-mcp-servers" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> your server handles errors, long tasks, and changing data well, and it's tested.</p>
+<h3 id="day-1-tool-errors-and-input-validation">Day 1: Tool errors and input validation<a class="anchor" href="#day-1-tool-errors-and-input-validation" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://modelcontextprotocol.io/specification/latest/server/tools" target="_blank" rel="noopener">MCP specification: tools</a>, the section on error handling</li>
+</ul>
+<p><strong>Do:</strong> make tools return clear errors instead of throwing, for example &quot;Week 99 doesn't exist; the plan has weeks 1–52&quot;. Validate every input, such as a <code>top</code> value of 1–10 or a known roadmap name.</p>
+<p><strong>Done when:</strong> each bad input gives a helpful message in the Inspector.</p>
+<h3 id="day-2-long-running-tools-and-progress">Day 2: Long-running tools and progress<a class="anchor" href="#day-2-long-running-tools-and-progress" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> <code>compare_with_roadmap</code> can take minutes. MCP lets servers send progress updates and lets clients cancel.</p>
+<p><strong>Do:</strong> read the C# SDK docs on progress notifications (<a href="https://csharp.sdk.modelcontextprotocol.io/" target="_blank" rel="noopener">MCP C# SDK documentation</a>). Make <code>compare_with_roadmap</code> report progress after each batch of topics, and stop when its <code>CancellationToken</code> is cancelled.</p>
+<p><strong>Done when:</strong> the Inspector shows progress while the tool runs, and cancelling stops it.</p>
+<h3 id="day-3-testing-the-server">Day 3: Testing the server<a class="anchor" href="#day-3-testing-the-server" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add an xUnit test project for <code>Assistant.Mcp</code>. In each test, start the server with <code>StdioClientTransport</code>, connect an <code>McpClient</code>, and check:</p>
+<ul>
+<li><code>ListToolsAsync()</code> returns exactly your four tools</li>
+<li><code>get_week</code> with week 22 returns text containing &quot;Build an MCP server in C#&quot;</li>
+<li><code>get_week</code> with week 99 returns your error message</li>
+</ul>
+<p><strong>Done when:</strong> <code>dotnet test</code> passes, which proves the server works from a real client's point of view.</p>
+<h3 id="day-4-tool-design-for-agents">Day 4: Tool design for agents<a class="anchor" href="#day-4-tool-design-for-agents" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> MCP clients may connect many servers at once. Clear names, short descriptions, and small result sizes help the model choose well.</p>
+<p><strong>Do:</strong> review your tools:</p>
+<ul>
+<li>Use names like <code>search_knowledge</code>, not generic ones like <code>search</code>.</li>
+<li>Keep descriptions to one or two sentences each.</li>
+<li>Cap results, for example at 3,000 characters, and say when you've cut them short.</li>
+</ul>
+<p><strong>Done when:</strong> you've changed at least two tools and re-run your Week 20 agent tests through MCP.</p>
+<h3 id="day-5-connecting-the-agent-to-its-own-mcp-server">Day 5: Connecting the agent to its own MCP server<a class="anchor" href="#day-5-connecting-the-agent-to-its-own-mcp-server" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> change the Curriculum Agent so it gets its plan tools <strong>through MCP</strong> from <code>Assistant.Mcp</code>, instead of calling <code>AssistantTools</code> directly. Keep it behind a setting, <code>&quot;Tools&quot;: &quot;Direct&quot;</code> or <code>&quot;Mcp&quot;</code>.</p>
+<p><strong>Done when:</strong> the browser chat works in both modes. This is how agents connect to tools owned by other teams.</p>
+<h3 id="day-6-combining-several-servers">Day 6: Combining several servers<a class="anchor" href="#day-6-combining-several-servers" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> give the Curriculum Agent three MCP servers at once: your own, the filesystem server (for your <code>ai-learning</code> code), and a fetch server for reading web pages, <code>uvx mcp-server-fetch</code>. Ask: &quot;Compare what I wrote in week-11 with what the Qdrant hybrid search docs recommend.&quot;</p>
+<p><strong>Done when:</strong> one answer uses tools from all three servers.</p>
+<h3 id="day-7-review-and-catch-up-light-2">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-2" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push, and draw the current architecture in the README: browser, API, agent, MCP servers, Qdrant, and Ollama.</li>
+</ul>
+<hr>
+<h2 id="week-24-remote-mcp-over-http-and-a-python-server">Week 24: Remote MCP over HTTP, and a Python server<a class="anchor" href="#week-24-remote-mcp-over-http-and-a-python-server" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> your MCP server runs over HTTP with an API key, and you've built a second MCP server in Python.</p>
+<h3 id="day-1-streamable-http-transport">Day 1: Streamable HTTP transport<a class="anchor" href="#day-1-streamable-http-transport" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://modelcontextprotocol.io/specification/latest/basic/transports" target="_blank" rel="noopener">MCP specification: transports</a></li>
+</ul>
+<p><strong>Do:</strong> create <code>src/Assistant.McpHttp</code> with <code>dotnet new web</code>, add <code>dotnet add package ModelContextProtocol.AspNetCore --prerelease</code>, and reuse the same tool classes:</p>
+<pre><code class="lang-csharp">builder.Services.AddMcpServer()
+    .WithHttpTransport(o =&gt; o.Stateless = true)
+    .WithToolsFromAssembly(typeof(PlanTools).Assembly)
+    .WithResourcesFromAssembly(typeof(PlanTools).Assembly)
+    .WithPromptsFromAssembly(typeof(PlanTools).Assembly);
+
+var app = builder.Build();
+app.MapMcp(&quot;/mcp&quot;);
+app.Run(&quot;http://localhost:3001&quot;);</code></pre>
+<p>Set <code>&quot;AllowedHosts&quot;: &quot;localhost&quot;</code> in <code>appsettings.json</code>, as the <a href="https://csharp.sdk.modelcontextprotocol.io/v1/concepts/getting-started.html" target="_blank" rel="noopener">C# SDK getting started</a> security notes recommend.</p>
+<p><strong>Done when:</strong> the Inspector connects to <code>http://localhost:3001/mcp</code> using the Streamable HTTP option, and the tools work.</p>
+<h3 id="day-2-protecting-it-with-an-api-key">Day 2: Protecting it with an API key<a class="anchor" href="#day-2-protecting-it-with-an-api-key" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://modelcontextprotocol.io/specification/latest/basic/authorization" target="_blank" rel="noopener">MCP specification: authorization</a>. Skim it; full OAuth is beyond this week.</li>
+</ul>
+<p><strong>Do:</strong> add middleware that requires an <code>Authorization: Bearer &lt;key&gt;</code> header on <code>/mcp</code>, comparing it with a key from user secrets (<code>dotnet user-secrets set Mcp:ApiKey &lt;random value&gt;</code>). Return <code>401</code> otherwise. Add the header in the Inspector and in your editor's MCP config, using an input variable so the key isn't saved in the file.</p>
+<p><strong>Done when:</strong> requests without the key get <code>401</code>, and with the key they work.</p>
+<h3 id="day-3-a-python-mcp-server">Day 3: A Python MCP server<a class="anchor" href="#day-3-a-python-mcp-server" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://github.com/modelcontextprotocol/python-sdk" target="_blank" rel="noopener">MCP Python SDK</a>, the FastMCP quickstart in the README</li>
+</ul>
+<p><strong>Do:</strong> turn your Week 6 link checker into an MCP server:</p>
+<pre><code class="lang-powershell">uv init py-mcp
+cd py-mcp
+uv add &quot;mcp[cli]&quot; httpx</code></pre>
+<pre><code class="lang-python"># server.py
+from mcp.server.fastmcp import FastMCP
+import httpx
+
+mcp = FastMCP(&quot;link-checker&quot;)
+
+@mcp.tool()
+async def check_url(url: str) -&gt; str:
+    &quot;&quot;&quot;Check whether a URL works. Returns the status code and the final URL after redirects.&quot;&quot;&quot;
+    async with httpx.AsyncClient(follow_redirects=True, timeout=15) as client:
+        try:
+            r = await client.get(url)
+            return f&quot;{r.status_code} {r.url}&quot;
+        except httpx.HTTPError as e:
+            return f&quot;error: {e}&quot;
+
+if __name__ == &quot;__main__&quot;:
+    mcp.run()</code></pre>
+<p>Test it with <code>npx @modelcontextprotocol/inspector uv run server.py</code>.</p>
+<p><strong>Done when:</strong> <code>check_url</code> works in the Inspector.</p>
+<h3 id="day-4-use-the-python-server-from-c">Day 4: Use the Python server from C#<a class="anchor" href="#day-4-use-the-python-server-from-c" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add the Python server to the Curriculum Agent's MCP servers, with <code>Command = &quot;uv&quot;</code> and <code>Arguments = [&quot;run&quot;, &quot;--project&quot;, &quot;&lt;path&gt;/py-mcp&quot;, &quot;server.py&quot;]</code>. Ask: &quot;Check whether all the links in Week 21 still work.&quot;</p>
+<p><strong>Done when:</strong> your C# agent calls your Python tool for each link and reports the results. C# and Python now work together through a standard protocol.</p>
+<h3 id="day-5-mcp-security">Day 5: MCP security<a class="anchor" href="#day-5-mcp-security" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://modelcontextprotocol.io/specification/latest/basic/security_best_practices" target="_blank" rel="noopener">MCP security best practices</a></li>
+</ul>
+<p><strong>Do:</strong> add an &quot;MCP&quot; section to your <code>SECURITY.md</code> from Week 20, covering:</p>
+<ul>
+<li>which tools can change data, and how they're protected</li>
+<li>why you only install MCP servers you trust, since a server runs code on your machine</li>
+<li>your HTTP server's host restriction and API key</li>
+<li>how you'd stop a tool result from containing instructions that hijack the agent</li>
+</ul>
+<p><strong>Done when:</strong> the section is written, and you've checked your editor's MCP config for any server you don't actually need.</p>
+<h3 id="day-6-package-the-http-server-in-docker">Day 6: Package the HTTP server in Docker<a class="anchor" href="#day-6-package-the-http-server-in-docker" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add a <code>Dockerfile</code> for <code>Assistant.McpHttp</code>, add it to <code>compose.yaml</code> on port 3001, and pass the API key as an environment variable. Connect your editor to the containerized server.</p>
+<p><strong>Done when:</strong> <code>docker compose up -d --build</code> runs the API, the MCP server, and Qdrant, and your editor uses the MCP server from Docker. This container is what you'll deploy to AWS in Week 37.</p>
+<h3 id="day-7-review-and-catch-up-light-3">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-3" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push. Section E is complete. Tick the MCP topics on <a href="https://roadmap.sh/ai-agents" target="_blank" rel="noopener">roadmap.sh/ai-agents</a>.</li>
+</ul>
+<nav class="pager" aria-label="Sections"><a href="D-agents-weeks-15-20.html">← D. Agents (Weeks 15–20)</a><a href="F-aws-foundations-weeks-25-32.html">F. AWS foundations (Weeks 25–32) →</a></nav>
+</main>
+</body>
+</html>

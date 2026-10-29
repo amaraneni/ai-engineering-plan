@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Section I: Forward deployed engineering (Weeks 45–50)</title>
+<style>
+:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
+main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
+a { color:var(--accent); }
+a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
+h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
+h1:target,h2:target,h3:target { background:var(--target); }
+.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
+h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
+code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
+pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
+pre code { background:none; padding:0; font-size:.88rem; }
+.table-wrap { overflow-x:auto; }
+table { border-collapse:collapse; margin:1em 0; }
+th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
+th { background:var(--code); }
+li { margin:.2em 0; } li > p { margin:.3em 0; }
+hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
+.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
+@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Plan"><a href="../schedule.html">← Schedule</a><a href="../plan.html">Plan</a><a href="../resources.html">Resources</a></nav>
+<main>
+<h1 id="section-i-forward-deployed-engineering-weeks-4550">Section I: Forward deployed engineering (Weeks 45–50)<a class="anchor" href="#section-i-forward-deployed-engineering-weeks-4550" aria-label="Link to this heading">#</a></h1>
+<p>A <strong>forward deployed engineer</strong> (FDE) works inside a customer's environment to get an AI system working on the customer's real data and systems. The work runs from the first conversation through to production and handover. It's part engineer, part consultant: you scope the problem, build and integrate, deploy into an account you don't control, explain trade-offs, fix things on the spot, and leave something the customer can run.</p>
+<p>These weeks practice that with a <strong>made-up customer</strong>, so every exercise has a realistic brief.</p>
+<p><strong>The customer for this section:</strong> <em>Northwind Logistics</em>, a 400-person company. Their support team answers the same internal questions all day: how to book freight, which forms to use, and what the refund policy is. They have about 200 policy documents (Markdown and PDF) in a shared drive, a ticketing system with an API, and an AWS account their IT team owns. They want &quot;a chatbot that answers staff questions from our policies&quot;. You'll adapt your Curriculum Assistant for them, since it's already a RAG agent with tools, MCP, evaluation, and an AWS deployment.</p>
+<p><strong>Courses for this section (optional, see <a href="../resources.html">resources.md</a>):</strong> <a href="https://hatchworks.com/blog/fde/forward-deployed-engineer/" target="_blank" rel="noopener">What is a forward deployed engineer?</a> for the role, LinkedIn Learning's <a href="https://www.linkedin.com/learning/search?keywords=technical%20consulting%20skills" target="_blank" rel="noopener">technical consulting courses</a> for Weeks 45 and 48, and the <a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html" target="_blank" rel="noopener">AWS Well-Architected Framework</a> for Weeks 46–47.</p>
+<hr>
+<h2 id="week-45-the-role-and-scoping-the-work">Week 45: The role, and scoping the work<a class="anchor" href="#week-45-the-role-and-scoping-the-work" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> a scoping document for Northwind that a real customer would sign off: the problem, success measures, data, risks, and a plan.</p>
+<h3 id="day-1-what-the-role-is">Day 1: What the role is<a class="anchor" href="#day-1-what-the-role-is" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~25 min)</strong></p>
+<ul>
+<li><a href="https://hatchworks.com/blog/fde/forward-deployed-engineer/" target="_blank" rel="noopener">What is a forward deployed engineer?</a> (HatchWorks)</li>
+<li>Search any job site for &quot;Forward Deployed Engineer AI&quot;, and read three current job posts from different companies.</li>
+</ul>
+<p><strong>Do:</strong> from the job posts, list the ten skills that appear most often. Next to each, write the weeks of this plan where you practiced it, or &quot;gap&quot;.</p>
+<p><strong>Done when:</strong> you have a skills map, and you know which gaps the next six weeks need to cover.</p>
+<h3 id="day-2-discovery-questions">Day 2: Discovery questions<a class="anchor" href="#day-2-discovery-questions" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write the questions you'd ask Northwind in a first one-hour meeting, grouped as:</p>
+<ul>
+<li><strong>Problem:</strong> who asks the questions, how many a day, and what a wrong answer costs</li>
+<li><strong>Success:</strong> how they'll judge it, for example the percentage of questions answered correctly, or time saved</li>
+<li><strong>Data:</strong> where the documents are, how often they change, who owns them, and whether any are confidential</li>
+<li><strong>Systems:</strong> single sign-on, the ticketing system, and AWS account rules</li>
+<li><strong>Constraints:</strong> budget, deadline, data location, and security review</li>
+</ul>
+<p><strong>Done when:</strong> you have about 25 questions, with the five most important marked.</p>
+<h3 id="day-3-a-practice-discovery-call">Day 3: A practice discovery call<a class="anchor" href="#day-3-a-practice-discovery-call" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> play the meeting with an AI model taking the customer's role. Give your local model this system prompt: &quot;You are Dana, head of support at Northwind Logistics (details: ...). Answer as a busy, slightly sceptical customer. Don't volunteer information unless asked.&quot; Ask your Day 2 questions, and take notes as you would in a real call.</p>
+<p><strong>Done when:</strong> you have call notes, and you've written down two facts that changed your assumptions.</p>
+<h3 id="day-4-success-measures">Day 4: Success measures<a class="anchor" href="#day-4-success-measures" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> turn &quot;a chatbot that answers staff questions&quot; into measurable targets, for example:</p>
+<ul>
+<li>85% of answers on a 50-question test set are correct and cite the right policy.</li>
+<li>&quot;I don't know&quot; is the answer for questions outside the policies, at least 90% of the time.</li>
+<li>p95 answer time is under 8 seconds.</li>
+<li>Cost is under $X a month at 2,000 questions a day.</li>
+</ul>
+<p>Use your Week 12 evaluation and Week 41 cost numbers to make the targets realistic.</p>
+<p><strong>Done when:</strong> every target is a number you can measure with tools you've already built.</p>
+<h3 id="day-5-risks-and-options">Day 5: Risks and options<a class="anchor" href="#day-5-risks-and-options" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write the risks (out-of-date policies, confidential documents, staff trusting wrong answers, prompt injection through documents, and cost overruns), each with a mitigation. Then write two solution options, as in Week 34: your own RAG versus a Bedrock Knowledge Base, with cost, effort, control, and risk for each.</p>
+<p><strong>Done when:</strong> you have a risk table and an options table, with your recommendation.</p>
+<h3 id="day-6-the-scoping-document">Day 6: The scoping document<a class="anchor" href="#day-6-the-scoping-document" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write <code>northwind/SCOPE.md</code> (no more than three pages):</p>
+<ol>
+<li>The problem, in Northwind's words</li>
+<li>The success measures</li>
+<li>What's in scope and what's out (for example, no ticket creation in phase 1)</li>
+<li>The data and access you need from them</li>
+<li>The recommended option, and why</li>
+<li>A four-week plan with a demo at the end of each week</li>
+<li>The risks and their mitigations</li>
+</ol>
+<p><strong>Done when:</strong> a non-technical manager could read it in ten minutes and say yes or no.</p>
+<h3 id="day-7-review-and-catch-up-light">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Ask your local model, playing Dana, to review <code>SCOPE.md</code> and raise objections. Answer each objection in the document.</li>
+</ul>
+<hr>
+<h2 id="week-46-connecting-to-customer-data-and-systems">Week 46: Connecting to customer data and systems<a class="anchor" href="#week-46-connecting-to-customer-data-and-systems" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> the assistant indexes Northwind's documents with access rules, and calls their ticketing system through an MCP server.</p>
+<p><strong>Setup:</strong> create the made-up customer data. Ask your local model to write 30 short policy documents for Northwind (freight booking, refunds, travel, IT access, and so on), and save them to <code>northwind/data/policies/</code>. Mark three as <code>confidential: true</code> in a front-matter line at the top.</p>
+<h3 id="day-1-a-new-tenant-in-the-assistant">Day 1: A new tenant in the assistant<a class="anchor" href="#day-1-a-new-tenant-in-the-assistant" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add a <code>TenantId</code> to <code>KnowledgeChunk</code> and to every store query, so Northwind's documents never mix with your plan. Index the 30 policies under <code>tenant=northwind</code>.</p>
+<p><strong>Done when:</strong> a question in the Northwind tenant can't return any plan chunks, and a test proves it.</p>
+<h3 id="day-2-access-rules-on-documents">Day 2: Access rules on documents<a class="anchor" href="#day-2-access-rules-on-documents" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> store a <code>Confidential</code> flag on each chunk, read from the front matter. Add a <code>UserRole</code> (staff or manager) to each request, and filter out confidential chunks for staff.</p>
+<p><strong>Done when:</strong> a staff user asking about a confidential policy gets &quot;I can't help with that&quot;, while a manager gets the answer. Add a test for both.</p>
+<h3 id="day-3-a-fake-ticketing-system">Day 3: A fake ticketing system<a class="anchor" href="#day-3-a-fake-ticketing-system" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> create a small minimal API, <code>northwind/TicketApi</code>, with:</p>
+<ul>
+<li><code>GET /tickets?status=open</code></li>
+<li><code>GET /tickets/{id}</code></li>
+<li><code>POST /tickets</code>, which creates a ticket with a title and description</li>
+</ul>
+<p>Store tickets in memory, with an API key header for authentication. This stands in for the customer's real system, such as Jira or ServiceNow.</p>
+<p><strong>Done when:</strong> you can create and list tickets with <code>Invoke-RestMethod</code>.</p>
+<h3 id="day-4-an-mcp-server-for-their-system">Day 4: An MCP server for their system<a class="anchor" href="#day-4-an-mcp-server-for-their-system" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> build <code>northwind/TicketMcp</code>, an MCP server as in Week 22, with tools <code>list_open_tickets</code>, <code>get_ticket(id)</code>, and <code>create_ticket(title, description)</code>. It calls the Ticket API with its key, taken from an environment variable. Mark <code>create_ticket</code> clearly in its description as changing data.</p>
+<p><strong>Done when:</strong> the tools work in the MCP Inspector.</p>
+<h3 id="day-5-the-agent-uses-both">Day 5: The agent uses both<a class="anchor" href="#day-5-the-agent-uses-both" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> give the Northwind agent your RAG tools (Northwind tenant only) plus <code>TicketMcp</code>. Put <code>create_ticket</code> behind approval, as in Week 17. Ask: &quot;A customer says their refund is late. What's our policy, and can you open a ticket?&quot;</p>
+<p><strong>Done when:</strong> the answer cites the refund policy, and a ticket is created only after you approve it.</p>
+<h3 id="day-6-data-handling-notes">Day 6: Data handling notes<a class="anchor" href="#day-6-data-handling-notes" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write <code>northwind/DATA.md</code>, covering what data is copied where (S3, the vector store, and logs), how long it's kept, who can see it, how a document is removed everywhere when Northwind deletes it (use your Week 13 <code>index prune</code>), and what's sent to the model provider.</p>
+<p><strong>Done when:</strong> you could hand this to Northwind's security team.</p>
+<h3 id="day-7-review-and-catch-up-light-1">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-1" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push the <code>northwind</code> folder, with fake data only.</li>
+</ul>
+<hr>
+<h2 id="week-47-deploying-into-the-customers-aws-account">Week 47: Deploying into the customer's AWS account<a class="anchor" href="#week-47-deploying-into-the-customers-aws-account" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> the whole system deployed into a <strong>separate AWS account</strong> that stands in for Northwind's, using only the access a customer would give you.</p>
+<p><strong>Cost warning:</strong> this uses a second AWS account. Set a $10 budget alert on it on Day 1, and destroy everything at the end of each day.</p>
+<h3 id="day-1-a-separate-customer-account">Day 1: A separate &quot;customer&quot; account<a class="anchor" href="#day-1-a-separate-customer-account" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html" target="_blank" rel="noopener">What is AWS Organizations?</a></li>
+</ul>
+<p><strong>Do:</strong> create an AWS Organization from your account, and add a new member account named <code>northwind-sandbox</code>. Set a $10 budget with alerts in it. In IAM Identity Center, give your user access to it with a <strong>limited</strong> permission set that you'll define on Day 2, not admin.</p>
+<p><strong>Done when:</strong> you can sign in to <code>northwind-sandbox</code> through the portal.</p>
+<h3 id="day-2-working-with-limited-access">Day 2: Working with limited access<a class="anchor" href="#day-2-working-with-limited-access" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write the permission set a cautious customer would give you: CloudFormation, ECS, ECR, S3, DynamoDB, the Bedrock models they approved, CloudWatch, and Secrets Manager. No IAM user creation, and no access to anything not tagged <code>project=northwind-assistant</code>. Attach it, then try to deploy your CDK stacks.</p>
+<p><strong>Done when:</strong> you've hit at least one permission error, worked out exactly which permission was missing, and written it in a &quot;permissions we need&quot; list for the customer.</p>
+<h3 id="day-3-their-rules-not-yours">Day 3: Their rules, not yours<a class="anchor" href="#day-3-their-rules-not-yours" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> customers have their own rules. Pretend Northwind requires:</p>
+<ul>
+<li>every resource tagged <code>cost-center=support</code></li>
+<li>data kept only in <code>us-east-1</code></li>
+<li>no public load balancer, so it's reachable only through their VPN (simulate this by allowing only your own IP in the load balancer's security group)</li>
+</ul>
+<p>Change your CDK app so these come from settings for each customer, not code changes.</p>
+<p><strong>Done when:</strong> you deploy to <code>northwind-sandbox</code> following all three rules, and your own account deployment is unchanged.</p>
+<h3 id="day-4-deploy-and-smoke-test">Day 4: Deploy and smoke test<a class="anchor" href="#day-4-deploy-and-smoke-test" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> deploy <code>DataStack</code>, <code>ApiStack</code>, and the <code>TicketMcp</code> service to <code>northwind-sandbox</code>. Upload the policies, run indexing, and run the Northwind evaluation (50 questions you write from the policies, in the same format as Week 12).</p>
+<p><strong>Done when:</strong> the system runs in the customer account, and you have its evaluation scores against the Week 45 targets.</p>
+<h3 id="day-5-the-deployment-guide">Day 5: The deployment guide<a class="anchor" href="#day-5-the-deployment-guide" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write <code>northwind/DEPLOY.md</code> for Northwind's IT team: the prerequisites, the permissions needed, the settings (tags, region, allowed IPs, and model IDs), the exact commands to deploy, how to check it worked, how to update, how to roll back, and how to remove it all.</p>
+<p><strong>Done when:</strong> following the guide from a clean state works. Destroy everything and redeploy from the guide alone.</p>
+<h3 id="day-6-handing-over-pipelines">Day 6: Handing over pipelines<a class="anchor" href="#day-6-handing-over-pipelines" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> add a GitHub Actions deployment for the customer account, using an OIDC role created in <code>northwind-sandbox</code> (as in Week 39), so their own pipeline can deploy future versions without you.</p>
+<p><strong>Done when:</strong> a release deploys to the customer account from GitHub.</p>
+<h3 id="day-7-review-and-catch-up-light-2">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-2" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li><strong>Clean up:</strong> destroy everything in <code>northwind-sandbox</code>. Keep the account and its budget alert for Weeks 49–50.</li>
+</ul>
+<hr>
+<h2 id="week-48-demos-and-explaining-trade-offs">Week 48: Demos and explaining trade-offs<a class="anchor" href="#week-48-demos-and-explaining-trade-offs" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> a polished demo, a short recorded walkthrough, and practice explaining technical choices to non-technical people.</p>
+<h3 id="day-1-planning-a-demo">Day 1: Planning a demo<a class="anchor" href="#day-1-planning-a-demo" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write a ten-minute demo script for Northwind's head of support:</p>
+<ol>
+<li>The problem, in their words (1 minute)</li>
+<li>Three real questions answered with citations (3 minutes)</li>
+<li>One &quot;I don't know&quot; answer, to show it doesn't make things up (1 minute)</li>
+<li>A ticket created with approval (2 minutes)</li>
+<li>The evaluation scores against the targets (2 minutes)</li>
+<li>Next steps (1 minute)</li>
+</ol>
+<p><strong>Done when:</strong> you have the script, with the exact questions you'll ask.</p>
+<h3 id="day-2-make-the-demo-reliable">Day 2: Make the demo reliable<a class="anchor" href="#day-2-make-the-demo-reliable" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> demos fail at the worst moment. Prepare for it:</p>
+<ul>
+<li>run every demo question ten times, and replace any that fail</li>
+<li>add a <code>/demo/reset</code> endpoint that restores the demo data</li>
+<li>record a backup video of the demo working, in case the live version breaks</li>
+</ul>
+<p><strong>Done when:</strong> the demo works ten times in a row, and the backup video exists.</p>
+<h3 id="day-3-explaining-trade-offs">Day 3: Explaining trade-offs<a class="anchor" href="#day-3-explaining-trade-offs" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write a short, plain-language answer, with no jargon, to each question a customer always asks:</p>
+<ul>
+<li>&quot;Why does it sometimes say it doesn't know?&quot;</li>
+<li>&quot;Why does it cost money each time someone asks a question?&quot;</li>
+<li>&quot;Can it learn from our tickets?&quot;</li>
+<li>&quot;Is our data used to train the model?&quot;</li>
+<li>&quot;Why not just use ChatGPT?&quot;</li>
+</ul>
+<p>Use your Week 33 and 38 notes on how Bedrock handles data, and check the current Bedrock data-privacy docs before writing the training answer.</p>
+<p><strong>Done when:</strong> each answer is three or four sentences that a support manager would understand.</p>
+<h3 id="day-4-handling-hard-questions">Day 4: Handling hard questions<a class="anchor" href="#day-4-handling-hard-questions" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> practice with your local model playing a sceptical CTO: &quot;You are Northwind's CTO. You're worried about cost, security, and whether this will be abandoned. Ask hard questions one at a time.&quot; Answer five questions, then ask the model to grade your answers.</p>
+<p><strong>Done when:</strong> you've answered five hard questions, and improved the two weakest answers.</p>
+<h3 id="day-5-the-weekly-status-update">Day 5: The weekly status update<a class="anchor" href="#day-5-the-weekly-status-update" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write the kind of status update a forward deployed engineer sends every Friday: what was done, the current scores against the targets, the risks or blockers (with what you need from the customer), and next week's plan. Keep it under 200 words.</p>
+<p><strong>Done when:</strong> a manager could read it in a minute and know where things stand.</p>
+<h3 id="day-6-record-the-walkthrough">Day 6: Record the walkthrough<a class="anchor" href="#day-6-record-the-walkthrough" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> record a five-minute screen recording of the demo, with you narrating. This works as a portfolio piece too.</p>
+<p><strong>Done when:</strong> the video is saved and linked from the <code>northwind</code> README.</p>
+<h3 id="day-7-review-and-catch-up-light-3">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-3" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Watch your recording, and write down three things to do better next time.</li>
+</ul>
+<hr>
+<h2 id="week-49-debugging-in-the-field">Week 49: Debugging in the field<a class="anchor" href="#week-49-debugging-in-the-field" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> practice handling a live incident in the customer's system: find the cause fast, fix it safely, communicate clearly, and write it up.</p>
+<p><strong>Setup:</strong> redeploy to <code>northwind-sandbox</code> from your <code>DEPLOY.md</code>. Destroy it at the end of each day.</p>
+<h3 id="day-1-how-to-run-an-incident">Day 1: How to run an incident<a class="anchor" href="#day-1-how-to-run-an-incident" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li>Re-read your <code>RUNBOOK.md</code> from Weeks 39–43.</li>
+</ul>
+<p><strong>Do:</strong> write an incident checklist: confirm the problem, check the scope (who's affected), stop the damage (roll back, or switch off the feature), find the cause, fix it, tell people at each stage, and write it up afterwards.</p>
+<p><strong>Done when:</strong> your checklist fits on one page.</p>
+<h3 id="day-2-incident-1-its-giving-wrong-answers">Day 2: Incident 1, &quot;It's giving wrong answers&quot;<a class="anchor" href="#day-2-incident-1-its-giving-wrong-answers" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> set this up yourself without looking at the details later. Change one policy document to say the opposite of the others (&quot;refunds take 90 days&quot;), re-index, then a day later treat it as a report from a user. Use traces and citations to find which document caused it.</p>
+<p><strong>Done when:</strong> you've found the bad document from the evidence, and written a one-paragraph incident summary.</p>
+<h3 id="day-3-incident-2-its-very-slow">Day 3: Incident 2, &quot;It's very slow&quot;<a class="anchor" href="#day-3-incident-2-its-very-slow" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> lower the Fargate task to 0.25 vCPU and turn on reranking for 20 results. Use the CloudWatch dashboard and traces to find the cause, then fix it.</p>
+<p><strong>Done when:</strong> you've found both causes, and p95 is back under target.</p>
+<h3 id="day-4-incident-3-it-stopped-working-this-morning">Day 4: Incident 3, &quot;It stopped working this morning&quot;<a class="anchor" href="#day-4-incident-3-it-stopped-working-this-morning" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> expire or rotate the Ticket API key without updating Secrets Manager, so ticket creation fails. Find it from the logs, fix it, and work out how to catch it earlier, for example with a health check that calls the Ticket API.</p>
+<p><strong>Done when:</strong> it's fixed, and the new health check would have caught it.</p>
+<h3 id="day-5-communicating-during-an-incident">Day 5: Communicating during an incident<a class="anchor" href="#day-5-communicating-during-an-incident" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> for Incident 3, write the three messages you'd send: the first notice (&quot;We know about it and we're looking into it&quot;), an update with the cause and expected fix time, and the &quot;resolved&quot; message with next steps. Keep each under 80 words.</p>
+<p><strong>Done when:</strong> the messages are clear, calm, and don't blame anyone.</p>
+<h3 id="day-6-the-post-incident-review">Day 6: The post-incident review<a class="anchor" href="#day-6-the-post-incident-review" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write <code>northwind/incidents/2-slow-answers.md</code>, covering the timeline, the impact, the cause, how you found it, the fix, and three actions to stop it happening again (each with an owner and a date). Keep it blameless: it's about the system, not the person.</p>
+<p><strong>Done when:</strong> the review is written, and at least one action is already done, such as a new alarm.</p>
+<h3 id="day-7-review-and-catch-up-light-4">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-4" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li><strong>Clean up</strong> <code>northwind-sandbox</code>. Add the incident checklist to <code>RUNBOOK.md</code>.</li>
+</ul>
+<hr>
+<h2 id="week-50-handover">Week 50: Handover<a class="anchor" href="#week-50-handover" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> everything Northwind needs to run the system without you: documentation, runbooks, training, and a final review.</p>
+<h3 id="day-1-the-architecture-document">Day 1: The architecture document<a class="anchor" href="#day-1-the-architecture-document" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write <code>northwind/ARCHITECTURE.md</code> with a diagram, each component and why it was chosen, the data flows, the security controls, the costs at current usage, and the limits you know about.</p>
+<p><strong>Done when:</strong> a new engineer could understand the system in 20 minutes.</p>
+<h3 id="day-2-the-operations-runbook">Day 2: The operations runbook<a class="anchor" href="#day-2-the-operations-runbook" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> turn your notes into <code>northwind/RUNBOOK.md</code>, for the people who'll run it:</p>
+<ul>
+<li>daily and weekly checks</li>
+<li>how to add, update, or remove a policy document</li>
+<li>how to rotate each secret</li>
+<li>each alarm: what it means, and what to do</li>
+<li>the incident checklist from Week 49</li>
+<li>who to contact</li>
+</ul>
+<p><strong>Done when:</strong> each alarm in CloudWatch has a matching runbook entry.</p>
+<h3 id="day-3-training-the-support-team">Day 3: Training the support team<a class="anchor" href="#day-3-training-the-support-team" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write a one-page user guide for Northwind's support staff: what to ask, what it can't do, how to read citations, what to do when it says &quot;I don't know&quot;, and how to report a wrong answer.</p>
+<p><strong>Done when:</strong> it's one page, with no technical terms.</p>
+<h3 id="day-4-keeping-quality-up-after-you-leave">Day 4: Keeping quality up after you leave<a class="anchor" href="#day-4-keeping-quality-up-after-you-leave" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> set up what keeps it working: the monthly evaluation run in GitHub Actions (from Week 42) against the Northwind test set, the source-freshness report (from Week 13) run weekly, and a simple &quot;report a wrong answer&quot; button in the chat page that saves the question for the next evaluation.</p>
+<p><strong>Done when:</strong> the evaluation and freshness jobs are scheduled, and the feedback button works.</p>
+<h3 id="day-5-the-final-review">Day 5: The final review<a class="anchor" href="#day-5-the-final-review" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write <code>northwind/FINAL-REVIEW.md</code>, covering each Week 45 target with its final number, what went well, what didn't, open risks, and recommended next steps (phase 2).</p>
+<p><strong>Done when:</strong> every target has a measured result next to it.</p>
+<h3 id="day-6-your-portfolio-case-study">Day 6: Your portfolio case study<a class="anchor" href="#day-6-your-portfolio-case-study" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> turn the Northwind work into a one-page case study for your portfolio: the problem, your approach, the architecture, the results, and what you learned. Link the demo video and the repository. Say clearly that the customer is made up.</p>
+<p><strong>Done when:</strong> the case study is in your <code>CurriculumAssistant</code> README or on your GitHub profile.</p>
+<h3 id="day-7-review-and-catch-up-light-5">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-5" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li><strong>Clean up:</strong> destroy everything in <code>northwind-sandbox</code>. You can close the account, or keep it with a $0 budget alert.</li>
+<li>Section I is complete.</li>
+</ul>
+<nav class="pager" aria-label="Sections"><a href="H-production-weeks-39-44.html">← H. Production (Weeks 39–44)</a><a href="J-capstone-weeks-51-52.html">J. Capstone (Weeks 51–52) →</a></nav>
+</main>
+</body>
+</html>

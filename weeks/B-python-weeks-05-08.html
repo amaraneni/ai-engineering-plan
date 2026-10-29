@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Section B: Python for AI (Weeks 5–8)</title>
+<style>
+:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
+main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
+a { color:var(--accent); }
+a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
+h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
+h1:target,h2:target,h3:target { background:var(--target); }
+.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
+h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
+code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
+pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
+pre code { background:none; padding:0; font-size:.88rem; }
+.table-wrap { overflow-x:auto; }
+table { border-collapse:collapse; margin:1em 0; }
+th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
+th { background:var(--code); }
+li { margin:.2em 0; } li > p { margin:.3em 0; }
+hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
+.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
+@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Plan"><a href="../schedule.html">← Schedule</a><a href="../plan.html">Plan</a><a href="../resources.html">Resources</a></nav>
+<main>
+<h1 id="section-b-python-for-ai-weeks-58">Section B: Python for AI (Weeks 5–8)<a class="anchor" href="#section-b-python-for-ai-weeks-58" aria-label="Link to this heading">#</a></h1>
+<p>You already know how to program, so these weeks map Python onto what you know from C#. Each day has a &quot;C# equivalent&quot; note. All of it runs on plain Windows.</p>
+<p><strong>Setup once:</strong> install uv, which handles both Python versions and packages (like <code>dotnet</code> plus NuGet):</p>
+<pre><code class="lang-powershell">powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</code></pre>
+<p>Close and reopen the terminal, then run <code>uv --version</code>. In VS Code, install the <strong>Python</strong> extension from Microsoft.</p>
+<p><strong>Videos for the whole block (pick one):</strong> &quot;Python for Everybody&quot; (Coursera, University of Michigan), or any LinkedIn Learning &quot;Python Essential Training&quot; course. Watch only the parts matching each day's topic.</p>
+<hr>
+<h2 id="week-5-python-for-c-developers">Week 5: Python for C# developers<a class="anchor" href="#week-5-python-for-c-developers" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> you can write, run, and structure small Python programs, and you know the main differences from C#.</p>
+<h3 id="day-1-install-run-and-the-repl">Day 1: Install, run, and the REPL<a class="anchor" href="#day-1-install-run-and-the-repl" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> uv creates projects and virtual environments. A virtual environment is a per-project folder of packages, like a project's NuGet packages.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://docs.astral.sh/uv/getting-started/" target="_blank" rel="noopener">uv: Getting started</a></li>
+<li><a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener">The Python Tutorial</a>: sections 1–3, skimmed</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create a project and run it:
+<pre><code class="lang-powershell">uv init py-basics
+cd py-basics
+uv run main.py</code></pre></li>
+<li>Open <code>main.py</code> in VS Code. Notice there's no class and no <code>Main</code>. The file just runs from top to bottom.</li>
+<li>Start the interactive shell with <code>uv run python</code> and try <code>2 ** 10</code>, <code>&quot;abc&quot;.upper()</code>, <code>len(&quot;hello&quot;)</code>, and <code>help(str.split)</code>. Quit with <code>exit()</code>.</li>
+</ol>
+<p><strong>Done when:</strong> <code>uv run main.py</code> prints its greeting, and you've used the REPL.</p>
+<p><strong>C# equivalent:</strong> <code>uv init</code> ≈ <code>dotnet new console</code>, <code>uv run</code> ≈ <code>dotnet run</code>, and the REPL ≈ C# Interactive.</p>
+<h3 id="day-2-types-collections-and-comprehensions">Day 2: Types, collections, and comprehensions<a class="anchor" href="#day-2-types-collections-and-comprehensions" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> Python's lists, dicts, sets, and tuples replace <code>List</code>, <code>Dictionary</code>, <code>HashSet</code>, and tuples. Comprehensions do much of what LINQ does.</p>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://docs.python.org/3/tutorial/datastructures.html" target="_blank" rel="noopener">Data Structures</a> (Python tutorial, section 5)</li>
+</ul>
+<p><strong>Do:</strong> in <code>main.py</code>, write each of these, run it, and check the output:</p>
+<pre><code class="lang-python">words = [&quot;rag&quot;, &quot;mcp&quot;, &quot;aws&quot;, &quot;agent&quot;, &quot;llm&quot;, &quot;rag&quot;]
+
+upper = [w.upper() for w in words]                 # Select
+long_words = [w for w in words if len(w) &gt; 3]       # Where
+unique = set(words)                                 # Distinct
+counts = {w: words.count(w) for w in unique}        # ToDictionary
+first_r = next((w for w in words if w.startswith(&quot;r&quot;)), None)  # FirstOrDefault
+by_length = sorted(words, key=len, reverse=True)    # OrderByDescending
+
+print(upper, long_words, unique, counts, first_r, by_length, sep=&quot;\n&quot;)
+
+point = (3, 4)          # tuple: fixed size, can't be changed
+x, y = point            # unpacking, like a C# deconstruction
+print(f&quot;x={x}, y={y}&quot;)  # f-string = C# $&quot;...&quot;</code></pre>
+<p><strong>Done when:</strong> you can write each LINQ method you use daily as a comprehension or built-in.</p>
+<h3 id="day-3-functions-type-hints-and-dataclasses">Day 3: Functions, type hints, and dataclasses<a class="anchor" href="#day-3-functions-type-hints-and-dataclasses" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> Python is dynamically typed, but type hints plus a checker give you much of C#'s safety. A <code>dataclass</code> is roughly a C# <code>record</code>.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://docs.python.org/3/library/dataclasses.html" target="_blank" rel="noopener">dataclasses</a>: the first example only</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create <code>models.py</code>:
+<pre><code class="lang-python">from dataclasses import dataclass
+
+@dataclass(frozen=True)          # frozen = immutable, like a record
+class Lesson:
+    week: int
+    day: int
+    title: str
+    minutes: int = 75             # default value
+
+def total_minutes(lessons: list[Lesson]) -&gt; int:
+    return sum(l.minutes for l in lessons)
+
+def find(lessons: list[Lesson], week: int) -&gt; list[Lesson]:
+    return [l for l in lessons if l.week == week]</code></pre></li>
+<li>Use it from <code>main.py</code> with <code>from models import Lesson, total_minutes, find</code>, creating a few lessons.</li>
+<li>Add a deliberate type error, <code>total_minutes(&quot;oops&quot;)</code>, then run the type checker:
+<pre><code class="lang-powershell">uv add --dev mypy
+uv run mypy .</code></pre></li>
+</ol>
+<p><strong>Done when:</strong> mypy reports your type error, and you've fixed it.</p>
+<p><strong>C# equivalent:</strong> <code>def f(x: int) -&gt; str</code> ≈ <code>string F(int x)</code>, and the <code>@dataclass(frozen=True)</code> class ≈ <code>record Lesson(int Week, ...)</code>.</p>
+<h3 id="day-4-classes-interfaces-and-exceptions">Day 4: Classes, interfaces, and exceptions<a class="anchor" href="#day-4-classes-interfaces-and-exceptions" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> Python classes have explicit <code>self</code>. A <code>Protocol</code> acts like an interface (matched by shape, not declared). Exceptions work as in C#, with <code>try</code>/<code>except</code>.</p>
+<p><strong>Do:</strong> create <code>stores.py</code>:</p>
+<pre><code class="lang-python">from typing import Protocol
+
+class ProgressStore(Protocol):          # like an interface
+    def mark_done(self, lesson_id: str) -&gt; None: ...
+    def is_done(self, lesson_id: str) -&gt; bool: ...
+
+class MemoryStore:                      # doesn't need to say it implements ProgressStore
+    def __init__(self) -&gt; None:         # constructor
+        self._done: set[str] = set()    # leading _ means &quot;private&quot; by convention
+
+    def mark_done(self, lesson_id: str) -&gt; None:
+        if not lesson_id:
+            raise ValueError(&quot;lesson_id is required&quot;)
+        self._done.add(lesson_id)
+
+    def is_done(self, lesson_id: str) -&gt; bool:
+        return lesson_id in self._done
+
+def report(store: ProgressStore, ids: list[str]) -&gt; None:
+    for i in ids:
+        print(i, &quot;done&quot; if store.is_done(i) else &quot;todo&quot;)
+
+store = MemoryStore()
+store.mark_done(&quot;W5D4&quot;)
+report(store, [&quot;W5D3&quot;, &quot;W5D4&quot;])
+try:
+    store.mark_done(&quot;&quot;)
+except ValueError as e:
+    print(&quot;Error:&quot;, e)</code></pre>
+<p>Run <code>uv run stores.py</code>, then <code>uv run mypy stores.py</code>.</p>
+<p><strong>Done when:</strong> it prints the report and the error, and mypy is happy.</p>
+<h3 id="day-5-modules-packages-and-project-layout">Day 5: Modules, packages, and project layout<a class="anchor" href="#day-5-modules-packages-and-project-layout" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> a file is a module and a folder of modules is a package. <code>if __name__ == &quot;__main__&quot;:</code> marks the &quot;only when run directly&quot; code.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://docs.python.org/3/tutorial/modules.html" target="_blank" rel="noopener">Modules</a> (Python tutorial, section 6)</li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Reorganize <code>py-basics</code> into:
+<pre><code class="lang-text">py-basics/
+  learning/
+    __init__.py      (empty)
+    models.py
+    stores.py
+  main.py</code></pre></li>
+<li>Update the imports (<code>from learning.models import Lesson</code>) and move the demo code in <code>stores.py</code> under <code>if __name__ == &quot;__main__&quot;:</code>.</li>
+<li>Add a package with <code>uv add rich</code>, then print a colored table:
+<pre><code class="lang-python">from rich.console import Console
+from rich.table import Table
+
+table = Table(&quot;Week&quot;, &quot;Day&quot;, &quot;Title&quot;)
+table.add_row(&quot;5&quot;, &quot;5&quot;, &quot;Modules and packages&quot;)
+Console().print(table)</code></pre></li>
+<li>Open <code>pyproject.toml</code> (the Python version of a <code>.csproj</code>) and <code>uv.lock</code>, and find <code>rich</code> in both.</li>
+</ol>
+<p><strong>Done when:</strong> <code>uv run main.py</code> prints the table, and importing <code>stores</code> no longer runs its demo.</p>
+<h3 id="day-6-mini-project-plan-statistics-cli">Day 6: Mini project, plan statistics CLI<a class="anchor" href="#day-6-mini-project-plan-statistics-cli" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write <code>plan_stats.py</code>, a command-line tool that reads <code>plan.md</code> and the <code>weeks</code> files, then prints:</p>
+<ul>
+<li>the number of weeks and days found (count lines starting with <code>## Week </code> and <code>### Day </code>)</li>
+<li>the 10 most common words longer than 4 letters (use <code>collections.Counter</code>)</li>
+<li>every link in the plan (use <code>re.findall(r&quot;\((https?://[^)]+)\)&quot;, text)</code>)</li>
+</ul>
+<p>Use <code>argparse</code> so it can be run as <code>uv run plan_stats.py ..\ai-engineering-plan</code>, and use <code>pathlib.Path</code> for files: <code>Path(folder).glob(&quot;**/*.md&quot;)</code>.</p>
+<p><strong>Done when:</strong> it prints all three reports for your plan folder.</p>
+<h3 id="day-7-review-and-catch-up-light">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push <code>py-basics</code> to <code>ai-learning/week-05</code>.</li>
+<li>Write a &quot;Python vs C#&quot; cheat sheet in the README with the 15 differences that surprised you most.</li>
+</ul>
+<hr>
+<h2 id="week-6-files-http-async-and-tests">Week 6: Files, HTTP, async, and tests<a class="anchor" href="#week-6-files-http-async-and-tests" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> you can build a real Python tool. You'll build an async link checker for the plan, which the Curriculum Assistant reuses later.</p>
+<h3 id="day-1-files-and-json">Day 1: Files and JSON<a class="anchor" href="#day-1-files-and-json" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do</strong></p>
+<ol>
+<li>Create <code>uv init py-tools</code> and add a <code>io_demo.py</code> script that:
+<ul>
+<li>reads <code>plan.md</code> with <code>Path(&quot;...&quot;).read_text(encoding=&quot;utf-8&quot;)</code></li>
+<li>writes a summary dict to <code>summary.json</code> using <code>json.dumps(data, indent=2)</code></li>
+<li>reads it back with <code>json.loads</code> and prints one field</li>
+</ul></li>
+<li>Use <code>with open(path, &quot;w&quot;, encoding=&quot;utf-8&quot;) as f:</code> once. It's like C#'s <code>using</code>.</li>
+</ol>
+<p><strong>Done when:</strong> <code>summary.json</code> exists and reads back correctly.</p>
+<h3 id="day-2-http-with-httpx">Day 2: HTTP with httpx<a class="anchor" href="#day-2-http-with-httpx" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> <code>httpx</code> is a modern HTTP client, the Python equivalent of <code>HttpClient</code>.</p>
+<p><strong>Learn (~10 min)</strong></p>
+<ul>
+<li><a href="https://www.python-httpx.org/quickstart/" target="_blank" rel="noopener">httpx QuickStart</a></li>
+</ul>
+<p><strong>Do:</strong> run <code>uv add httpx</code>, then write <code>http_demo.py</code>:</p>
+<pre><code class="lang-python">import httpx
+
+r = httpx.get(&quot;https://api.github.com/repos/dotnet/runtime&quot;, timeout=10)
+r.raise_for_status()                      # like EnsureSuccessStatusCode()
+repo = r.json()
+print(repo[&quot;full_name&quot;], repo[&quot;stargazers_count&quot;])</code></pre>
+<p><strong>Done when:</strong> it prints the repository name and star count.</p>
+<h3 id="day-3-async-and-await">Day 3: async and await<a class="anchor" href="#day-3-async-and-await" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> Python's <code>async</code>/<code>await</code> looks like C#'s, but you start it with <code>asyncio.run</code>, and <code>asyncio.gather</code> is <code>Task.WhenAll</code>.</p>
+<p><strong>Learn (~20 min)</strong></p>
+<ul>
+<li><a href="https://docs.python.org/3/library/asyncio-task.html" target="_blank" rel="noopener">Coroutines and Tasks</a>: the first sections</li>
+</ul>
+<p><strong>Do</strong></p>
+<pre><code class="lang-python">import asyncio, time
+import httpx
+
+URLS = [&quot;https://learn.microsoft.com&quot;, &quot;https://docs.python.org&quot;, &quot;https://docs.aws.amazon.com&quot;]
+
+async def status(client: httpx.AsyncClient, url: str) -&gt; tuple[str, int]:
+    r = await client.get(url, follow_redirects=True, timeout=15)
+    return url, r.status_code
+
+async def main() -&gt; None:
+    start = time.perf_counter()
+    async with httpx.AsyncClient() as client:
+        results = await asyncio.gather(*(status(client, u) for u in URLS))   # Task.WhenAll
+    for url, code in results:
+        print(code, url)
+    print(f&quot;{time.perf_counter() - start:.2f}s&quot;)
+
+asyncio.run(main())</code></pre>
+<p>Then write a version that awaits each request one after another, and compare the times.</p>
+<p><strong>Done when:</strong> the <code>gather</code> version is clearly faster.</p>
+<h3 id="day-4-validation-with-pydantic">Day 4: Validation with Pydantic<a class="anchor" href="#day-4-validation-with-pydantic" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> Pydantic validates and converts data, much like model binding plus DataAnnotations. It's used all over AI tooling.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://pydantic.dev/docs/validation/latest/concepts/models/" target="_blank" rel="noopener">Pydantic: Models</a></li>
+</ul>
+<p><strong>Do:</strong> run <code>uv add pydantic</code>, then:</p>
+<pre><code class="lang-python">from pydantic import BaseModel, HttpUrl, ValidationError
+
+class LinkResult(BaseModel):
+    url: HttpUrl
+    status: int
+    ok: bool
+
+print(LinkResult(url=&quot;https://example.com&quot;, status=200, ok=True).model_dump_json())
+try:
+    LinkResult(url=&quot;not a url&quot;, status=&quot;abc&quot;, ok=True)
+except ValidationError as e:
+    print(e)</code></pre>
+<p><strong>Done when:</strong> the valid object prints as JSON, and the invalid one shows two clear errors.</p>
+<h3 id="day-5-testing-with-pytest">Day 5: Testing with pytest<a class="anchor" href="#day-5-testing-with-pytest" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> pytest is the standard Python test runner. A test is any function named <code>test_...</code> that uses plain <code>assert</code>.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://docs.pytest.org/en/stable/getting-started.html" target="_blank" rel="noopener">pytest: Get started</a></li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Run <code>uv add --dev pytest</code>, then put a function <code>extract_links(text: str) -&gt; list[str]</code> in <code>links.py</code>, using the regex from Week 5 Day 6.</li>
+<li>Create <code>tests/test_links.py</code> with three tests: one link, no links, and a duplicate link counted once.</li>
+<li>Run <code>uv run pytest -q</code>.</li>
+</ol>
+<p><strong>Done when:</strong> 3 tests pass.</p>
+<h3 id="day-6-mini-project-async-link-checker">Day 6: Mini project, async link checker<a class="anchor" href="#day-6-mini-project-async-link-checker" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> build <code>check_links.py</code>, which:</p>
+<ol>
+<li>finds every <code>.md</code> file in a folder and extracts all links (reuse <code>extract_links</code>)</li>
+<li>checks them in parallel with <code>httpx.AsyncClient</code>, at most 10 at a time using <code>asyncio.Semaphore(10)</code></li>
+<li>treats status 200–399 as OK and 401/403 as &quot;needs login&quot;, while anything else, or a timeout, is broken</li>
+<li>prints a summary and writes every result to <code>links-report.json</code> using your <code>LinkResult</code> model</li>
+</ol>
+<p>Run it on your plan folder: <code>uv run check_links.py ..\ai-engineering-plan</code>.</p>
+<p><strong>Done when:</strong> you get a report of all the plan's links. Fix any broken ones in the plan. You'll turn this tool into an MCP server in Week 24.</p>
+<h3 id="day-7-review-and-catch-up-light-1">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-1" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push <code>py-tools</code> to <code>ai-learning/week-06</code>, with the tests passing.</li>
+</ul>
+<hr>
+<h2 id="week-7-ai-from-python">Week 7: AI from Python<a class="anchor" href="#week-7-ai-from-python" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> you can call local models and embeddings from Python, use notebooks, and know the OpenAI-compatible API that most AI tools use.</p>
+<h3 id="day-1-chat-with-ollama-from-python">Day 1: Chat with Ollama from Python<a class="anchor" href="#day-1-chat-with-ollama-from-python" aria-label="Link to this heading">#</a></h3>
+<p><strong>Learn (~10 min)</strong></p>
+<ul>
+<li><a href="https://github.com/ollama/ollama-python" target="_blank" rel="noopener">ollama-python README</a></li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Run <code>uv init py-ai</code> and <code>uv add ollama</code>.</li>
+<li>Port your Week 1 chat loop:
+<pre><code class="lang-python">import ollama
+
+history = [{&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;Answer in at most 3 bullet points.&quot;}]
+while (q := input(&quot;You: &quot;).strip()):           # := assigns and tests in one go
+    history.append({&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: q})
+    reply = ollama.chat(model=&quot;llama3.2&quot;, messages=history)
+    text = reply[&quot;message&quot;][&quot;content&quot;]
+    print(&quot;AI:&quot;, text, &quot;\n&quot;)
+    history.append({&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: text})</code></pre></li>
+<li>Add streaming with <code>ollama.chat(..., stream=True)</code>, printing each <code>chunk[&quot;message&quot;][&quot;content&quot;]</code> with <code>end=&quot;&quot;</code> and <code>flush=True</code>.</li>
+</ol>
+<p><strong>Done when:</strong> you have a streaming chat working in Python. Compare it with your C# version.</p>
+<h3 id="day-2-embeddings-and-numpy">Day 2: Embeddings and NumPy<a class="anchor" href="#day-2-embeddings-and-numpy" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> NumPy is the array library that almost all AI Python code relies on.</p>
+<p><strong>Do:</strong> run <code>uv add numpy</code>, then:</p>
+<pre><code class="lang-python">import numpy as np
+import ollama
+
+def embed(texts: list[str]) -&gt; np.ndarray:
+    result = ollama.embed(model=&quot;nomic-embed-text&quot;, input=texts)
+    return np.array(result[&quot;embeddings&quot;])
+
+docs = [&quot;Deploy .NET to AWS Lambda&quot;, &quot;Pizza recipes&quot;, &quot;Serverless functions in C#&quot;]
+doc_vectors = embed(docs)
+query = embed([&quot;How do I run C# serverless?&quot;])[0]
+
+# cosine similarity for every document at once
+scores = doc_vectors @ query / (np.linalg.norm(doc_vectors, axis=1) * np.linalg.norm(query))
+for i in np.argsort(-scores):
+    print(f&quot;{scores[i]:.3f}  {docs[i]}&quot;)</code></pre>
+<p><strong>Done when:</strong> the two serverless documents rank above pizza. Notice that one line of NumPy replaces your C# loop.</p>
+<h3 id="day-3-jupyter-notebooks">Day 3: Jupyter notebooks<a class="anchor" href="#day-3-jupyter-notebooks" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> notebooks mix code, output, and notes. They're the standard place to experiment in AI work.</p>
+<p><strong>Learn (~10 min)</strong></p>
+<ul>
+<li><a href="https://code.visualstudio.com/docs/datascience/jupyter-notebooks" target="_blank" rel="noopener">Jupyter notebooks in VS Code</a></li>
+</ul>
+<p><strong>Do</strong></p>
+<ol>
+<li>Run <code>uv add --dev ipykernel</code>, create <code>explore.ipynb</code> in VS Code, and select the <code>.venv</code> interpreter as the kernel.</li>
+<li>Move the Day 2 code into cells, then add a Markdown cell explaining the result.</li>
+<li>Add a cell that embeds 10 of your plan's day titles and prints the similarity of each to &quot;vector database&quot;.</li>
+</ol>
+<p><strong>Done when:</strong> the notebook runs from top to bottom, with output saved in it.</p>
+<h3 id="day-4-the-openai-compatible-api">Day 4: The OpenAI-compatible API<a class="anchor" href="#day-4-the-openai-compatible-api" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> most AI tools speak the OpenAI API format. Ollama provides it at <code>http://localhost:11434/v1</code>, so the same code works locally or with a cloud provider.</p>
+<p><strong>Learn (~10 min)</strong></p>
+<ul>
+<li><a href="https://docs.ollama.com/api/openai-compatibility" target="_blank" rel="noopener">Ollama OpenAI compatibility</a></li>
+</ul>
+<p><strong>Do:</strong> run <code>uv add openai</code>, then:</p>
+<pre><code class="lang-python">from openai import OpenAI
+
+client = OpenAI(base_url=&quot;http://localhost:11434/v1&quot;, api_key=&quot;ollama&quot;)  # key is ignored locally
+r = client.chat.completions.create(
+    model=&quot;llama3.2&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Name three AWS compute services.&quot;}],
+)
+print(r.choices[0].message.content)
+print(r.usage)</code></pre>
+<p><strong>Done when:</strong> it answers and prints token usage. You can now use any tool that &quot;needs an OpenAI key&quot; against your local model.</p>
+<h3 id="day-5-structured-output-and-pandas">Day 5: Structured output and pandas<a class="anchor" href="#day-5-structured-output-and-pandas" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do</strong></p>
+<ol>
+<li>Ask for JSON that matches a Pydantic model:
+<pre><code class="lang-python">from pydantic import BaseModel
+import ollama
+
+class Triage(BaseModel):
+    severity: str
+    area: str
+    summary: str
+
+r = ollama.chat(
+    model=&quot;llama3.2&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Triage: checkout is 10s slow since the release&quot;}],
+    format=Triage.model_json_schema(),          # forces JSON matching the schema
+)
+print(Triage.model_validate_json(r[&quot;message&quot;][&quot;content&quot;]))</code></pre></li>
+<li>Run <code>uv add pandas</code>. Triage the same three bug reports you used in C# in Week 1, put the results in a <code>pandas.DataFrame</code>, and print it sorted by severity.</li>
+</ol>
+<p><strong>Done when:</strong> you have a typed result, plus a sorted table.</p>
+<h3 id="day-6-notebook-project-comparing-two-embedding-models">Day 6: Notebook project, comparing two embedding models<a class="anchor" href="#day-6-notebook-project-comparing-two-embedding-models" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do</strong></p>
+<ol>
+<li>Run <code>ollama pull mxbai-embed-large</code>, a second embedding model.</li>
+<li>In a notebook, take your 10 questions from <code>eval-questions.md</code> (Week 4 Day 5) and the plan chunks.</li>
+<li>For each model, check whether the correct day appears in the top 3 results, and count the hits.</li>
+<li>Show a small table with the model, its hits out of 10, and the average search time.</li>
+</ol>
+<p><strong>Done when:</strong> you know which embedding model works better on your own plan, and you have numbers to prove it.</p>
+<h3 id="day-7-review-and-catch-up-light-2">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-2" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push <code>py-ai</code> and the notebooks to <code>ai-learning/week-07</code>.</li>
+</ul>
+<hr>
+<h2 id="week-8-rag-in-python-compared-with-net">Week 8: RAG in Python, compared with .NET<a class="anchor" href="#week-8-rag-in-python-compared-with-net" aria-label="Link to this heading">#</a></h2>
+<p><strong>By the end of the week:</strong> your Week 4 RAG app rebuilt in Python and served by an API, and an honest comparison of the two languages for AI work.</p>
+<h3 id="day-1-chunk-and-embed-the-plan">Day 1: Chunk and embed the plan<a class="anchor" href="#day-1-chunk-and-embed-the-plan" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> in a new project, <code>uv init py-rag</code>, write <code>index.py</code>. It ports <code>ChunkPlan</code> from Week 3 Day 6, embeds every chunk with <code>ollama.embed</code> in batches of 32, and saves the vectors with <code>np.save(&quot;vectors.npy&quot;, ...)</code> and the chunks to <code>chunks.json</code>.</p>
+<p><strong>Done when:</strong> both files exist and the chunk count matches your C# version.</p>
+<h3 id="day-2-search">Day 2: Search<a class="anchor" href="#day-2-search" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write <code>search.py</code> with <code>search(question: str, k: int = 3) -&gt; list[tuple[float, dict]]</code>, using the NumPy cosine trick from Week 7 Day 2. Add pytest tests: the question &quot;cosine similarity&quot; must return Week 3 Day 2 in its top 3.</p>
+<p><strong>Done when:</strong> the test passes.</p>
+<h3 id="day-3-generate-with-citations">Day 3: Generate with citations<a class="anchor" href="#day-3-generate-with-citations" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write <code>rag.py</code> with <code>ask(question) -&gt; str</code>, using the same system prompt, <code>[1]</code> citations, and minimum-score cut-off as your C# <code>RagService</code>.</p>
+<p><strong>Done when:</strong> answers match the quality of your C# version on five questions.</p>
+<h3 id="day-4-serve-it-with-fastapi">Day 4: Serve it with FastAPI<a class="anchor" href="#day-4-serve-it-with-fastapi" aria-label="Link to this heading">#</a></h3>
+<p><strong>Topic:</strong> FastAPI is the most common Python web framework for AI services. It's close to ASP.NET Core minimal APIs.</p>
+<p><strong>Learn (~15 min)</strong></p>
+<ul>
+<li><a href="https://fastapi.tiangolo.com/tutorial/first-steps/" target="_blank" rel="noopener">FastAPI: First Steps</a></li>
+</ul>
+<p><strong>Do</strong></p>
+<pre><code class="lang-python"># app.py
+from fastapi import FastAPI
+from pydantic import BaseModel
+from rag import ask
+
+app = FastAPI()
+
+class Question(BaseModel):
+    question: str
+
+@app.post(&quot;/ask&quot;)
+def ask_endpoint(q: Question) -&gt; dict:
+    return {&quot;answer&quot;: ask(q.question)}</code></pre>
+<p>Run <code>uv add &quot;fastapi[standard]&quot;</code>, then <code>uv run fastapi dev app.py</code>. Open <code>http://127.0.0.1:8000/docs</code> and try <code>/ask</code> from the built-in page. Stop it with Ctrl+C.</p>
+<p><strong>Done when:</strong> you get an answer from the API docs page.</p>
+<p><strong>C# equivalent:</strong> <code>app.MapPost(&quot;/ask&quot;, (Question q) =&gt; ...)</code> plus Swagger.</p>
+<h3 id="day-5-compare-net-and-python">Day 5: Compare .NET and Python<a class="anchor" href="#day-5-compare-net-and-python" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> fill in this table in <code>ai-learning/week-08/README.md</code>, with real numbers from your two versions:</p>
+<div class="table-wrap"><table><thead><tr><th scope="col"></th><th scope="col">C# (Week 4)</th><th scope="col">Python (this week)</th></tr></thead><tbody><tr><td>Lines of code</td><td></td><td></td></tr><tr><td>Time to build the index</td><td></td><td></td></tr><tr><td>Average answer time</td><td></td><td></td></tr><tr><td>Score on your 10 eval questions</td><td></td><td></td></tr><tr><td>Libraries you needed</td><td></td><td></td></tr><tr><td>What was easier</td><td></td><td></td></tr></tbody></table></div>
+<p><strong>Done when:</strong> the table is filled in, with a short conclusion. The usual finding is that both work well. Python has more AI libraries and examples, and C# gives you stronger types and is what most enterprise teams already run.</p>
+<h3 id="day-6-python-version-passes-the-same-evaluation">Day 6: Python version passes the same evaluation<a class="anchor" href="#day-6-python-version-passes-the-same-evaluation" aria-label="Link to this heading">#</a></h3>
+<p><strong>Do:</strong> write <code>eval.py</code>, which reads <code>eval-questions.md</code>, runs <code>search()</code> on each question, and prints hits@3 for the Python version. Compare it with the C# search.</p>
+<p><strong>Done when:</strong> both versions are measured on the same questions. If the Python version scores differently, find out why (chunking, model, or threshold).</p>
+<h3 id="day-7-review-and-catch-up-light-3">Day 7: Review and catch-up (light)<a class="anchor" href="#day-7-review-and-catch-up-light-3" aria-label="Link to this heading">#</a></h3>
+<ul>
+<li>Push <code>py-rag</code> to <code>ai-learning/week-08</code>.</li>
+<li>Python is now one of your tools. From here on, lessons use C# by default and Python where its libraries are clearly better.</li>
+</ul>
+<nav class="pager" aria-label="Sections"><a href="A-ai-foundations-weeks-02-04.html">← A. AI foundations (Weeks 2–4)</a><a href="C-rag-weeks-09-14.html">C. RAG (Weeks 9–14) →</a></nav>
+</main>
+</body>
+</html>
