@@ -1,6 +1,7 @@
 // Converts the plan's Markdown files to HTML pages you can open straight from disk.
 // Usage (from the plan folder): node tools/build-html.mjs
-// Output: plan.html, resources.html, and weeks/*.html next to their .md files.
+// Output: plan.html, resources.html, and weeks/*.html next to their .md files. The pages use the
+// shared assets/site.css, common.js, plan-data.js, and lessons.js; run build-schedule.mjs first.
 // Links between .md files are rewritten to the .html versions, and heading IDs match the
 // anchors used by schedule.html. No packages needed; it handles the Markdown this plan uses:
 // headings, paragraphs, nested lists, fenced code, tables, links, bold, italics, inline code.
@@ -141,32 +142,6 @@ function parseBlocks(lines, slug) {
   return out;
 }
 
-const CSS = `
-:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
-@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
-* { box-sizing:border-box; }
-body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
-nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
-main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
-a { color:var(--accent); }
-a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
-h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
-h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
-h1:target,h2:target,h3:target { background:var(--target); }
-.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
-h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
-code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
-pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
-pre code { background:none; padding:0; font-size:.88rem; }
-.table-wrap { overflow-x:auto; }
-table { border-collapse:collapse; margin:1em 0; }
-th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
-th { background:var(--code); }
-li { margin:.2em 0; } li > p { margin:.3em 0; }
-hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
-.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
-@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
-`;
 
 const pages = [
   ["plan.md", "Plan and Week 1"],
@@ -193,31 +168,48 @@ pages.forEach(([rel, label], index) => {
   const md = fs.readFileSync(path.join(root, rel), "utf8").replace(/\r\n/g, "\n");
   const body = parseBlocks(md.split("\n"), makeSlugger()).join("\n");
   const title = (md.match(/^# (.*)$/m) || [, label])[1].replace(/[`*]/g, "");
-  const nav = [
-    `<a href="${relLink(rel, "schedule.html")}">← Schedule</a>`,
-    `<a href="${relLink(rel, "plan.md")}">Plan</a>`,
-    `<a href="${relLink(rel, "resources.md")}">Resources</a>`
-  ].join("");
+  const htmlRel = rel.replace(/\.md$/, ".html");
+  const toRoot = rel.includes("/") ? "../" : "";
+  const current = (target) => (htmlRel === target ? ' aria-current="page"' : "");
   const prev = pages[index - 1];
   const next = pages[index + 1];
-  const pager = `<nav class="pager" aria-label="Sections">${prev ? `<a href="${relLink(rel, prev[0])}">← ${esc(prev[1])}</a>` : "<span></span>"}${next ? `<a href="${relLink(rel, next[0])}">${esc(next[1])} →</a>` : "<span></span>"}</nav>`;
+  const pager = `<nav class="pager" aria-label="Sections">${prev ? `<a class="prev" href="${relLink(rel, prev[0])}"><small>Previous</small>← ${esc(prev[1])}</a>` : "<span></span>"}${next ? `<a class="next" href="${relLink(rel, next[0])}"><small>Next</small>${esc(next[1])} →</a>` : "<span></span>"}</nav>`;
   const html = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(title)}</title>
-<style>${CSS}</style>
+<title>${esc(title)} · AI Engineering Plan</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="${toRoot}assets/site.css">
+<script src="${toRoot}assets/common.js"></script>
 </head>
-<body>
-<nav class="top" aria-label="Plan">${nav}</nav>
-<main>
+<body data-page="${htmlRel}" data-root="${toRoot}">
+<a class="skip" href="#content">Skip to the lesson</a>
+<div class="read-progress" aria-hidden="true"><span></span></div>
+<header class="topbar">
+  <button type="button" class="icon-btn toc-toggle" id="toc-btn" aria-controls="toc" aria-expanded="false" aria-label="Show contents">☰</button>
+  <a class="brand" href="${toRoot}schedule.html"><span class="logo" aria-hidden="true">AI</span><span class="brand-text">AI Engineering Plan</span></a>
+  <nav class="top-links" aria-label="Plan">
+    <a href="${toRoot}schedule.html">Schedule</a>
+    <a href="${toRoot}plan.html"${current("plan.html")}>Plan</a>
+    <a href="${toRoot}resources.html"${current("resources.html")}>Resources</a>
+  </nav>
+  <span class="grow"></span>
+  <button type="button" class="icon-btn" id="theme-btn"></button>
+</header>
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="On this page"></nav>
+  <main class="prose" id="content">
 ${body}
 ${pager}
-</main>
+  </main>
+</div>
+<script src="${toRoot}assets/plan-data.js"></script>
+<script src="${toRoot}assets/lessons.js"></script>
 </body>
 </html>
 `;
-  fs.writeFileSync(path.join(root, rel.replace(/\.md$/, ".html")), html, "utf8");
+  fs.writeFileSync(path.join(root, htmlRel), html, "utf8");
 });
 console.log(`Wrote ${pages.length} HTML pages.`);

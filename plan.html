@@ -3,37 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Engineering Plan: Week by Week</title>
-<style>
-:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
-@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
-* { box-sizing:border-box; }
-body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
-nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
-main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
-a { color:var(--accent); }
-a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
-h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
-h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
-h1:target,h2:target,h3:target { background:var(--target); }
-.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
-h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
-code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
-pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
-pre code { background:none; padding:0; font-size:.88rem; }
-.table-wrap { overflow-x:auto; }
-table { border-collapse:collapse; margin:1em 0; }
-th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
-th { background:var(--code); }
-li { margin:.2em 0; } li > p { margin:.3em 0; }
-hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
-.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
-@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
-</style>
+<title>AI Engineering Plan: Week by Week · AI Engineering Plan</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/common.js"></script>
 </head>
-<body>
-<nav class="top" aria-label="Plan"><a href="schedule.html">← Schedule</a><a href="plan.html">Plan</a><a href="resources.html">Resources</a></nav>
-<main>
+<body data-page="plan.html" data-root="">
+<a class="skip" href="#content">Skip to the lesson</a>
+<div class="read-progress" aria-hidden="true"><span></span></div>
+<header class="topbar">
+  <button type="button" class="icon-btn toc-toggle" id="toc-btn" aria-controls="toc" aria-expanded="false" aria-label="Show contents">☰</button>
+  <a class="brand" href="schedule.html"><span class="logo" aria-hidden="true">AI</span><span class="brand-text">AI Engineering Plan</span></a>
+  <nav class="top-links" aria-label="Plan">
+    <a href="schedule.html">Schedule</a>
+    <a href="plan.html" aria-current="page">Plan</a>
+    <a href="resources.html">Resources</a>
+  </nav>
+  <span class="grow"></span>
+  <button type="button" class="icon-btn" id="theme-btn"></button>
+</header>
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="On this page"></nav>
+  <main class="prose" id="content">
 <h1 id="ai-engineering-plan-week-by-week">AI Engineering Plan: Week by Week<a class="anchor" href="#ai-engineering-plan-week-by-week" aria-label="Link to this heading">#</a></h1>
 <p><strong>Goal:</strong> by the end you can build and deploy real AI systems: LLM apps, RAG, agents, MCP servers, and AWS deployments. You'll also be able to work as a forward deployed engineer, someone who takes these systems into a customer's environment and makes them work there.</p>
 <p><strong>Language:</strong> C# and .NET by default, because that's your strength. Python has its own block of weeks (5–8), then comes back wherever the Python ecosystem is clearly better, for example RAG evaluation and LangGraph.</p>
@@ -48,6 +39,8 @@ hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
 <li><code>tools/check-links.mjs</code>: run <code>node tools/check-links.mjs</code> to re-check every link; the results go to <code>tools/link-report.json</code></li>
 <li><code>tools/build-schedule.mjs</code>: run <code>node tools/build-schedule.mjs 2026-10-28</code> to rebuild the schedule after editing the plan, or pass a different start date</li>
 <li><code>tools/build-html.mjs</code>: run <code>node tools/build-html.mjs</code> to rebuild the HTML lesson pages (<code>plan.html</code>, <code>resources.html</code>, and <code>weeks/*.html</code>) after editing any <code>.md</code> file</li>
+<li><code>data/roadmap-map.json</code>: which roadmap.sh topics to mark done after each week. After editing it, run <code>node tools/fetch-roadmap-titles.mjs</code> (needs internet) to refresh the topic names, then rebuild the schedule</li>
+<li><code>assets/</code>: the shared styles and scripts for every HTML page. Keep this folder next to the pages</li>
 </ul>
 <hr>
 <h2 id="your-main-project-the-curriculum-assistant">Your main project: the Curriculum Assistant<a class="anchor" href="#your-main-project-the-curriculum-assistant" aria-label="Link to this heading">#</a></h2>
@@ -343,7 +336,10 @@ while (true)
 <li><strong>Optional:</strong> try a different model, such as <code>ollama pull qwen2.5:3b</code>, by changing just the model name. Your code doesn't change, which is the point of <code>IChatClient</code>.</li>
 </ul>
 <p><strong>Done when:</strong> the repository is on GitHub, and running <code>dotnet run</code> in each folder works.</p>
-<nav class="pager" aria-label="Sections"><span></span><a href="weeks/A-ai-foundations-weeks-02-04.html">A. AI foundations (Weeks 2–4) →</a></nav>
-</main>
+<nav class="pager" aria-label="Sections"><span></span><a class="next" href="weeks/A-ai-foundations-weeks-02-04.html"><small>Next</small>A. AI foundations (Weeks 2–4) →</a></nav>
+  </main>
+</div>
+<script src="assets/plan-data.js"></script>
+<script src="assets/lessons.js"></script>
 </body>
 </html>
