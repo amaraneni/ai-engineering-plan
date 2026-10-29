@@ -1,9 +1,12 @@
-// Builds a dated, checkable schedule from the plan files.
+// Builds the dated, checkable schedule from the plan files.
 // Usage (from the plan folder):  node tools/build-schedule.mjs [start-date YYYY-MM-DD]
-// Default start date: 2026-10-28. Re-run it after editing the plan; your ticks in
-// schedule.html are kept in the browser, keyed by week and day, so they survive a rebuild.
-// Outputs: schedule.md (printable, tickable on GitHub) and schedule.html (click to tick).
-// schedule.html links to the HTML lesson pages; run tools/build-html.mjs to create them.
+// Default start date: 2026-10-28. Re-run it after editing the plan. Your ticks, notes, and
+// roadmap.sh topics are kept in the browser, keyed by week and day, so they survive a rebuild.
+// Outputs:
+//   assets/plan-data.js  the days and roadmap.sh topics, shared by every HTML page
+//   schedule.html        the interactive dashboard and checklist
+//   schedule.md          the same checklist as Markdown (printable, tickable on GitHub)
+// The lesson pages come from tools/build-html.mjs; roadmap.sh topics from data/roadmap-topics.json.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -27,13 +30,11 @@ function makeSlugger() {
 }
 
 const sectionFiles = ["plan.md", ...fs.readdirSync(path.join(root, "weeks")).filter((f) => f.endsWith(".md")).sort().map((f) => `weeks/${f}`)];
-const sectionTitles = new Map(); // week -> section title
-const weeks = new Map();         // week -> { title, file, days: [] }
+const weeks = new Map(); // week -> { title, file, days: [] }
 
 for (const rel of sectionFiles) {
   const lines = fs.readFileSync(path.join(root, rel), "utf8").split(/\r?\n/);
   const slug = makeSlugger();
-  let section = null;
   let week = null;
   let day = null;
   let inCode = false;
@@ -44,15 +45,10 @@ for (const rel of sectionFiles) {
     const heading = line.match(/^(#{1,6})\s+(.*)$/);
     const headingSlug = heading ? slug(heading[2]) : null;
 
-    const sec = line.match(/^# Section ([A-J]): (.*)$/);
-    if (sec) section = `${sec[1]}. ${sec[2]}`;
-
     const w = line.match(/^## Week (\d+)(?: in full)?: (.*)$/);
     if (w) {
-      const n = Number(w[1]);
-      week = { number: n, title: w[2].trim(), file: rel, days: [] };
-      weeks.set(n, week);
-      if (section) sectionTitles.set(n, section);
+      week = { number: Number(w[1]), title: w[2].trim(), file: rel, days: [] };
+      weeks.set(week.number, week);
       day = null;
       continue;
     }
@@ -62,11 +58,12 @@ for (const rel of sectionFiles) {
       week.days.push(day);
       continue;
     }
-    if (heading && heading[1].length <= 2) { day = null; }
+    if (heading && heading[1].length <= 2) day = null;
     const done = line.match(/^\*\*Done when:\*\*\s*(.*)$/);
     if (done && day && !day.doneWhen) day.doneWhen = done[1].trim();
   }
 }
+
 // One name per section, by week range, so Week 1 (in plan.md) and Weeks 2–4 share Section A.
 const SECTIONS = [
   [1, 4, "A. AI foundations in .NET (Weeks 1–4)"],
@@ -80,9 +77,9 @@ const SECTIONS = [
   [45, 50, "I. Forward deployed engineering (Weeks 45–50)"],
   [51, 52, "J. Capstone (Weeks 51–52)"]
 ];
-for (const [from, to, name] of SECTIONS) for (let n = from; n <= to; n++) sectionTitles.set(n, name);
+const sectionOf = (n) => SECTIONS.find(([a, b]) => n >= a && n <= b)[2];
 
-// Plain text for the schedule: drop Markdown links and emphasis.
+// Plain text: drop Markdown links and emphasis.
 const plain = (s) => s.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/\*\*|`/g, "");
 
 const entries = [];
@@ -91,17 +88,16 @@ for (let n = 1; n <= 52; n++) {
   if (!w) throw new Error(`Week ${n} not found`);
   for (const d of w.days) {
     if (d.number < 1 || d.number > 7) continue;
-    const offset = (n - 1) * 7 + (d.number - 1);
     const date = new Date(start);
-    date.setUTCDate(date.getUTCDate() + offset);
+    date.setUTCDate(date.getUTCDate() + (n - 1) * 7 + (d.number - 1));
     entries.push({
       id: `W${String(n).padStart(2, "0")}D${d.number}`,
       week: n,
       weekTitle: plain(w.title),
-      section: sectionTitles.get(n) ?? "",
+      section: sectionOf(n),
       day: d.number,
       title: plain(d.title),
-      doneWhen: plain(d.doneWhen) || (d.number === 7 ? "Your week's work is pushed and anything skipped is caught up." : ""),
+      doneWhen: plain(d.doneWhen) || (d.number === 7 ? "Your week's work is pushed, and anything you skipped is caught up." : ""),
       light: d.number === 7,
       date: date.toISOString().slice(0, 10),
       link: `${w.file}#${d.anchor}`,
@@ -111,13 +107,25 @@ for (let n = 1; n <= 52; n++) {
 }
 if (entries.length !== 364) throw new Error(`Expected 364 days, found ${entries.length}`);
 
+// roadmap.sh topics for each week (from tools/fetch-roadmap-titles.mjs).
+const roadmapFile = path.join(root, "data", "roadmap-topics.json");
+if (!fs.existsSync(roadmapFile)) throw new Error("data/roadmap-topics.json is missing. Run: node tools/fetch-roadmap-titles.mjs");
+const roadmap = JSON.parse(fs.readFileSync(roadmapFile, "utf8"));
+for (let n = 1; n <= 52; n++) if (!roadmap.weeks[String(n)]?.length) throw new Error(`No roadmap.sh topics for Week ${n}`);
+
 const fmt = (iso, opts) => new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", { timeZone: "UTC", ...opts });
 const endDate = entries.at(-1).date;
+
+// ---------- assets/plan-data.js ----------
+const data = { start: startArg, entries, roadmap: { roadmaps: roadmap.roadmaps, weeks: roadmap.weeks, checkedAt: roadmap.checkedAt } };
+fs.mkdirSync(path.join(root, "assets"), { recursive: true });
+fs.writeFileSync(path.join(root, "assets", "plan-data.js"),
+  `// Generated by tools/build-schedule.mjs. Don't edit by hand.\nwindow.PLAN_DATA = ${JSON.stringify(data).replace(/</g, "\\u003c")};\n`, "utf8");
 
 // ---------- schedule.md ----------
 let md = `# Schedule and checklist\n\n`;
 md += `Starts **${fmt(entries[0].date, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}** and ends **${fmt(endDate, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}**: 52 weeks, 364 days. Day 7 of each week is a light catch-up day.\n\n`;
-md += `Tick a day when its "Done when" goal is met. Each title links to the full lesson. For clickable ticks that are saved for you, open [schedule.html](schedule.html) in your browser instead.\n\n`;
+md += `Tick a day when its "Done when" goal is met. Each title links to the full lesson. At the end of each week, mark the listed topics done on roadmap.sh. For a dashboard with saved ticks and notes, open [schedule.html](schedule.html) in your browser instead.\n\n`;
 md += `Missed a day? Do it next, and use that week's Day 7 to catch up. The dates are a guide, not a deadline.\n\n`;
 md += `Generated by \`node tools/build-schedule.mjs ${startArg}\`. To start on a different date, run it again with that date.\n`;
 let lastSection = "";
@@ -129,179 +137,123 @@ for (let n = 1; n <= 52; n++) {
     md += `- [ ] **${fmt(e.date, { weekday: "short", month: "short", day: "numeric" })}** · Day ${e.day}: [${e.title}](${e.link})${e.light ? " *(light)*" : ""}\n`;
     if (e.doneWhen) md += `  - Done when: ${e.doneWhen}\n`;
   }
+  md += `\n**After this week, mark these done on roadmap.sh:**\n\n`;
+  for (const t of roadmap.weeks[String(n)]) md += `- [ ] [${roadmap.roadmaps[t.roadmap].name}](${roadmap.roadmaps[t.roadmap].url}): ${t.title}\n`;
 }
 fs.writeFileSync(path.join(root, "schedule.md"), md, "utf8");
 
 // ---------- schedule.html ----------
-const data = JSON.stringify(entries).replace(/</g, "\\u003c");
 const html = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Engineering Plan: schedule and checklist</title>
-<style>
-  :root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --done:#1a7f37; --today:#fff8c5; --card:#f6f8fa; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --done:#3fb950; --today:#3a3000; --card:#151b23; } }
-  * { box-sizing: border-box; }
-  body { margin:0; font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--fg); }
-  header { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:12px 16px; }
-  h1 { font-size:1.25rem; margin:0 0 6px; }
-  .bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
-  .progress { flex:1 1 240px; height:10px; background:var(--card); border:1px solid var(--line); border-radius:6px; overflow:hidden; }
-  .progress > span { display:block; height:100%; background:var(--done); width:0; }
-  button, select { font:inherit; padding:6px 10px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); cursor:pointer; min-height:36px; }
-  button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
-  main { max-width:960px; margin:0 auto; padding:8px 16px 48px; }
-  h2 { font-size:1.1rem; margin:28px 0 8px; color:var(--muted); }
-  section.week { border:1px solid var(--line); border-radius:8px; margin:12px 0; background:var(--card); }
-  section.week > h3 { margin:0; padding:10px 12px; font-size:1rem; display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; }
-  section.week > h3 small { color:var(--muted); font-weight:normal; }
-  ul { list-style:none; margin:0; padding:0; }
-  li { display:grid; grid-template-columns:auto 1fr; gap:4px 10px; padding:8px 12px; border-top:1px solid var(--line); background:var(--bg); }
-  li.today { background:var(--today); }
-  li.done .title { text-decoration:line-through; color:var(--muted); }
-  input[type=checkbox] { width:20px; height:20px; margin-top:2px; accent-color:var(--done); }
-  .date { color:var(--muted); font-size:.9rem; margin-right:6px; white-space:nowrap; }
-  .done-when { grid-column:2; color:var(--muted); font-size:.92rem; }
-  .light { font-size:.8rem; border:1px solid var(--line); border-radius:10px; padding:0 6px; margin-left:6px; color:var(--muted); }
-  a { color:var(--accent); }
-  .status { min-height:1.5em; color:var(--muted); font-size:.9rem; }
-  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
-  @media print { header { position:static; } .bar button, .bar select { display:none; } li.today { background:none; } }
-</style>
+<title>AI Engineering Plan: schedule</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/common.js"></script>
 </head>
 <body>
-<header>
-  <h1>AI Engineering Plan: schedule and checklist</h1>
-  <p style="margin:0 0 6px"><a href="plan.html">Plan</a> · <a href="resources.html">Resources</a></p>
-  <div class="bar">
-    <div class="progress" role="progressbar" aria-label="Days completed" aria-valuemin="0" aria-valuemax="364" aria-valuenow="0"><span></span></div>
-    <strong id="count">0 / 364</strong>
-    <button type="button" id="today-btn">Go to today</button>
-    <label class="sr-only" for="filter">Show</label>
-    <select id="filter"><option value="all">All days</option><option value="todo">Not done</option><option value="done">Done</option></select>
-    <button type="button" id="export-btn">Export progress</button>
-    <button type="button" id="import-btn">Import progress</button>
-    <input type="file" id="import-file" accept="application/json" hidden>
-  </div>
-  <div class="status" id="status" role="status" aria-live="polite"></div>
+<a class="skip" href="#weeks">Skip to the checklist</a>
+<header class="topbar">
+  <a class="brand" href="schedule.html"><span class="logo" aria-hidden="true">AI</span><span class="brand-text">AI Engineering Plan</span></a>
+  <nav class="top-links" aria-label="Plan">
+    <a href="schedule.html" aria-current="page">Schedule</a>
+    <a href="plan.html">Plan</a>
+    <a href="resources.html">Resources</a>
+  </nav>
+  <span class="grow"></span>
+  <button type="button" class="btn sm" id="today-btn" title="Shortcut: T">Today <kbd>T</kbd></button>
+  <button type="button" class="icon-btn" id="theme-btn"></button>
 </header>
-<main id="main"></main>
-<script>
-"use strict";
-const ENTRIES = ${data};
-const KEY = "ai-plan-checklist-v1";
-let done = {};
-try { done = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { done = {}; }
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch { say("Your browser isn't saving progress. Use Export to keep a copy."); } };
-const say = (msg) => { document.getElementById("status").textContent = msg; };
-const todayIso = (() => { const d = new Date(); return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().slice(0, 10); })();
-const fmt = (iso, opts) => new Date(iso + "T00:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", ...opts });
 
-function el(tag, props = {}, children = []) {
-  const n = document.createElement(tag);
-  for (const [k, v] of Object.entries(props)) { if (k === "text") n.textContent = v; else n.setAttribute(k, v); }
-  for (const c of [].concat(children)) n.append(c);
-  return n;
-}
+<main class="container">
+  <div class="page-head">
+    <h1>Your AI engineering year</h1>
+    <p class="muted" id="plan-dates"></p>
+  </div>
 
-function render() {
-  const main = document.getElementById("main");
-  main.replaceChildren();
-  const filter = document.getElementById("filter").value;
-  let section = "";
-  for (let w = 1; w <= 52; w++) {
-    const days = ENTRIES.filter((e) => e.week === w && (filter === "all" || (filter === "done") === !!done[e.id]));
-    if (!days.length) continue;
-    if (days[0].section !== section) { section = days[0].section; main.append(el("h2", { text: section })); }
-    const all = ENTRIES.filter((e) => e.week === w);
-    const weekDone = all.filter((e) => done[e.id]).length;
-    const box = el("section", { class: "week", "aria-labelledby": "w" + w });
-    box.append(el("h3", { id: "w" + w }, [
-      el("span", { text: "Week " + w + ": " + all[0].weekTitle }),
-      el("small", { text: fmt(all[0].date, { month: "short", day: "numeric" }) + " – " + fmt(all[6].date, { month: "short", day: "numeric" }) + " · " + weekDone + "/7 done" })
-    ]));
-    const list = el("ul");
-    for (const e of days) {
-      const li = el("li", { id: e.id });
-      if (e.date === todayIso) li.classList.add("today");
-      if (done[e.id]) li.classList.add("done");
-      const cb = el("input", { type: "checkbox", id: "cb-" + e.id });
-      cb.checked = !!done[e.id];
-      cb.addEventListener("change", () => {
-        if (cb.checked) done[e.id] = new Date().toISOString(); else delete done[e.id];
-        save(); updateProgress();
-        li.classList.toggle("done", cb.checked);
-        say((cb.checked ? "Marked done: " : "Marked not done: ") + "Week " + e.week + " Day " + e.day + ".");
-      });
-      const label = el("label", { for: "cb-" + e.id }, [
-        el("span", { class: "date", text: fmt(e.date, { weekday: "short", month: "short", day: "numeric" }) }),
-        el("span", { class: "title", text: "Day " + e.day + ": " + e.title })
-      ]);
-      if (e.light) label.append(el("span", { class: "light", text: "light" }));
-      const link = el("a", { href: e.htmlLink, target: "_blank", rel: "noopener", text: "Open lesson" });
-      li.append(cb, el("div", {}, [label, document.createTextNode(" · "), link]));
-      if (e.doneWhen) li.append(el("div", { class: "done-when", text: "Done when: " + e.doneWhen }));
-      list.append(li);
-    }
-    box.append(list);
-    main.append(box);
-  }
-  if (!main.children.length) main.append(el("p", { text: "Nothing to show for this filter." }));
-}
+  <section id="dashboard" aria-label="Dashboard">
+    <div class="dash-grid">
+      <article class="card hero" id="hero" aria-live="polite"></article>
+      <article class="card progress-card" aria-label="Overall progress">
+        <div class="ring-wrap" id="ring" role="progressbar" aria-label="Days completed" aria-valuemin="0" aria-valuemax="364" aria-valuenow="0">
+          <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+            <defs><linearGradient id="ring-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#9333ea"/></linearGradient></defs>
+            <circle class="ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="52" stroke="url(#ring-grad)" style="stroke:url(#ring-grad)"/>
+          </svg>
+          <div class="ring-label"><strong id="ring-pct">0%</strong><span id="ring-count">0 of 364 days</span></div>
+        </div>
+        <p class="muted small" id="ring-week"></p>
+      </article>
+      <article class="card stats" id="stats" aria-label="Stats"></article>
+    </div>
 
-function updateProgress() {
-  const count = ENTRIES.filter((e) => done[e.id]).length;
-  document.getElementById("count").textContent = count + " / 364";
-  const bar = document.querySelector(".progress");
-  bar.setAttribute("aria-valuenow", count);
-  bar.firstElementChild.style.width = (count / 364 * 100) + "%";
-  document.querySelectorAll("section.week").forEach((s) => {
-    const w = Number(s.querySelector("h3").id.slice(1));
-    const all = ENTRIES.filter((e) => e.week === w);
-    s.querySelector("h3 small").textContent = fmt(all[0].date, { month: "short", day: "numeric" }) + " – " + fmt(all[6].date, { month: "short", day: "numeric" }) + " · " + all.filter((e) => done[e.id]).length + "/7 done";
-  });
-}
+    <section class="card sections" aria-labelledby="sec-title">
+      <div class="card-head"><h2 id="sec-title">Sections</h2><span class="muted small">Click one to show only its weeks.</span></div>
+      <div class="sec-grid" id="sec-grid"></div>
+    </section>
 
-document.getElementById("filter").addEventListener("change", () => { render(); updateProgress(); });
-document.getElementById("today-btn").addEventListener("click", () => {
-  const target = ENTRIES.find((e) => e.date === todayIso) || ENTRIES.find((e) => !done[e.id]);
-  if (!target) { say("Everything is done."); return; }
-  document.getElementById("filter").value = "all"; render(); updateProgress();
-  const li = document.getElementById(target.id);
-  li.scrollIntoView({ block: "center" });
-  document.getElementById("cb-" + target.id).focus();
-  say(target.date === todayIso ? "Today: Week " + target.week + " Day " + target.day + "." : "Today isn't in the schedule. Showing your first unfinished day.");
-});
-document.getElementById("export-btn").addEventListener("click", () => {
-  const blob = new Blob([JSON.stringify({ format: KEY, exportedAt: new Date().toISOString(), done }, null, 2)], { type: "application/json" });
-  const a = el("a", { href: URL.createObjectURL(blob), download: "ai-plan-progress.json" });
-  document.body.append(a); a.click(); a.remove();
-  say("Progress exported.");
-});
-document.getElementById("import-btn").addEventListener("click", () => document.getElementById("import-file").click());
-document.getElementById("import-file").addEventListener("change", async (ev) => {
-  const file = ev.target.files[0]; ev.target.value = "";
-  if (!file) return;
-  try {
-    const parsed = JSON.parse(await file.text());
-    const ids = new Set(ENTRIES.map((e) => e.id));
-    if (parsed.format !== KEY || typeof parsed.done !== "object") throw new Error("not a progress file from this page");
-    const clean = {};
-    for (const [id, when] of Object.entries(parsed.done)) if (ids.has(id) && typeof when === "string") clean[id] = when;
-    if (!confirm("Replace your current progress with " + Object.keys(clean).length + " completed days from this file?")) { say("Import cancelled."); return; }
-    done = clean; save(); render(); updateProgress();
-    say("Progress imported.");
-  } catch (err) { say("Couldn't import that file: " + err.message + "."); }
-});
+    <div class="dash-grid two">
+      <section class="card heat-card" aria-labelledby="heat-title">
+        <div class="card-head">
+          <h2 id="heat-title">Your year</h2>
+          <div class="legend" aria-hidden="true">
+            <span><i class="s-done"></i>Done</span><span><i class="s-today"></i>Today</span><span><i class="s-overdue"></i>Behind</span><span><i class="s-future"></i>Coming up</span>
+          </div>
+        </div>
+        <div class="heat-scroll">
+          <div class="heat-months" id="heat-months" aria-hidden="true"></div>
+          <div class="heat-grid" id="heat-grid" aria-label="Every day of the plan. Each column is a week."></div>
+        </div>
+        <p class="muted small">Each column is a week and each square is a day. Click a square to jump to it.</p>
+      </section>
+      <section class="card roadmap-card heat-card" aria-labelledby="rm-title">
+        <div class="card-head"><h2 id="rm-title">roadmap.sh progress</h2></div>
+        <div class="rm-progress" id="rm-progress"></div>
+        <p class="muted small" style="margin-top:12px">Topics you've ticked after each week. Click a roadmap to open it.</p>
+      </section>
+    </div>
+  </section>
 
-render(); updateProgress();
-</script>
+  <div class="toolbar" role="search">
+    <div class="search">
+      <label class="sr-only" for="search">Search lessons, notes, and roadmap topics</label>
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="search" placeholder="Search lessons, notes, and roadmap topics" autocomplete="off">
+      <kbd class="search-kbd" aria-hidden="true">/</kbd>
+    </div>
+    <div class="chips" role="group" aria-label="Show">
+      <button type="button" class="chip-btn" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="chip-btn" data-filter="week" aria-pressed="false">This week</button>
+      <button type="button" class="chip-btn" data-filter="todo" aria-pressed="false">To do</button>
+      <button type="button" class="chip-btn" data-filter="overdue" aria-pressed="false">Behind <span class="count" id="overdue-count" hidden>0</span></button>
+      <button type="button" class="chip-btn" data-filter="done" aria-pressed="false">Done</button>
+    </div>
+    <label class="sr-only" for="section-select">Section</label>
+    <select class="sel" id="section-select"><option value="">All sections</option></select>
+    <button type="button" class="btn sm" id="expand-btn">Expand all</button>
+  </div>
+  <p class="muted small" id="result-count" role="status" aria-live="polite"></p>
+
+  <div id="weeks"></div>
+
+  <footer class="foot">
+    <p>Your ticks, notes, and roadmap.sh topics are saved in this browser only.
+      <button type="button" class="btn sm" id="export-btn">Export progress</button>
+      <button type="button" class="btn sm" id="import-btn">Import progress</button>
+      <input type="file" id="import-file" accept="application/json" hidden>
+    </p>
+    <p>Shortcuts: <kbd>/</kbd> search · <kbd>T</kbd> today · <kbd>Esc</kbd> clear search</p>
+  </footer>
+</main>
+<script src="assets/plan-data.js"></script>
+<script src="assets/schedule.js"></script>
 </body>
 </html>
 `;
 fs.writeFileSync(path.join(root, "schedule.html"), html, "utf8");
-console.log(`Wrote schedule.md and schedule.html: ${entries.length} days, ${entries[0].date} to ${endDate}.`);
+console.log(`Wrote assets/plan-data.js, schedule.html, and schedule.md: ${entries.length} days, ${entries[0].date} to ${endDate}.`);
 const missingDoneWhen = entries.filter((e) => !e.doneWhen).map((e) => e.id);
 if (missingDoneWhen.length) console.log(`Days without a "Done when" line: ${missingDoneWhen.join(", ")}`);
