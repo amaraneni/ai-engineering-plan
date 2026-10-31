@@ -3,37 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Section C: RAG in depth (Weeks 9–14)</title>
-<style>
-:root { --bg:#fff; --fg:#1b1f24; --muted:#59636e; --line:#d1d9e0; --accent:#0969da; --code:#f6f8fa; --target:#fff8c5; }
-@media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --accent:#4493f8; --code:#151b23; --target:#3a3000; } }
-* { box-sizing:border-box; }
-body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
-nav.top { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 16px; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.95rem; }
-main { max-width:900px; margin:0 auto; padding:16px 16px 64px; }
-a { color:var(--accent); }
-a:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
-h1,h2,h3,h4 { line-height:1.3; scroll-margin-top:56px; }
-h1 { font-size:1.8rem; } h2 { font-size:1.4rem; margin-top:2.2em; padding-bottom:.2em; border-bottom:1px solid var(--line); } h3 { font-size:1.15rem; margin-top:1.8em; }
-h1:target,h2:target,h3:target { background:var(--target); }
-.anchor { margin-left:.4em; color:var(--muted); text-decoration:none; font-weight:normal; opacity:0; }
-h1:hover .anchor,h2:hover .anchor,h3:hover .anchor,.anchor:focus { opacity:1; }
-code { font:.9em/1.4 ui-monospace,Consolas,monospace; background:var(--code); padding:.1em .3em; border-radius:4px; }
-pre { background:var(--code); border:1px solid var(--line); border-radius:6px; padding:12px; overflow:auto; }
-pre code { background:none; padding:0; font-size:.88rem; }
-.table-wrap { overflow-x:auto; }
-table { border-collapse:collapse; margin:1em 0; }
-th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top; }
-th { background:var(--code); }
-li { margin:.2em 0; } li > p { margin:.3em 0; }
-hr { border:0; border-top:1px solid var(--line); margin:2em 0; }
-.pager { display:flex; justify-content:space-between; gap:16px; margin-top:3em; padding-top:1em; border-top:1px solid var(--line); }
-@media print { nav.top, .pager, .anchor { display:none; } h1:target,h2:target,h3:target { background:none; } }
-</style>
+<title>Section C: RAG in depth (Weeks 9–14) · AI Engineering Plan</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/common.js"></script>
 </head>
-<body>
-<nav class="top" aria-label="Plan"><a href="../schedule.html">← Schedule</a><a href="../plan.html">Plan</a><a href="../resources.html">Resources</a></nav>
-<main>
+<body data-page="weeks/C-rag-weeks-09-14.html" data-root="../">
+<a class="skip" href="#content">Skip to the lesson</a>
+<div class="read-progress" aria-hidden="true"><span></span></div>
+<header class="topbar">
+  <button type="button" class="icon-btn toc-toggle" id="toc-btn" aria-controls="toc" aria-expanded="false" aria-label="Show contents">☰</button>
+  <a class="brand" href="../schedule.html"><span class="logo" aria-hidden="true">AI</span><span class="brand-text">AI Engineering Plan</span></a>
+  <nav class="top-links" aria-label="Plan">
+    <a href="../schedule.html">Schedule</a>
+    <a href="../plan.html">Plan</a>
+    <a href="../resources.html">Resources</a>
+  </nav>
+  <span class="grow"></span>
+  <button type="button" class="icon-btn" id="theme-btn"></button>
+</header>
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="On this page"></nav>
+  <main class="prose" id="content">
 <h1 id="section-c-rag-in-depth-weeks-914">Section C: RAG in depth (Weeks 9–14)<a class="anchor" href="#section-c-rag-in-depth-weeks-914" aria-label="Link to this heading">#</a></h1>
 <p>Everything here goes into the <code>CurriculumAssistant</code> solution from Week 4. By Week 14 it downloads the docs your plan links to, stores them in a real vector database, searches with keywords plus meaning, measures its own quality, and runs as a web API with a chat page.</p>
 <p><strong>Courses for this section (optional, see <a href="../resources.html">resources.md</a>):</strong> the Coursera <a href="https://www.coursera.org/learn/retrieval-augmented-generation-rag" target="_blank" rel="noopener">Retrieval Augmented Generation (RAG)</a> course for Weeks 9–13, and the Docker sections of Udemy's <a href="https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/" target="_blank" rel="noopener">Docker and Kubernetes: The Complete Guide</a> for Week 10. <strong>roadmap.sh:</strong> <a href="https://roadmap.sh/ai-engineer" target="_blank" rel="noopener">AI Engineer</a> (RAG and vector databases topics), <a href="https://roadmap.sh/docker" target="_blank" rel="noopener">Docker</a>, <a href="https://roadmap.sh/aspnet-core" target="_blank" rel="noopener">ASP.NET Core</a>.</p>
@@ -477,7 +468,10 @@ builder.Services.AddSingleton&lt;RagService&gt;();</code></pre></li>
 <li>Push, run your evaluation against the API version, and add a screenshot of the chat page to the README.</li>
 <li>Section C is complete. Tick the RAG topics on <a href="https://roadmap.sh/ai-engineer" target="_blank" rel="noopener">roadmap.sh/ai-engineer</a>.</li>
 </ul>
-<nav class="pager" aria-label="Sections"><a href="B-python-weeks-05-08.html">← B. Python (Weeks 5–8)</a><a href="D-agents-weeks-15-20.html">D. Agents (Weeks 15–20) →</a></nav>
-</main>
+<nav class="pager" aria-label="Sections"><a class="prev" href="B-python-weeks-05-08.html"><small>Previous</small>← B. Python (Weeks 5–8)</a><a class="next" href="D-agents-weeks-15-20.html"><small>Next</small>D. Agents (Weeks 15–20) →</a></nav>
+  </main>
+</div>
+<script src="../assets/plan-data.js"></script>
+<script src="../assets/lessons.js"></script>
 </body>
 </html>

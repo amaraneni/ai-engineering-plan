@@ -15,6 +15,8 @@
 - `tools/check-links.mjs`: run `node tools/check-links.mjs` to re-check every link; the results go to `tools/link-report.json`
 - `tools/build-schedule.mjs`: run `node tools/build-schedule.mjs 2026-10-28` to rebuild the schedule after editing the plan, or pass a different start date
 - `tools/build-html.mjs`: run `node tools/build-html.mjs` to rebuild the HTML lesson pages (`plan.html`, `resources.html`, and `weeks/*.html`) after editing any `.md` file
+- `data/roadmap-map.json`: which roadmap.sh topics to mark done after each week. After editing it, run `node tools/fetch-roadmap-titles.mjs` (needs internet) to refresh the topic names, then rebuild the schedule
+- `assets/`: the shared styles and scripts for every HTML page. Keep this folder next to the pages
 
 ---
 

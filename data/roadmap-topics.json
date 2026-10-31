@@ -1,0 +1,1069 @@
+{
+ "checkedAt": "2026-10-29",
+ "roadmaps": {
+  "ai-engineer": {
+   "name": "AI Engineer",
+   "url": "https://roadmap.sh/ai-engineer"
+  },
+  "ai-agents": {
+   "name": "AI Agents",
+   "url": "https://roadmap.sh/ai-agents"
+  },
+  "prompt-engineering": {
+   "name": "Prompt Engineering",
+   "url": "https://roadmap.sh/prompt-engineering"
+  },
+  "python": {
+   "name": "Python",
+   "url": "https://roadmap.sh/python"
+  },
+  "docker": {
+   "name": "Docker",
+   "url": "https://roadmap.sh/docker"
+  },
+  "aws": {
+   "name": "AWS",
+   "url": "https://roadmap.sh/aws"
+  },
+  "aspnet-core": {
+   "name": "ASP.NET Core",
+   "url": "https://roadmap.sh/aspnet-core"
+  },
+  "devops": {
+   "name": "DevOps",
+   "url": "https://roadmap.sh/devops"
+  },
+  "linux": {
+   "name": "Linux",
+   "url": "https://roadmap.sh/linux"
+  },
+  "mlops": {
+   "name": "MLOps",
+   "url": "https://roadmap.sh/mlops"
+  },
+  "system-design": {
+   "name": "System Design",
+   "url": "https://roadmap.sh/system-design"
+  },
+  "git-github": {
+   "name": "Git and GitHub",
+   "url": "https://roadmap.sh/git-github"
+  }
+ },
+ "weeks": {
+  "1": [
+   {
+    "id": "ai-engineer/large-language-model-llm",
+    "roadmap": "ai-engineer",
+    "title": "Large Language Model (LLM)"
+   },
+   {
+    "id": "ai-engineer/tokens",
+    "roadmap": "ai-engineer",
+    "title": "Tokens"
+   },
+   {
+    "id": "ai-engineer/context-window",
+    "roadmap": "ai-engineer",
+    "title": "Context Window"
+   },
+   {
+    "id": "ai-engineer/ollama",
+    "roadmap": "ai-engineer",
+    "title": "Ollama"
+   },
+   {
+    "id": "prompt-engineering/what-is-a-prompt",
+    "roadmap": "prompt-engineering",
+    "title": "What is a Prompt?"
+   },
+   {
+    "id": "prompt-engineering/temperature",
+    "roadmap": "prompt-engineering",
+    "title": "Temperature"
+   }
+  ],
+  "2": [
+   {
+    "id": "prompt-engineering/one-shot--few-shot-prompting",
+    "roadmap": "prompt-engineering",
+    "title": "One-Shot / Few-Shot Prompting"
+   },
+   {
+    "id": "prompt-engineering/system-prompting",
+    "roadmap": "prompt-engineering",
+    "title": "System Prompting"
+   },
+   {
+    "id": "prompt-engineering/structured-outputs",
+    "roadmap": "prompt-engineering",
+    "title": "Structured Outputs"
+   },
+   {
+    "id": "ai-engineer/function-calling",
+    "roadmap": "ai-engineer",
+    "title": "Function Calling"
+   },
+   {
+    "id": "ai-agents/what-are-tools",
+    "roadmap": "ai-agents",
+    "title": "What are Tools?"
+   }
+  ],
+  "3": [
+   {
+    "id": "ai-engineer/what-are-embeddings",
+    "roadmap": "ai-engineer",
+    "title": "What are Embeddings"
+   },
+   {
+    "id": "ai-engineer/embedding-models",
+    "roadmap": "ai-engineer",
+    "title": "Embedding Models"
+   },
+   {
+    "id": "ai-engineer/semantic-search",
+    "roadmap": "ai-engineer",
+    "title": "Semantic Search"
+   },
+   {
+    "id": "ai-engineer/performing-similarity-search",
+    "roadmap": "ai-engineer",
+    "title": "Performing Similarity Search"
+   }
+  ],
+  "4": [
+   {
+    "id": "ai-engineer/what-are-rags",
+    "roadmap": "ai-engineer",
+    "title": "What are RAGs?"
+   },
+   {
+    "id": "ai-engineer/retrieval-process",
+    "roadmap": "ai-engineer",
+    "title": "Retrieval Process"
+   },
+   {
+    "id": "ai-engineer/generation",
+    "roadmap": "ai-engineer",
+    "title": "Generation"
+   },
+   {
+    "id": "ai-agents/understand-the-basics-of-rag",
+    "roadmap": "ai-agents",
+    "title": "Understand the Basics of RAG"
+   }
+  ],
+  "5": [
+   {
+    "id": "python/basic-syntax",
+    "roadmap": "python",
+    "title": "Basic Syntax"
+   },
+   {
+    "id": "python/variables-and-data-types",
+    "roadmap": "python",
+    "title": "Variables and Data Types"
+   },
+   {
+    "id": "python/list-comprehensions",
+    "roadmap": "python",
+    "title": "List Comprehensions"
+   },
+   {
+    "id": "python/classes",
+    "roadmap": "python",
+    "title": "Classes"
+   },
+   {
+    "id": "python/typing",
+    "roadmap": "python",
+    "title": "typing"
+   },
+   {
+    "id": "python/uv",
+    "roadmap": "python",
+    "title": "uv"
+   }
+  ],
+  "6": [
+   {
+    "id": "python/file-handling",
+    "roadmap": "python",
+    "title": "File Handling"
+   },
+   {
+    "id": "python/asynchrony",
+    "roadmap": "python",
+    "title": "Asynchrony"
+   },
+   {
+    "id": "python/pydantic",
+    "roadmap": "python",
+    "title": "Pydantic"
+   },
+   {
+    "id": "python/pytest",
+    "roadmap": "python",
+    "title": "pytest"
+   }
+  ],
+  "7": [
+   {
+    "id": "ai-engineer/openai-compatible-apis",
+    "roadmap": "ai-engineer",
+    "title": "OpenAI-compatible APIs"
+   },
+   {
+    "id": "ai-engineer/using-sdks-directly",
+    "roadmap": "ai-engineer",
+    "title": "Using SDKs Directly"
+   },
+   {
+    "id": "ai-engineer/structured-output",
+    "roadmap": "ai-engineer",
+    "title": "Structured Output"
+   }
+  ],
+  "8": [
+   {
+    "id": "python/fast-api",
+    "roadmap": "python",
+    "title": "Fast API"
+   },
+   {
+    "id": "ai-engineer/manual-implementation",
+    "roadmap": "ai-engineer",
+    "title": "Manual Implementation"
+   }
+  ],
+  "9": [
+   {
+    "id": "ai-engineer/chunking",
+    "roadmap": "ai-engineer",
+    "title": "Chunking"
+   },
+   {
+    "id": "ai-engineer/indexing-embeddings",
+    "roadmap": "ai-engineer",
+    "title": "Indexing Embeddings"
+   }
+  ],
+  "10": [
+   {
+    "id": "docker/what-are-containers",
+    "roadmap": "docker",
+    "title": "What are Containers?"
+   },
+   {
+    "id": "docker/dockerfiles",
+    "roadmap": "docker",
+    "title": "Dockerfiles"
+   },
+   {
+    "id": "docker/docker-compose",
+    "roadmap": "docker",
+    "title": "docker compose"
+   },
+   {
+    "id": "docker/volumes",
+    "roadmap": "docker",
+    "title": "Volumes"
+   },
+   {
+    "id": "ai-engineer/qdrant",
+    "roadmap": "ai-engineer",
+    "title": "Qdrant"
+   },
+   {
+    "id": "ai-engineer/rag-and-dynamic-filters",
+    "roadmap": "ai-engineer",
+    "title": "RAG & Dynamic Filters"
+   }
+  ],
+  "11": [
+   {
+    "id": "ai-agents/rag-and-vector-databases",
+    "roadmap": "ai-agents",
+    "title": "RAG and Vector Databases"
+   },
+   {
+    "id": "ai-engineer/vector-databases",
+    "roadmap": "ai-engineer",
+    "title": "Vector Databases"
+   }
+  ],
+  "12": [
+   {
+    "id": "ai-engineer/llm-evaluations",
+    "roadmap": "ai-engineer",
+    "title": "LLM Evaluations"
+   },
+   {
+    "id": "ai-engineer/evaluation-metrics",
+    "roadmap": "ai-engineer",
+    "title": "Evaluation Metrics"
+   },
+   {
+    "id": "ai-engineer/ragas",
+    "roadmap": "ai-engineer",
+    "title": "RAGAS"
+   }
+  ],
+  "13": [
+   {
+    "id": "ai-engineer/context-sources",
+    "roadmap": "ai-engineer",
+    "title": "Context Sources"
+   }
+  ],
+  "14": [
+   {
+    "id": "aspnet-core/minimal-apis",
+    "roadmap": "aspnet-core",
+    "title": "Minimal APIs"
+   },
+   {
+    "id": "aspnet-core/middlewares",
+    "roadmap": "aspnet-core",
+    "title": "Middlewares"
+   },
+   {
+    "id": "aspnet-core/memory-cache",
+    "roadmap": "aspnet-core",
+    "title": "Memory Cache"
+   },
+   {
+    "id": "ai-engineer/streaming-responses",
+    "roadmap": "ai-engineer",
+    "title": "Streaming Responses"
+   },
+   {
+    "id": "docker/building-container-images",
+    "roadmap": "docker",
+    "title": "Building Container Images"
+   }
+  ],
+  "15": [
+   {
+    "id": "ai-engineer/tools--function-calling",
+    "roadmap": "ai-engineer",
+    "title": "Tools & Function Calling"
+   },
+   {
+    "id": "ai-agents/tool-definition",
+    "roadmap": "ai-agents",
+    "title": "Tool Definition"
+   },
+   {
+    "id": "ai-agents/acting--tool-invocation",
+    "roadmap": "ai-agents",
+    "title": "Acting / Tool Invocation"
+   }
+  ],
+  "16": [
+   {
+    "id": "ai-agents/what-are-ai-agents",
+    "roadmap": "ai-agents",
+    "title": "What are AI Agents?"
+   },
+   {
+    "id": "ai-agents/agent-loop",
+    "roadmap": "ai-agents",
+    "title": "Agent Loop"
+   },
+   {
+    "id": "ai-agents/short-term--memory",
+    "roadmap": "ai-agents",
+    "title": "Short Term  Memory"
+   },
+   {
+    "id": "ai-agents/long-term-memory",
+    "roadmap": "ai-agents",
+    "title": "Long Term Memory"
+   }
+  ],
+  "17": [
+   {
+    "id": "ai-agents/planner-executor",
+    "roadmap": "ai-agents",
+    "title": "Planner Executor"
+   },
+   {
+    "id": "ai-agents/dag-agents",
+    "roadmap": "ai-agents",
+    "title": "DAG Agents"
+   },
+   {
+    "id": "ai-agents/tool-sandboxing--permissioning",
+    "roadmap": "ai-agents",
+    "title": "Tool sandboxing / Permissioning"
+   }
+  ],
+  "18": [
+   {
+    "id": "ai-agents/multi-agents",
+    "roadmap": "ai-agents",
+    "title": "Multi-Agents"
+   },
+   {
+    "id": "ai-agents/self-critique-agents",
+    "roadmap": "ai-agents",
+    "title": "Self-critique Agents"
+   },
+   {
+    "id": "ai-engineer/multi-agents",
+    "roadmap": "ai-engineer",
+    "title": "Multi-agents"
+   }
+  ],
+  "19": [
+   {
+    "id": "ai-agents/langgraph",
+    "roadmap": "ai-agents",
+    "title": "LangGraph"
+   },
+   {
+    "id": "ai-agents/react-reason--act",
+    "roadmap": "ai-agents",
+    "title": "ReAct (Reason + Act)"
+   }
+  ],
+  "20": [
+   {
+    "id": "ai-agents/prompt-injection--jailbreaks",
+    "roadmap": "ai-agents",
+    "title": "Prompt Injection / Jailbreaks"
+   },
+   {
+    "id": "ai-agents/safety--red-team-testing",
+    "roadmap": "ai-agents",
+    "title": "Safety + Red Team Testing"
+   },
+   {
+    "id": "ai-agents/data-privacy--pii-redaction",
+    "roadmap": "ai-agents",
+    "title": "Data Privacy + PII Redaction"
+   },
+   {
+    "id": "ai-agents/unit-testing-for-individual-tools",
+    "roadmap": "ai-agents",
+    "title": "Unit Testing for Individual Tools"
+   },
+   {
+    "id": "ai-engineer/prompt-injection-attacks",
+    "roadmap": "ai-engineer",
+    "title": "Prompt Injection Attacks"
+   }
+  ],
+  "21": [
+   {
+    "id": "ai-agents/model-context-protocol-mcp",
+    "roadmap": "ai-agents",
+    "title": "Model Context Protocol (MCP)"
+   },
+   {
+    "id": "ai-agents/mcp-hosts",
+    "roadmap": "ai-agents",
+    "title": "MCP Hosts"
+   },
+   {
+    "id": "ai-agents/mcp-client",
+    "roadmap": "ai-agents",
+    "title": "MCP Client"
+   },
+   {
+    "id": "ai-engineer/connect-to-local-server",
+    "roadmap": "ai-engineer",
+    "title": "Connect to Local Server"
+   }
+  ],
+  "22": [
+   {
+    "id": "ai-agents/creating-mcp-servers",
+    "roadmap": "ai-agents",
+    "title": "Creating MCP Servers"
+   },
+   {
+    "id": "ai-agents/mcp-servers",
+    "roadmap": "ai-agents",
+    "title": "MCP Servers"
+   },
+   {
+    "id": "ai-engineer/building-an-mcp-server",
+    "roadmap": "ai-engineer",
+    "title": "Building an MCP Server"
+   }
+  ],
+  "23": [
+   {
+    "id": "ai-engineer/building-an-mcp-client",
+    "roadmap": "ai-engineer",
+    "title": "Building an MCP Client"
+   },
+   {
+    "id": "ai-engineer/mcp-host",
+    "roadmap": "ai-engineer",
+    "title": "MCP Host"
+   },
+   {
+    "id": "ai-agents/integration-testing-for-flows",
+    "roadmap": "ai-agents",
+    "title": "Integration Testing for Flows"
+   }
+  ],
+  "24": [
+   {
+    "id": "ai-engineer/connect-to-remote-server",
+    "roadmap": "ai-engineer",
+    "title": "Connect to Remote Server"
+   },
+   {
+    "id": "ai-engineer/transport-layer",
+    "roadmap": "ai-engineer",
+    "title": "Transport Layer"
+   }
+  ],
+  "25": [
+   {
+    "id": "aws/introduction-to-aws",
+    "roadmap": "aws",
+    "title": "Introduction to AWS"
+   },
+   {
+    "id": "aws/iam",
+    "roadmap": "aws",
+    "title": "IAM"
+   },
+   {
+    "id": "aws/users--user-groups",
+    "roadmap": "aws",
+    "title": "Users / User Groups"
+   },
+   {
+    "id": "aws/identity-based",
+    "roadmap": "aws",
+    "title": "Identity-based"
+   }
+  ],
+  "26": [
+   {
+    "id": "aws/s3",
+    "roadmap": "aws",
+    "title": "S3"
+   },
+   {
+    "id": "aws/buckets--objects",
+    "roadmap": "aws",
+    "title": "Buckets / Objects"
+   },
+   {
+    "id": "aws/roles",
+    "roadmap": "aws",
+    "title": "Roles"
+   },
+   {
+    "id": "aws/assuming-roles",
+    "roadmap": "aws",
+    "title": "Assuming Roles"
+   }
+  ],
+  "27": [
+   {
+    "id": "aws/lambda",
+    "roadmap": "aws",
+    "title": "Lambda"
+   },
+   {
+    "id": "aws/creating--invoking-functions",
+    "roadmap": "aws",
+    "title": "Creating / Invoking Functions"
+   },
+   {
+    "id": "aws/cold-start-and-limitations",
+    "roadmap": "aws",
+    "title": "Cold Start and Limitations"
+   },
+   {
+    "id": "aws/logs",
+    "roadmap": "aws",
+    "title": "Logs"
+   }
+  ],
+  "28": [
+   {
+    "id": "aws/api-gateway",
+    "roadmap": "aws",
+    "title": "API Gateway"
+   },
+   {
+    "id": "aspnet-core/rest",
+    "roadmap": "aspnet-core",
+    "title": "REST"
+   }
+  ],
+  "29": [
+   {
+    "id": "aws/dynamodb",
+    "roadmap": "aws",
+    "title": "DynamoDB"
+   },
+   {
+    "id": "aws/tables--items--attributes",
+    "roadmap": "aws",
+    "title": "Tables / Items / Attributes"
+   },
+   {
+    "id": "aws/primary-keys--secondary-indexes",
+    "roadmap": "aws",
+    "title": "Primary Keys / Secondary Indexes"
+   },
+   {
+    "id": "aws/data-modeling",
+    "roadmap": "aws",
+    "title": "Data Modeling"
+   }
+  ],
+  "30": [
+   {
+    "id": "devops/aws-cdk",
+    "roadmap": "devops",
+    "title": "AWS CDK"
+   },
+   {
+    "id": "devops/cloudformation",
+    "roadmap": "devops",
+    "title": "CloudFormation"
+   },
+   {
+    "id": "mlops/infrastructure-as-code",
+    "roadmap": "mlops",
+    "title": "Infrastructure as Code"
+   }
+  ],
+  "31": [
+   {
+    "id": "aws/vpc",
+    "roadmap": "aws",
+    "title": "VPC"
+   },
+   {
+    "id": "aws/subnets",
+    "roadmap": "aws",
+    "title": "Subnets"
+   },
+   {
+    "id": "aws/cidr-blocks",
+    "roadmap": "aws",
+    "title": "CIDR Blocks"
+   },
+   {
+    "id": "aws/route-tables",
+    "roadmap": "aws",
+    "title": "Route Tables"
+   },
+   {
+    "id": "aws/internet-gateway",
+    "roadmap": "aws",
+    "title": "Internet Gateway"
+   },
+   {
+    "id": "aws/nat-gateway",
+    "roadmap": "aws",
+    "title": "NAT Gateway"
+   },
+   {
+    "id": "aws/security-groups",
+    "roadmap": "aws",
+    "title": "Security Groups"
+   }
+  ],
+  "32": [
+   {
+    "id": "aws/ecr",
+    "roadmap": "aws",
+    "title": "ECR"
+   },
+   {
+    "id": "aws/ecs",
+    "roadmap": "aws",
+    "title": "ECS"
+   },
+   {
+    "id": "aws/fargate",
+    "roadmap": "aws",
+    "title": "Fargate"
+   },
+   {
+    "id": "aws/elastic-load-balancers",
+    "roadmap": "aws",
+    "title": "Elastic Load Balancers"
+   },
+   {
+    "id": "docker/container-registries",
+    "roadmap": "docker",
+    "title": "Container Registries"
+   }
+  ],
+  "33": [
+   {
+    "id": "ai-engineer/choosing-the-right-model",
+    "roadmap": "ai-engineer",
+    "title": "Choosing the Right Model"
+   },
+   {
+    "id": "ai-engineer/closed-vs-open-source-models",
+    "roadmap": "ai-engineer",
+    "title": "Closed vs Open Source Models"
+   },
+   {
+    "id": "ai-engineer/embedding",
+    "roadmap": "ai-engineer",
+    "title": "Embedding"
+   }
+  ],
+  "34": [
+   {
+    "id": "ai-engineer/rag-vs-fine-tuning",
+    "roadmap": "ai-engineer",
+    "title": "RAG vs Fine-tuning"
+   },
+   {
+    "id": "ai-engineer/rag-usecases",
+    "roadmap": "ai-engineer",
+    "title": "RAG Usecases"
+   }
+  ],
+  "35": [
+   {
+    "id": "devops/aws-ecs--fargate",
+    "roadmap": "devops",
+    "title": "AWS ECS / Fargate"
+   },
+   {
+    "id": "devops/secret-management",
+    "roadmap": "devops",
+    "title": "Secret Management"
+   },
+   {
+    "id": "aws/cloudwatch",
+    "roadmap": "aws",
+    "title": "Cloudwatch"
+   }
+  ],
+  "36": [
+   {
+    "id": "ai-agents/remote--cloud",
+    "roadmap": "ai-agents",
+    "title": "Remote / Cloud"
+   },
+   {
+    "id": "ai-engineer/inference",
+    "roadmap": "ai-engineer",
+    "title": "Inference"
+   }
+  ],
+  "37": [
+   {
+    "id": "aws/cloudfront",
+    "roadmap": "aws",
+    "title": "Cloudfront"
+   },
+   {
+    "id": "ai-engineer/mcp-server",
+    "roadmap": "ai-engineer",
+    "title": "MCP Server"
+   }
+  ],
+  "38": [
+   {
+    "id": "ai-engineer/security-and-privacy-concerns",
+    "roadmap": "ai-engineer",
+    "title": "Security and Privacy Concerns"
+   },
+   {
+    "id": "ai-engineer/content-moderation-apis",
+    "roadmap": "ai-engineer",
+    "title": "Content Moderation APIs"
+   },
+   {
+    "id": "ai-agents/bias--toxicity-guardrails",
+    "roadmap": "ai-agents",
+    "title": "Bias & Toxicity Guardrails"
+   },
+   {
+    "id": "aws/shared-responsibility-model",
+    "roadmap": "aws",
+    "title": "Shared Responsibility Model"
+   }
+  ],
+  "39": [
+   {
+    "id": "devops/github-actions",
+    "roadmap": "devops",
+    "title": "GitHub Actions"
+   },
+   {
+    "id": "devops/ci--cd-tools",
+    "roadmap": "devops",
+    "title": "CI / CD Tools"
+   },
+   {
+    "id": "git-github/secrets-and-env-vars",
+    "roadmap": "git-github",
+    "title": "Secrets and Env Vars"
+   },
+   {
+    "id": "git-github/workflow-triggers",
+    "roadmap": "git-github",
+    "title": "Workflow Triggers"
+   }
+  ],
+  "40": [
+   {
+    "id": "devops/opentelemetry",
+    "roadmap": "devops",
+    "title": "OpenTelemetry"
+   },
+   {
+    "id": "devops/observability",
+    "roadmap": "devops",
+    "title": "Observability"
+   },
+   {
+    "id": "ai-engineer/llm-observability",
+    "roadmap": "ai-engineer",
+    "title": "LLM Observability"
+   },
+   {
+    "id": "ai-engineer/tracing--logging",
+    "roadmap": "ai-engineer",
+    "title": "Tracing & logging"
+   },
+   {
+    "id": "ai-agents/structured-logging--tracing",
+    "roadmap": "ai-agents",
+    "title": "Structured logging & tracing"
+   }
+  ],
+  "41": [
+   {
+    "id": "ai-engineer/prompt-caching",
+    "roadmap": "ai-engineer",
+    "title": "Prompt Caching"
+   },
+   {
+    "id": "ai-engineer/costlatency-monitoring",
+    "roadmap": "ai-engineer",
+    "title": "Cost/latency monitoring"
+   },
+   {
+    "id": "system-design/caching",
+    "roadmap": "system-design",
+    "title": "Caching"
+   },
+   {
+    "id": "system-design/throttling",
+    "roadmap": "system-design",
+    "title": "Throttling"
+   },
+   {
+    "id": "aspnet-core/distributed-cache",
+    "roadmap": "aspnet-core",
+    "title": "Distributed Cache"
+   }
+  ],
+  "42": [
+   {
+    "id": "ai-engineer/regression-testing",
+    "roadmap": "ai-engineer",
+    "title": "Regression Testing"
+   },
+   {
+    "id": "ai-engineer/deterministic-evals",
+    "roadmap": "ai-engineer",
+    "title": "Deterministic Evals"
+   },
+   {
+    "id": "ai-engineer/model-based-evals",
+    "roadmap": "ai-engineer",
+    "title": "Model-Based Evals"
+   },
+   {
+    "id": "mlops/model-evaluation",
+    "roadmap": "mlops",
+    "title": "Model Evaluation"
+   }
+  ],
+  "43": [
+   {
+    "id": "system-design/retry",
+    "roadmap": "system-design",
+    "title": "Retry"
+   },
+   {
+    "id": "system-design/circuit-breaker",
+    "roadmap": "system-design",
+    "title": "Circuit Breaker"
+   },
+   {
+    "id": "system-design/fail-over",
+    "roadmap": "system-design",
+    "title": "Fail-Over"
+   },
+   {
+    "id": "aspnet-core/polly",
+    "roadmap": "aspnet-core",
+    "title": "Polly"
+   }
+  ],
+  "44": [
+   {
+    "id": "linux/navigation-basics",
+    "roadmap": "linux",
+    "title": "Navigation Basics"
+   },
+   {
+    "id": "linux/file-permissions",
+    "roadmap": "linux",
+    "title": "File Permissions"
+   },
+   {
+    "id": "linux/process-management",
+    "roadmap": "linux",
+    "title": "Process Management"
+   },
+   {
+    "id": "linux/networking",
+    "roadmap": "linux",
+    "title": "Networking"
+   },
+   {
+    "id": "linux/shell-programming",
+    "roadmap": "linux",
+    "title": "Shell Programming"
+   },
+   {
+    "id": "linux/troubleshooting",
+    "roadmap": "linux",
+    "title": "Troubleshooting"
+   }
+  ],
+  "45": [
+   {
+    "id": "system-design/how-to-approach-system-design",
+    "roadmap": "system-design",
+    "title": "How to approach System Design?"
+   },
+   {
+    "id": "ai-engineer/know-your-customers--usecases",
+    "roadmap": "ai-engineer",
+    "title": "Know your Customers / Usecases"
+   },
+   {
+    "id": "ai-engineer/impact-on-product-development",
+    "roadmap": "ai-engineer",
+    "title": "Impact on Product Development"
+   }
+  ],
+  "46": [
+   {
+    "id": "ai-engineer/data-classification",
+    "roadmap": "ai-engineer",
+    "title": "Data Classification"
+   },
+   {
+    "id": "ai-engineer/context-security",
+    "roadmap": "ai-engineer",
+    "title": "Context Security"
+   }
+  ],
+  "47": [
+   {
+    "id": "aws/well-architected-framework",
+    "roadmap": "aws",
+    "title": "Well Architected Framework"
+   },
+   {
+    "id": "aws/quotas",
+    "roadmap": "aws",
+    "title": "Quotas"
+   },
+   {
+    "id": "devops/provisioning",
+    "roadmap": "devops",
+    "title": "Provisioning"
+   }
+  ],
+  "48": [
+   {
+    "id": "ai-engineer/agents-usecases",
+    "roadmap": "ai-engineer",
+    "title": "Agents Usecases"
+   },
+   {
+    "id": "ai-engineer/multimodal-ai-usecases",
+    "roadmap": "ai-engineer",
+    "title": "Multimodal AI Usecases"
+   }
+  ],
+  "49": [
+   {
+    "id": "linux/checking-service-logs",
+    "roadmap": "linux",
+    "title": "Checking Service Logs"
+   },
+   {
+    "id": "devops/logs-management",
+    "roadmap": "devops",
+    "title": "Logs Management"
+   },
+   {
+    "id": "system-design/health-monitoring",
+    "roadmap": "system-design",
+    "title": "Health Monitoring"
+   }
+  ],
+  "50": [
+   {
+    "id": "git-github/documentation",
+    "roadmap": "git-github",
+    "title": "Documentation"
+   },
+   {
+    "id": "git-github/project-readme",
+    "roadmap": "git-github",
+    "title": "Project Readme"
+   }
+  ],
+  "51": [
+   {
+    "id": "system-design/availability-vs-consistency",
+    "roadmap": "system-design",
+    "title": "Availability vs Consistency"
+   },
+   {
+    "id": "system-design/performance-vs-scalability",
+    "roadmap": "system-design",
+    "title": "Performance vs Scalability"
+   },
+   {
+    "id": "system-design/horizontal-scaling",
+    "roadmap": "system-design",
+    "title": "Horizontal Scaling"
+   }
+  ],
+  "52": [
+   {
+    "id": "git-github/github-releases",
+    "roadmap": "git-github",
+    "title": "GitHub Releases"
+   },
+   {
+    "id": "ai-engineer/production-monitoring",
+    "roadmap": "ai-engineer",
+    "title": "Production monitoring"
+   }
+  ]
+ }
+}
